@@ -1,8 +1,5 @@
 <template>
   <el-container>
-    <el-header class="header" height="70px">
-      <p>TJ众测</p>
-    </el-header>
     <el-main>
       <router-view/>
     </el-main>
