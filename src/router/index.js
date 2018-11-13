@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Main from '@/components/Main.vue'
-import Login from '@/components/Login.vue'
-import Register from '@/components/Register.vue'
-import RegisterWorker from '@/components/RegisterWorker.vue'
-import RegisterRequester from '@/components/RegisterRequester.vue'
-import WorkerTaskSquare from '@/components/WorkerTaskSquare.vue'
+import Main from '@/views/Main.vue'
+import Login from '@/views/Login.vue'
+import Register from '@/views/Register.vue'
+import RegisterWorker from '@/views/RegisterWorker.vue'
+import RegisterRequester from '@/views/RegisterRequester.vue'
+import WorkerTaskSquare from '@/views/worker/WorkerTaskSquare.vue'
 
 Vue.use(Router) // 注册vue-router
 

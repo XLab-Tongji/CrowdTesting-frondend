@@ -751,7 +751,7 @@
           },
           page:1,
           help_page_menu:"0.0",
-          url_crowdsourcing:require("../../static/crowdTestingTag.png"),
+          url_crowdsourcing:require("../../../static/crowdTestingTag.png"),
           input_search: '',
           input_advice: '',
           taskList:[
