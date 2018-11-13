@@ -5,6 +5,7 @@ import Login from '@/components/Login.vue'
 import Register from '@/components/Register.vue'
 import RegisterWorker from '@/components/RegisterWorker.vue'
 import RegisterRequester from '@/components/RegisterRequester.vue'
+import WorkerTaskSquare from '@/components/WorkerTaskSquare.vue'
 
 Vue.use(Router) // 注册vue-router
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/register_requester',
       name: 'RegisterRequester',
       component: RegisterRequester
+    },
+    {
+      path: '/worker_task_square',
+      name: 'WorkerTaskSquare',
+      component: WorkerTaskSquare
     }
   ]
 })
