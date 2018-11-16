@@ -44,10 +44,10 @@
     export default {
         methods: {
             login () {
-                this.$router.replace('/login')
+                this.$router.push('/login')
             },
             register(){
-                this.$router.replace('/register')
+                this.$router.push('/register')
             }
         },
         data(){

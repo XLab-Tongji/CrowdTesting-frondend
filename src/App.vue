@@ -13,8 +13,12 @@ export default {
 </script>
 
 <style>
-  .header{
-    background-color: #409EFF;
-    color: white;
-  }
+ .el-main{
+   padding: 0;
+   font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+ }
+ .el-row{
+    margin: 0;
+    padding: 0;
+}
 </style>
