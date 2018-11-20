@@ -9,6 +9,10 @@ import WorkerTaskSquare from '@/views/worker/WorkerTaskSquare.vue'
 import RequesterHomepageBasic from '@/views/requester/RequesterHomepageBasic.vue'
 import RequesterHomepageDetail from '@/views/requester/RequesterHomepageDetail.vue'
 import RequesterHomepageBalance from '@/views/requester/RequesterHomepageBalance.vue'
+import RequesterCreateMain from '@/views/requester/RequesterCreateMain.vue'
+import RequesterCreateMainpro1 from '@/views/requester/RequesterCreateMain_pro1.vue'
+import RequesterCreateMainpro2 from '@/views/requester/RequesterCreateMain_pro2.vue'
+import RequesterCreate from '@/views/requester/RequesterCreate.vue'
 
 Vue.use(Router) // 注册vue-router
 
@@ -58,6 +62,26 @@ export default new Router({
       path: '/requester_homepage_balance',
       name: 'RequesterHomepageBalance',
       component: RequesterHomepageBalance
+    },
+    {
+      path: '/requester_create_main',
+      name: 'RequesterCreateMain',
+      component: RequesterCreateMain
+    },
+    {
+      path: '/requester_create_main_pro1',
+      name: 'RequesterCreateMainpro1',
+      component: RequesterCreateMainpro1
+    },
+    {
+      path: '/requester_create_main_pro2',
+      name: 'RequesterCreateMainpro2',
+      component: RequesterCreateMainpro2
+    },
+    {
+      path: '/requester_create',
+      name: 'RequesterCreate',
+      component: RequesterCreate
     }
   ]
 })

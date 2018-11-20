@@ -21,4 +21,8 @@ export default {
     margin: 0;
     padding: 0;
 }
+.row_requester_main{
+  background-color:#F7F6F6;
+  height:700px;
+}
 </style>
