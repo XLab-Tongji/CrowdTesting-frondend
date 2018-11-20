@@ -13,6 +13,8 @@ import RequesterCreateMain from '@/views/requester/RequesterCreateMain.vue'
 import RequesterCreateMainpro1 from '@/views/requester/RequesterCreateMain_pro1.vue'
 import RequesterCreateMainpro2 from '@/views/requester/RequesterCreateMain_pro2.vue'
 import RequesterCreate from '@/views/requester/RequesterCreate.vue'
+import WorkerTaskDetails from '@/views/worker/WorkerTaskDetails.vue'
+import WorkerTaskTest from '@/views/worker/WorkerTaskTest.vue'
 
 Vue.use(Router) // 注册vue-router
 
@@ -47,6 +49,16 @@ export default new Router({
       path: '/worker_task_square',
       name: 'WorkerTaskSquare',
       component: WorkerTaskSquare
+    },
+    {
+      path: '/worker_task_details',
+      name: 'WorkerTaskDetails',
+      component: WorkerTaskDetails
+    },
+    {
+      path: '/worker_task_test',
+      name: 'WorkerTaskTest',
+      component: WorkerTaskTest
     },
     {
       path: '/requester_homepage_basic',

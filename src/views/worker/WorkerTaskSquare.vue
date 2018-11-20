@@ -1,7 +1,22 @@
 <template>
-  <el-ontainer>
+  <el-container>
     <!--导航-->
     <el-header height="12vh" style="">
+      <!--<el-row>
+      <el-col :span="3" style="background-color: #4D4D4D">
+        <p style="color:#fff; margin-left:50px;">TJ众测</p>
+      </el-col>
+      <el-col :span="18" >
+        <div class="topbar-title" style="background-color: #4D4D4D">
+          <el-menu :default-active="1"  mode="horizontal" @select="handleSelect"
+                   background-color=rgba(0,0,0,0) text-color="#fff"  active-text-color="#5ED5D1">
+            <el-menu-item index="1">广场</el-menu-item>
+            <el-menu-item index="2">任务</el-menu-item>
+            <el-menu-item index="3">价格</el-menu-item>
+          </el-menu>
+        </div>
+      </el-col>
+      </el-row>-->
       <el-row style = "background-color:#5ED5D1;height:80%">
         <el-col :span="3">
           <img :src="url_crowdsourcing"  style="width:100%;height:8vh;background-color: #4D4D4D"/>
@@ -91,7 +106,7 @@
           <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;">需求方</span>
         </el-col>
         <el-col span="9">
-          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">项目描述</span>
+          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">项目名称</span>
         </el-col>
         <el-col span="2">
           <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">热度</span>
@@ -185,7 +200,7 @@
               <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.reward}}</span>
             </el-col>
             <el-col span="3">
-              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.create_time}}</span>
+              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(task.create_time)}}</span>
             </el-col>
             <el-col :span="1">
               <el-button type="text" style="height:5vh;font-weight:500;color:#000000" @click="click">
@@ -642,12 +657,12 @@
         </el-col>
       </el-row>
     </el-main>
-  </el-ontainer>
+  </el-container>
 </template>
 
 <script>
   import * as Vue from 'autoprefixer'
-
+  import axios from 'axios'
   export default {
       methods: {
         help1_1(){
@@ -689,18 +704,7 @@
           workerNum.style.color = '#4D4D4D';
           reward.style.color = '#5ED5D1';
           date.style.color = '#4D4D4D';
-          this.taskList[0] = {
-            "name": "a",
-            "description": "this is a task to distinguish",
-            "reward": 40,
-            "status": null,
-            "type": "asdf data",
-            "restrictions": null,
-            "requests": null,
-            "requester_id": 1,
-            "task_id": 8,
-            "create_time":"2017-12-31",
-          };
+          this.taskList = newSort(this.taskList,'reward');
           this.$forceUpdate();
         },
         orderByDate(){
@@ -710,6 +714,8 @@
           workerNum.style.color = '#4D4D4D';
           reward.style.color = '#4D4D4D';
           date.style.color = '#5ED5D1';
+          this.taskList = newSort(this.taskList,'create_time');
+          this.$forceUpdate();
         },
         click(){
           alert("a");
@@ -754,104 +760,30 @@
           url_crowdsourcing:require("../../../static/crowdTestingTag.png"),
           input_search: '',
           input_advice: '',
-          taskList:[
-            {
-              "name": "big_data",
-              "description": "this is a task to distinguish",
-              "reward": 40,
-              "status": null,
-              "type": "collecting data",
-              "restrictions": null,
-              "requests": null,
-              "requester_id": 1,
-              "task_id": 8,
-              "create_time":"2017-12-31",
-              "level":3
-            },
-            {
-              "name": "classify",
-              "description": "this is a task to classify",
-              "reward": 15,
-              "status": null,
-              "type": "work",
-              "restrictions": null,
-              "requests": null,
-              "requester_id": 2,
-              "task_id": 7,
-              "create_time":"2017-12-31",
-              "level":2
-            },
-            {
-              "name": "Tag",
-              "description": "this is a tagging task",
-              "reward": 30,
-              "status": null,
-              "type": null,
-              "restrictions": null,
-              "requests": null,
-              "requester_id": 1,
-              "task_id": 6,
-              "create_time":"2017-12-31",
-              "level":4
-            }
-          ],
-          personalTaskList:[
-            {
-              "name": "Tag",
-              "description": "this is a tagging task",
-              "reward": 30,
-              "status": "80%",
-              "type": "collecting data",
-              "restrictions": null,
-              "requests": null,
-              "requester_id": 1,
-              "task_id": 1,
-              "create_time":"2017-12-31",
-              "level":3
-            },
-            {
-              "name": "Tag",
-              "description": "this is a tagging task",
-              "reward": 30,
-              "status": "100%",
-              "type": "work",
-              "restrictions": null,
-              "requests": null,
-              "requester_id": 1,
-              "task_id": 2,
-              "create_time":"2017-12-31",
-              "level":1
-            },
-            {
-              "name": "Tag",
-              "description": "this is a tagging task",
-              "reward": 30,
-              "status": "70%",
-              "type": "work",
-              "restrictions": null,
-              "requests": null,
-              "requester_id": 1,
-              "task_id": 3,
-              "create_time":"2017-12-31",
-              "level":2
-            },
-            {
-              "name": "Tag",
-              "description": "this is a tagging task",
-              "reward": 30,
-              "status": "100%",
-              "type": null,
-              "restrictions": null,
-              "requests": null,
-              "requester_id": 1,
-              "task_id": 4,
-              "create_time":"2017-12-31",
-              "level":4
-            }
-          ]
+          taskList:[],
+          personalTaskList:[]
         }
-      }
+      },
+    created()
+    {
+      let that=this
+      axios.get('/api/task/find-all')
+        .then(function (response) {
+          let tasks = response.data.tasks;
+          that.taskList = tasks;
+          that.$forceUpdate();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
+    }
+  function newSort(array,key){
+    return array.sort(function(a,b){
+      var x=a[key];
+      var y=b[key];
+      return ((x>y)?-1:((x<y)?1:0));
+    });}
 </script>
 
 <style scoped>
