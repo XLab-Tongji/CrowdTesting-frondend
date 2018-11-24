@@ -776,8 +776,18 @@
         .catch(function (error) {
           console.log(error);
         });
+      axios.get('/api/personal-task/find-my-task')
+        .then(function (response) {
+          let personalTasks = response.data.tasks;
+          console.log(personalTasks);
+          that.personalTaskList = personalTasks;
+          that.$forceUpdate();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
-    }
+  }
   function newSort(array,key){
     return array.sort(function(a,b){
       var x=a[key];
