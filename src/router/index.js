@@ -15,6 +15,8 @@ import RequesterCreateMainpro2 from '@/views/requester/RequesterCreateMain_pro2.
 import RequesterCreate from '@/views/requester/RequesterCreate.vue'
 import WorkerTaskDetails from '@/views/worker/WorkerTaskDetails.vue'
 import WorkerTaskTest from '@/views/worker/WorkerTaskTest.vue'
+import WorkerTaskPreview from '@/views/worker/WorkerTaskPreview.vue'
+import WorkerTaskContinuation from '@/views/worker/WorkerTaskContinuation.vue'
 import * as MessageBox from 'element-ui'
 
 Vue.use(Router) // 注册vue-router
@@ -63,6 +65,18 @@ const router = new Router({
       name: 'WorkerTaskTest',
       meta: { login:true },
       component: WorkerTaskTest
+    },
+    {
+      path: '/worker_task_preview',
+      name: 'WorkerTaskPreview',
+      meta: { login:true },
+      component: WorkerTaskPreview
+    },
+    {
+      path: '/worker_task_continuation',
+      name: 'WorkerTaskContinuation',
+      meta: { login:true },
+      component: WorkerTaskContinuation
     },
     {
       path: '/requester_homepage_basic',

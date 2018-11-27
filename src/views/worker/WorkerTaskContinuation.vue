@@ -107,7 +107,7 @@
         </el-col>
         <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
           <el-button type="text" style="width:100%;font-weight:500;color:#ffffff;background-color:#015D73">
-            <span style="font-size:1.2vw">练习</span>
+            <span style="font-size:1.2vw">继续</span>
           </el-button>
         </el-col>
       </el-row>

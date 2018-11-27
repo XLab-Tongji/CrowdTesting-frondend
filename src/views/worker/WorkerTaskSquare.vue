@@ -121,7 +121,8 @@
           <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">行为</span>
         </el-col>
       </el-row>
-      <el-collapse accordion v-for = "task in taskList" id = "collapse">
+      <el-collapse accordion v-for = "task in taskList" id = "collapse" v-model="activeNames">
+        <div v-if="personalTaskList.indexOf(task)===-1">
         <el-collapse-item v-if="user.level<task.level">
           <template slot="title">
             <el-col span="4">
@@ -143,12 +144,12 @@
               <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.create_time}}</span>
             </el-col>
             <el-col :span="1">
-            <el-button type="text" style="height:5vh;font-weight:500;color:#000000" @click="click">
+            <el-button type="text" style="height:5vh;font-weight:500;color:#000000" @click="preview(task.task_id)">
               <span style="font-size:1.0vw">preview</span>
             </el-button>
             </el-col>
             <el-col :span="2">
-              <el-button type="text" style="width:70%;height:5vh;font-weight:500;color:#000000;margin-left:3vh" @click="click">
+              <el-button type="text" style="width:70%;height:5vh;font-weight:500;color:#000000;margin-left:3vh">
                 <span style="height:5vh;font-weight:500;color:#000000">Quality</span>
               </el-button>
             </el-col>
@@ -203,12 +204,12 @@
               <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(task.create_time)}}</span>
             </el-col>
             <el-col :span="1">
-              <el-button type="text" style="height:5vh;font-weight:500;color:#000000" @click="click">
+              <el-button type="text" style="height:5vh;font-weight:500;color:#000000" @click="preview(task.task_id)">
                 <span style="font-size:1.0vw">preview</span>
               </el-button>
             </el-col>
             <el-col :span="2">
-              <el-button type="text" style="width:70%;height:5vh;font-weight:500;color:#ffffff;background-color:#015D73;margin-left:3vh">
+              <el-button type="text" style="width:70%;height:5vh;font-weight:500;color:#ffffff;background-color:#015D73;margin-left:3vh" @click="accept(task.task_id)">
                 <span style="font-size:1.0vw">Accept</span>
               </el-button>
             </el-col>
@@ -242,6 +243,7 @@
             </el-row>
           </div>
         </el-collapse-item>
+        </div>
       </el-collapse>
       <div class="block" style="text-align: center;margin-top:6vh">
         <el-pagination
@@ -306,7 +308,7 @@
               <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.status}}</span>
             </el-col>
             <el-col :span="2">
-              <el-button type="text" style="width:100%;height:5vh;font-weight:500;color:#ffffff;background-color:#015D73;margin-left:3vh">
+              <el-button type="text" style="width:100%;height:5vh;font-weight:500;color:#ffffff;background-color:#015D73;margin-left:3vh" @click="continuation(personalTask.task_id)">
                 <span style="font-size:1.0vw">Continue</span>
               </el-button>
             </el-col>
@@ -696,6 +698,7 @@
           workerNum.style.color = '#5ED5D1';
           reward.style.color = '#4D4D4D';
           date.style.color = '#4D4D4D';
+          this.activeNames = []
         },
         orderByReward(){
           var workerNum = document.getElementById('workerNum');
@@ -704,7 +707,9 @@
           workerNum.style.color = '#4D4D4D';
           reward.style.color = '#5ED5D1';
           date.style.color = '#4D4D4D';
+          let sortTaskList = newSort(this.taskList,'reward');
           this.taskList = newSort(this.taskList,'reward');
+          this.activeNames = []
           this.$forceUpdate();
         },
         orderByDate(){
@@ -715,6 +720,7 @@
           reward.style.color = '#4D4D4D';
           date.style.color = '#5ED5D1';
           this.taskList = newSort(this.taskList,'create_time');
+          this.activeNames = []
           this.$forceUpdate();
         },
         click(){
@@ -746,13 +752,21 @@
         },
         handleClose(key, keyPath) {
           console.log(key, keyPath);
+        },
+        preview(task_id){
+          this.$router.push({ name: 'WorkerTaskPreview', params: { task_id: task_id }})
+        },
+        accept(task_id){
+          this.$router.push({ name: 'WorkerTaskDetails', params: { task_id: task_id }})
+        },
+        continuation(task_id){
+          this.$router.push({name: 'WorkerTaskContinuation', params: {task_id: task_id}})
         }
       },
-
       data(){
         return{
           user:{
-            username :"hyq",
+            username :this.$store.state.username,
             level:2
           },
           page:1,
@@ -761,12 +775,17 @@
           input_search: '',
           input_advice: '',
           taskList:[],
-          personalTaskList:[]
+          personalTaskList:[],
+          activeNames:[]
         }
       },
     created()
     {
       let that=this
+      if(this.$route.params.page!=null)
+      {
+        this.page = this.$route.params.page;
+      }
       axios.get('/api/task/find-all')
         .then(function (response) {
           let tasks = response.data.tasks;
