@@ -95,17 +95,8 @@ import RequesterVisualizationSidebar from '@/components/RequesterNavi/RequesterV
     height: 640px;
     border: solid 1px #DCDFE6;
 }
-.basic_info_title{
-    width: 600px;
-    padding-top: 40px;
-    padding-bottom: 20px;
-    padding-left: 10px;
-    margin-left: 50px;
-    font-size: 25px;
-    border-bottom:solid 1px #E4E7ED;
-}
 .box{
-    width: 30%;
+    width: 80%;
     padding-left: 60px;
     padding-top: 50px;
 }
