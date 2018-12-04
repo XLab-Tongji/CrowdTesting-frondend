@@ -17,6 +17,7 @@ import WorkerTaskDetails from '@/views/worker/WorkerTaskDetails.vue'
 import WorkerTaskTest from '@/views/worker/WorkerTaskTest.vue'
 import WorkerTaskPreview from '@/views/worker/WorkerTaskPreview.vue'
 import WorkerTaskContinuation from '@/views/worker/WorkerTaskContinuation.vue'
+import WorkerInformation from '@/views/worker/WorkerInformation.vue'
 import * as MessageBox from 'element-ui'
 
 Vue.use(Router) // 注册vue-router
@@ -79,6 +80,12 @@ const router = new Router({
       component: WorkerTaskContinuation
     },
     {
+      path: '/worker_information',
+      name: 'WorkerInformation',
+      meta: { login:true },
+      component: WorkerInformation
+    },
+    {
       path: '/requester_homepage_basic',
       name: 'RequesterHomepageBasic',
       meta: { login:true },
@@ -119,7 +126,7 @@ const router = new Router({
       name: 'RequesterCreate',
       meta: { login:true },
       component: RequesterCreate
-    }
+    },
   ]
 })
 

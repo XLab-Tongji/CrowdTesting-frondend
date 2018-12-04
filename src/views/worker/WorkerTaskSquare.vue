@@ -83,25 +83,58 @@
         <b style="font-size:1.7vw;letter-spacing: 0.2vh">任务广场</b>
         </span>
       </el-row>
-      <el-row style="color:#4D4D4D">
-        <el-col span="12">
-          <span style="font-size:1.4vw;letter-spacing: 0.2vh;padding-left: 1vw;color:#4D4D4D;font-weight:600">筛选</span>
-          <span style="font-size:1.7vw;letter-spacing: 0.2vh;padding-left: 1vw;color:#E6E6E6">|</span>
-          <el-button type="text" style="color:#5ED5D1" @click="orderByWorkerNum" id="workerNum">
-            <span style="font-size:1.4vw;font-weight:600">热度</span>
-          </el-button>
-          <el-button type="text" style="color:#4D4D4D" @click="orderByReward" id="reward">
-            <span style="font-size:1.4vw;font-weight:600">报酬</span>
-          </el-button>
-          <el-button type="text" style="color:#4D4D4D" @click="orderByDate" id="date">
-            <span style="font-size:1.4vw;font-weight:600">创建时间</span>
-          </el-button>
-        </el-col>
-        <el-col span="12">
-          <el-input v-model="input_search" placeholder="search" suffix-icon="el-icon-search" style="width:98%"></el-input>
+      <el-row>
+        <el-col style="border-style:solid;border-width:0.3vh;border-color:#E6E6E6">
+          <span style="padding-left: 1vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;"><b>按条件查找：</b></span>
+          <span style="padding-left: 1vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;">报酬：</span>
+          <el-input v-model="minReward" placeholder="" size="mini" style="width:6%"></el-input>
+          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;">-</span>
+          <el-input v-model="maxReward" placeholder="" size="mini" style="width:6%"></el-input>
+          <span style="padding-left: 1vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;">时间：</span>
+          <el-date-picker
+            v-model="startDate"
+            align="right"
+            type="date"
+            placeholder="选择日期"
+            :picker-options="pickerOptions1"
+            style="width:10%" size="mini">
+          </el-date-picker>
+          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;">-</span>
+          <el-date-picker
+            v-model="endDate"
+            align="right"
+            type="date"
+            placeholder="选择日期"
+            :picker-options="pickerOptions1"
+            style="width:10%" size="mini">
+          </el-date-picker>
+          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;padding-left: 1vw;">关键字：</span>
+          <el-input v-model="keyword" placeholder="请输入任意关键字" style="width:15%" size="mini"></el-input>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="search">搜索</el-button>
         </el-col>
       </el-row>
-      <el-row style="background-color:#F2F0F0;margin-top:3vh;height:5vh">
+      <el-row>
+        <el-col style="border-style:solid;border-width:0.3vh;border-color:#E6E6E6">
+          <template>
+            <el-checkbox-group v-model="checkList" size="mini" @change="handleCheckedChange">
+              <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;padding-right: 3vw"><b>筛选：</b></span>
+              <el-checkbox label="显示可接受任务" border></el-checkbox>
+              <el-checkbox label="显示等级过高任务" border></el-checkbox>
+              <el-checkbox label="显示已完成任务" border></el-checkbox>
+              <el-checkbox label="显示未完成任务" border></el-checkbox>
+            </el-checkbox-group>
+          </template>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col style="border-style:solid;border-width:0.3vh;border-color:#E6E6E6">
+          <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;padding-right: 3vw"><b>排序：</b></span>
+          <el-button type="primary" style="color:#ffffff" @click="orderByWorkerNum" size="mini">热度</el-button>
+          <el-button type="success" style="color:#ffffff" @click="orderByReward" size="mini">报酬</el-button>
+          <el-button type="danger" style="color:#ffffff" @click="orderByDate" size="mini">创建时间</el-button>
+        </el-col>
+      </el-row>
+      <el-row style="background-color:#F2F0F0;height:5vh">
         <el-col span="4">
           <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;">需求方</span>
         </el-col>
@@ -121,15 +154,15 @@
           <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">行为</span>
         </el-col>
       </el-row>
-      <el-collapse accordion v-for = "task in taskList" id = "collapse" v-model="activeNames">
+      <el-collapse accordion v-for = "task in showTaskList" id = "collapse" v-model="activeNames">
         <div v-if="personalTaskList.indexOf(task)===-1">
         <el-collapse-item v-if="user.level<task.level">
           <template slot="title">
             <el-col span="4">
               <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;">{{task.requester_id}}</span>
             </el-col>
-            <el-col span="9" v-if="task.type!=null">
-              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.type}}</span>
+            <el-col span="9" v-if="task.name!=null">
+              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.name}}</span>
             </el-col>
             <el-col span="9" v-else>
               <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">暂无</span>
@@ -667,6 +700,120 @@
   import axios from 'axios'
   export default {
       methods: {
+        handleCheckedChange(){
+          let showTaskListCopy = this.showTaskListCopy;
+          this.showTaskList = [];
+          console.log(this.checkList);
+          if(this.checkList.indexOf("显示可接受任务") != -1){
+            if(this.checkList.indexOf("显示已完成任务") != -1){
+              for(let taskIndex in showTaskListCopy){
+                let aTask = showTaskListCopy[taskIndex];
+                if(aTask.level <= this.user.level && aTask.status == '100%')
+                  this.showTaskList.push(aTask);
+              }
+            }
+            if(this.checkList.indexOf("显示未完成任务") != -1){
+              for(let taskIndex in showTaskListCopy){
+                let aTask = showTaskListCopy[taskIndex];
+                if(aTask.level <= this.user.level && aTask.status != '100%')
+                  this.showTaskList.push(aTask);
+              }
+            }
+          }
+          if(this.checkList.indexOf("显示等级过高任务") != -1){
+            if(this.checkList.indexOf("显示已完成任务") != -1){
+              for(let taskIndex in showTaskListCopy){
+                let aTask = showTaskListCopy[taskIndex];
+                if(aTask.level > this.user.level && aTask.status == '100%')
+                  this.showTaskList.push(aTask);
+              }
+            }
+            if(this.checkList.indexOf("显示未完成任务") != -1){
+              for(let taskIndex in showTaskListCopy){
+                let aTask = showTaskListCopy[taskIndex];
+                if(aTask.level > this.user.level && aTask.status != '100%')
+                  this.showTaskList.push(aTask);
+              }
+            }
+          }
+        },
+        search(){
+          function dateToString(draftTimeV){
+            draftTimeV = draftTimeV + "";
+            let date = '';
+            let month = new Array();
+            month["Jan"] = 1; month["Feb"] = 2; month["Mar"] = 3; month["Apr"] = 4; month["May"] = 5; month["Jan"] = 6;
+            month["Jul"] = 7; month["Aug"] = 8; month["Sep"] = 9; month["Oct"] = 10; month["Nov"] = 11; month["Dec"] = 12;
+            let str = draftTimeV.split(" ");
+            date = str[3] + "-";
+            date = date + month[str[1]] + "-" + str[2];
+            return date;
+          }
+          let showTasks = [];
+          let minReward = 0;
+          let maxReward = 0;
+          if(this.minReward==''){
+            minReward = 0;
+          }
+          else if(!isNaN(parseInt(this.minReward,10))){
+            minReward = parseInt(this.minReward);
+          }
+          else{
+            alert("请输入正确的数值！")
+            return;
+          }
+          if(this.maxReward==''){
+            maxReward = Number.MAX_VALUE;
+          }
+          else if(!isNaN(parseInt(this.maxReward,10))){
+            maxReward = parseInt(this.maxReward);
+          }
+          else{
+            alert("请输入正确的数值！")
+            return;
+          }
+          if(parseInt(this.maxReward) < parseInt(this.minReward)) {
+            let change = this.maxReward;
+            this.maxReward = this.minReward;
+            this.minReward = change;
+            let change_num = maxReward;
+            maxReward = minReward;
+            minReward = change_num;
+          }
+          if(this.endDate < this.startDate) {
+            let change = this.startDate;
+            this.startDate = this.endDate;
+            this.endDate = change;
+          }
+          for(let task in this.taskList){
+            let aTask =this.taskList[task];
+            if(aTask.reward >= minReward && aTask.reward <= maxReward){
+              if(this.startDate != '' && aTask.create_time >= dateToString(this.startDate)) {
+                if(this.endDate != '' && aTask.create_time <= dateToString(this.endDate)) {
+                  if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.requests != null && aTask.requests.indexOf(this.keyword) >= 0))
+                    showTasks.push(aTask);
+                  }
+                else if(this.endDate == ''){
+                    if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.requests != null && aTask.requests.indexOf(this.keyword) >= 0))
+                      showTasks.push(aTask);
+                }
+              }
+              else if(this.startDate == '') {
+                if(this.endDate != '' && aTask.create_time <= dateToString(this.endDate)) {
+                  if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.requests != null && aTask.requests.indexOf(this.keyword) >= 0))
+                    showTasks.push(aTask);
+                }
+                else if(this.endDate == ''){
+                  if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.requests != null && aTask.requests.indexOf(this.keyword) >= 0))
+                    showTasks.push(aTask);
+                }
+              }
+            }
+          }
+          this.showTaskList = showTasks;
+          this.showTaskListCopy = this.showTaskList;
+          this.$forceUpdate();
+        },
         help1_1(){
           this.help_page_menu=1.1;
         },
@@ -707,8 +854,7 @@
           workerNum.style.color = '#4D4D4D';
           reward.style.color = '#5ED5D1';
           date.style.color = '#4D4D4D';
-          let sortTaskList = newSort(this.taskList,'reward');
-          this.taskList = newSort(this.taskList,'reward');
+          this.showTaskList = newSort(this.showTaskList,'reward');
           this.activeNames = []
           this.$forceUpdate();
         },
@@ -719,7 +865,7 @@
           workerNum.style.color = '#4D4D4D';
           reward.style.color = '#4D4D4D';
           date.style.color = '#5ED5D1';
-          this.taskList = newSort(this.taskList,'create_time');
+          this.showTaskList = newSort(this.showTaskList,'create_time');
           this.activeNames = []
           this.$forceUpdate();
         },
@@ -772,11 +918,45 @@
           page:1,
           help_page_menu:"0.0",
           url_crowdsourcing:require("../../../static/crowdTestingTag.png"),
-          input_search: '',
           input_advice: '',
           taskList:[],
+          showTaskList:[],
+          showTaskCopy:[],
+          minReward:'',
+          maxReward:'',
+          startDate:'',
+          endDate:'',
+          keyword:'',
+          checkList:["显示可接受任务","显示等级过高任务","显示已完成任务","显示未完成任务"],
           personalTaskList:[],
-          activeNames:[]
+          activeNames:[],
+          pickerOptions1: {
+            disabledDate(time) {
+              return time.getTime() > Date.now();
+            },
+            shortcuts: [{
+              text: '今天',
+              onClick(picker) {
+                picker.$emit('pick', new Date());
+              }
+            }, {
+              text: '昨天',
+              onClick(picker) {
+                const date = new Date();
+                date.setTime(date.getTime() - 3600 * 1000 * 24);
+                picker.$emit('pick', date);
+              }
+            }, {
+              text: '一周前',
+              onClick(picker) {
+                const date = new Date();
+                date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                picker.$emit('pick', date);
+              }
+            }]
+          },
+          value1: '',
+          value2: '',
         }
       },
     created()
@@ -790,6 +970,8 @@
         .then(function (response) {
           let tasks = response.data.tasks;
           that.taskList = tasks;
+          that.showTaskList = tasks;
+          that.showTaskListCopy = that.showTaskList;
           that.$forceUpdate();
         })
         .catch(function (error) {
@@ -809,8 +991,8 @@
   }
   function newSort(array,key){
     return array.sort(function(a,b){
-      var x=a[key];
-      var y=b[key];
+      let x=a[key];
+      let y=b[key];
       return ((x>y)?-1:((x<y)?1:0));
     });}
 </script>
