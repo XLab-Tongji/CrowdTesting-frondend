@@ -83,6 +83,7 @@
               data:param
             })
               .then(function (response) {
+                console.log(response);
                 if(response.data.code[0] == "2") {
                   let token = response.data.X_Auth_Token;
                   let username = self.email;
@@ -106,6 +107,7 @@
           }
         },
         loginWorker:function () {
+          let token_pointer = this
           this.button_disabled = true;
           if (this.email == "") {
             this.$message({
@@ -145,7 +147,7 @@
                 }
               })
               .catch(function (error) {
-                alert("登录失败");
+                alert(error);
               });
           }
         }
