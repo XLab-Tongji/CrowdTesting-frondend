@@ -13,11 +13,15 @@ import RequesterCreateMain from '@/views/requester/RequesterCreateMain.vue'
 import RequesterCreateMainpro1 from '@/views/requester/RequesterCreateMain_pro1.vue'
 import RequesterCreateMainpro2 from '@/views/requester/RequesterCreateMain_pro2.vue'
 import RequesterCreate from '@/views/requester/RequesterCreate.vue'
+import RequesterTaskManage from '@/views/requester/RequesterTaskManage.vue'
+import RequesterTask from '@/views/requester/RequesterTask.vue'
 import WorkerTaskDetails from '@/views/worker/WorkerTaskDetails.vue'
 import WorkerTaskTest from '@/views/worker/WorkerTaskTest.vue'
 import WorkerTaskPreview from '@/views/worker/WorkerTaskPreview.vue'
 import WorkerTaskContinuation from '@/views/worker/WorkerTaskContinuation.vue'
 import WorkerInformation from '@/views/worker/WorkerInformation.vue'
+import WorkerPersonalTask from '@/views/worker/WorkerPersonalTask.vue'
+import WorkerTaskHelp from '@/views/worker/WorkerTaskHelp.vue'
 import * as MessageBox from 'element-ui'
 
 Vue.use(Router) // 注册vue-router
@@ -54,6 +58,18 @@ const router = new Router({
       name: 'WorkerTaskSquare',
       meta: { login:true },
       component: WorkerTaskSquare
+    },
+    {
+      path: '/worker_personal_task',
+      name: 'WorkerPersonalTask',
+      meta: { login:true },
+      component: WorkerPersonalTask
+    },
+    {
+      path: '/worker_task_help',
+      name: 'WorkerTaskHelp',
+      meta: { login:true },
+      component: WorkerTaskHelp
     },
     {
       path: '/worker_task_details',
@@ -126,6 +142,18 @@ const router = new Router({
       name: 'RequesterCreate',
       meta: { login:true },
       component: RequesterCreate
+    },
+    {
+      path: '/requester_task_manage',
+      name: 'RequesterTaskManage',
+      meta: { login:true },
+      component: RequesterTaskManage
+    },
+    {
+      path: '/requester_task',
+      name: 'RequesterTask',
+      meta: { login:true },
+      component: RequesterTask
     },
   ]
 })
