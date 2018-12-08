@@ -14,6 +14,7 @@ axios.defaults.headers.common['X_Auth_Token'] = store.state.token;
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  axios,
   router,
   store,
   components: { App },
