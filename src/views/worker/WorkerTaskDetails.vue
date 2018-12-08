@@ -1,85 +1,11 @@
 <template>
   <el-container>
     <!--导航-->
-    <el-header height="12vh" style="">
-      <!--<el-row>
-      <el-col :span="3" style="background-color: #4D4D4D">
-        <p style="color:#fff; margin-left:50px;">TJ众测</p>
-      </el-col>
-      <el-col :span="18" >
-        <div class="topbar-title" style="background-color: #4D4D4D">
-          <el-menu :default-active="1"  mode="horizontal" @select="handleSelect"
-                   background-color=rgba(0,0,0,0) text-color="#fff"  active-text-color="#5ED5D1">
-            <el-menu-item index="1">广场</el-menu-item>
-            <el-menu-item index="2">任务</el-menu-item>
-            <el-menu-item index="3">价格</el-menu-item>
-          </el-menu>
-        </div>
-      </el-col>
-      </el-row>-->
-      <el-row style = "background-color:#5ED5D1;height:80%">
-        <el-col :span="3">
-          <img :src="url_crowdsourcing"  style="width:100%;height:8vh;background-color: #4D4D4D"/>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh">
-            <span>Worker</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style = "background-color:#5ED5D1" v-if="page==1">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600" @click="taskSquarePage">
-            <span style="font-size:1.4vw">广场</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D" v-else>
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600" @click="taskSquarePage">
-            <span style="font-size:1.4vw">广场</span>
-          </el-button>
-        </el-col>
-        <el-col :span="1" style = "background-color:#4D4D4D">
-          <div style="color:#ffffff;width:100%;height:8vh"></div>
-        </el-col>
-        <el-col :span="2" style = "background-color:#5ED5D1" v-if="page==2">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600" @click="taskPage">
-            <span style="font-size:1.4vw">任务</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D" v-else>
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600"  @click="taskPage">
-            <span style="font-size:1.4vw">任务</span>
-          </el-button>
-        </el-col>
-        <el-col :span="1" style = "background-color:#4D4D4D">
-          <div style="color:#ffffff;width:100%;height:8vh"></div>
-        </el-col>
-        <el-col :span="2" style = "background-color:#5ED5D1" v-if="page==3">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600"  @click="helpPage">
-            <span style="font-size:1.4vw">帮助</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D" v-else>
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600" @click="helpPage">
-            <span style="font-size:1.4vw">帮助</span>
-          </el-button>
-        </el-col>
-        <el-col :span="8" style = "background-color:#4D4D4D">
-          <div style="color:#ffffff;width:100%;height:8vh"></div>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh">
-            <span style="font-size:1.1vw">{{user.username}}</span>
-          </el-button>
-        </el-col>
-        <el-col :span="1" style = "background-color:#4D4D4D">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh">
-            <span style="font-size:1.1vw">登出</span>
-          </el-button>
-        </el-col>
-      </el-row>
-    </el-header>
+    <WorkerHomepageTopbar/>
+    <el-header height="12px"></el-header>
     <el-main>
       <el-row>
-        <el-col span="12">
+        <el-col :span="12">
           <el-button type="text" style="color:#019ED3;padding-left: 2vw;font-size:1.2vw;font-weight:500;line-height: 5vh" @click="taskSquarePage">广场</el-button>
           <i class="el-icon-caret-right"></i>
           <el-button type="text" style="color:#019ED3;font-size:1.2vw;font-weight:500;line-height: 5vh">{{task.name}}</el-button>
@@ -178,10 +104,14 @@
 </template>
 
 <script>
-  import * as Vue from 'autoprefixer'
   import axios from 'axios'
+  import WorkerHomepageTopbar from '@/components/WorkerNavi/WorkerHomepageTopbar.vue'
+
 
   export default {
+    components:{
+      WorkerHomepageTopbar,
+    },
     methods: {
       taskSquarePage () {
         this.$router.push({ name: 'WorkerTaskSquare', params: { page: 1 }})

@@ -3,7 +3,7 @@
     <el-row type="flex" justify="center">
         <el-col :span="6">
             <!--logo-->
-            <div style="width=500px; height=104px;text-align:center;margin:0 auto;padding-top:40px;">
+            <div style="width:500px; height:104px;text-align:center;margin:0 auto;padding-top:40px;">
                 <img :src="logo" height=50%; width=50%; />
             </div>
             <!--login-->
@@ -15,6 +15,7 @@
                     </el-form-item>
                     <el-form-item label="密码">
                         <el-input v-model="pwd" type="password"></el-input>
+                        <span style="color:#e4260c">{{wrong_pwd}}</span>
                     </el-form-item>
                     <el-form-item >
                         <el-radio v-model="radio" label="1">在这台电脑上保持登录</el-radio>
@@ -83,6 +84,7 @@
               data:param
             })
               .then(function (response) {
+                console.log(response);
                 if(response.data.code[0] == "2") {
                   let token = response.data.X_Auth_Token;
                   let username = self.email;
@@ -91,21 +93,25 @@
                     username: username
                   }
                   token_pointer.$store.commit('UserLogin', user_information);
-                  console.log(token_pointer.$store.state.token);
+                  token_pointer.button_disabled = false;
                 }
                 else if(response.data.code[0] == "4") {
-
+                  token_pointer.wrong_pwd = "用户名或密码错误";
+                  token_pointer.button_disabled = false;
                 }
                 else if(response.data.code[0] == "5") {
-                  alert("服务器错误")
+                  token_pointer.wrong_pwd("服务器错误")
+                  token_pointer.button_disabled = false;
                 }
               })
               .catch(function (error) {
                 alert(error);
+                token_pointer.button_disabled = false;
               });
           }
         },
         loginWorker:function () {
+          let token_pointer = this
           this.button_disabled = true;
           if (this.email == "") {
             this.$message({
@@ -135,17 +141,21 @@
                     username: username
                   }
                   token_pointer.$store.commit('UserLogin', user_information);
-                  console.log(token_pointer.$store.state.token);
+                  token_pointer.wrong_pwd = "";
+                  token_pointer.$router.replace("/worker_task_square");
+                  token_pointer.button_disabled = false;
                 }
                 else if(response.data.code[0] == "4") {
-
+                  token_pointer.wrong_pwd = "用户名或密码错误";
+                  token_pointer.button_disabled = false;
                 }
                 else if(response.data.code[0] == "5") {
-                  alert("服务器错误")
+                  token_pointer.wrong_pwd("服务器错误")
+                  token_pointer.button_disabled = false;
                 }
               })
               .catch(function (error) {
-                alert("登录失败");
+                alert(error);
               });
           }
         }
@@ -153,7 +163,8 @@
       data () {
         return {
           email:'',
-          pwd:''
+          pwd:'',
+          wrong_pwd:'',
         }
       }
     }
