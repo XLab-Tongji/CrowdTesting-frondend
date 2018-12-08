@@ -4,13 +4,19 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import '../node_modules'
+import store from './store'
+import axios from 'axios'
+import echarts from 'echarts'
 
 Vue.config.productionTip = false
+axios.defaults.headers.common['X_Auth_Token'] = store.state.token
+Vue.prototype.echarts = echarts
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

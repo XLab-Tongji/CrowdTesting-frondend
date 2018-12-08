@@ -9,30 +9,10 @@
                 <div class="basic_info">
                     <div class="box">
                         <el-form label-position="left" label-width="110px" :model="user" >                                            
-                        <el-table
-                             :data="tableData"
-                             style="width: 100%">
-                             <el-table-column
-                                 prop="num"
-                                 label="序号"
-                                 width="180">
-                             </el-table-column>
-                              <el-table-column
-                                 prop="date"
-                                 label="发布日期"
-                                 width="180">
-                             </el-table-column>
-                             <el-table-column
-                                 prop="name"
-                                 label="项目名称"
-                                 width="180">
-                             </el-table-column>
-                             <el-table-column
-                                 prop="state"
-                                 label="项目状态"
-                                 width="180">
-                             </el-table-column>
-                             </el-table>
+                        <div id="main" style="width: 500px;height: 400px;"></div>
+	                  <div class="col-xs-4">
+                          <h3>条形图</h3>
+	                  </div>
                     </el-form-item>
                 </el-form>
                     </div>
@@ -53,39 +33,74 @@ import RequesterVisualizationSidebar from '@/components/RequesterNavi/RequesterV
             RequesterHomepageTopbar,
             RequesterVisualizationSidebar
         },
-        methods: {
-            
-        },
         data(){
-            return{
-               tableData: [{
-                  num:'1',
-                  date: '2018-05-02',
-                  name: 'test',
-                  state: 'running'
-                 }, 
-                 {
-                  num:'2',
-                  date: '2018-06-02',
-                  name: 'test',
-                  state: 'running'
-                 }, 
-                 {
-                  num:'3',
-                  date: '2018-08-11',
-                  name: 'test',
-                  state: 'stop'
-                 }, 
-                 {
-                  num:'4',
-                  date: '2018-10-02',
-                  name: 'test',
-                  state: 'running'
-                 }]
-        }
-    }
-    }
+			
+	}}
+option = {
+            xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+             },
+            yAxis: {
+             type: 'value'
+            },
+            series: [{
+            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            type: 'line'
+             }]
+            }
+
 </script>
+
+ <script type="text/javascript">
+            var myChart = echarts.init(document.getElementById("main"));
+            var option = {
+                title:{
+                    text:"第一个演示示例"
+                },
+                tooltip:{
+                    text:"this is tool tip"
+                },
+                legend:{
+                    data:['答题人数']
+                },
+                xAxis:{
+                    data:["1","2","3","4","5","6"]
+                },
+                yAxis:{},
+                series:[{
+                            name:["答题人数"],
+                            type:"bar",
+                            data:[5,20,36,6,43,67]
+                        }]
+            };
+
+            // myChart.setOption(option);
+
+            myChart.setOption({
+                title:{
+                   title:{
+                    text:"第一个演示示例"
+                },
+                tooltip:{
+                    text:"this is tool tip"
+                },
+                legend:{
+                    data:['答题人数']
+                },
+                xAxis:{
+                    data:["1","2","3","4","5","6"]
+                },
+                yAxis:{},
+                series:[{
+                            name:["答题人数"],
+                            type:"bar",
+                            data:[5,20,36,6,43,67]
+                        }]
+			});
+			}
+
+ </script>
 
 <style scoped>
 .basic_info{
@@ -100,3 +115,5 @@ import RequesterVisualizationSidebar from '@/components/RequesterNavi/RequesterV
     padding-top: 50px;
 }
 </style>
+
+

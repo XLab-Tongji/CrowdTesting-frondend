@@ -9,30 +9,32 @@
                 <div class="basic_info">
                     <div class="box">
                         <el-form label-position="left" label-width="220px" :model="user" >                                            
-                        <el-table
-                             :data="tableData"
-                             style="width: 100%">
-                             <el-table-column
-                                 prop="num"
-                                 label="序号"
-                                 width="180">
-                             </el-table-column>
-                              <el-table-column
-                                 prop="date"
-                                 label="发布日期"
-                                 width="180">
-                             </el-table-column>
-                             <el-table-column
-                                 prop="people"
-                                 label="答题人数"
-                                 width="180">
-                             </el-table-column>
-                             <el-table-column
-                                 prop="rate"
-                                 label="平均正确率"
-                                 width="180">
-                             </el-table-column>
-                             </el-table>
+                       
+                        <el-tabs v-model="activeName" @tab-click="handleClick">
+                        <el-tab-pane label="task1" name="first">
+
+                           <div style="float:right;">
+                           <el-button type="primary" @click="task">查看答题详情</el-button>
+                           </div>
+
+                       </el-tab-pane>
+                       <el-tab-pane label="task2" name="second">
+                           <div style="float:right;">
+                           <el-button type="primary" @click="task">查看答题详情</el-button>
+                           </div>
+                       </el-tab-pane>
+                       <el-tab-pane label="task3" name="third">
+                           <div style="float:right;">
+                           <el-button type="primary" @click="task">查看答题详情</el-button>
+                           </div>
+                       </el-tab-pane>
+                       <el-tab-pane label="task4" name="fourth">
+                           <div style="float:right;">
+                           <el-button type="primary" @click="task">查看答题详情</el-button>
+                           </div>
+                       </el-tab-pane>
+                     </el-tabs>
+
                     </el-form-item>
                 </el-form>
                     </div>
@@ -53,39 +55,15 @@ import RequesterVisualizationSidebar from '@/components/RequesterNavi/RequesterV
             RequesterHomepageTopbar,
             RequesterVisualizationSidebar,      
         },
-        name: "chart",
-        methods: {
-            
-        },
        data () {
       return {
-          tableData: [{
-                  num:'1',
-                  date: '2018-05-02',
-                  people: '500',
-                  rate: '80%'
-                 }, 
-                 {
-                  num:'2',
-                  date: '2018-06-02',
-                  people: '375',
-                  rate: '30%'
-                 }, 
-                 {
-                  num:'3',
-                  date: '2018-08-11',
-                  people: '274',
-                  rate: '90%'
-                 }, 
-                 {
-                  num:'4',
-                  date: '2018-10-02',
-                  people: '180',
-                  rate: '100%'
-                 }]
+            methods:{
+                task(){
+                this.$router.push('/requester_visualization_task')
+                }
+            }
       }
-    }
-    }
+    }}
 </script>
 
 <style scoped>

@@ -20,6 +20,7 @@ import WorkerTaskContinuation from '@/views/worker/WorkerTaskContinuation.vue'
 import WorkerInformation from '@/views/worker/WorkerInformation.vue'
 import RequesterVisualizationRelease from '@/views/requester/RequesterVisualizationRelease.vue'
 import RequesterVisualizationAnswer from '@/views/requester/RequesterVisualizationAnswer.vue'
+import RequestVisualizationTask from '@/views/requester/RequestVisualizationTask.vue'
 
 Vue.use(Router) // 注册vue-router
 
@@ -89,6 +90,11 @@ const router = new Router({
       path: '/requester_homepage_basic',
       name: 'RequesterHomepageBasic',
       component: RequesterHomepageBasic
+    },
+    {
+      path: '/requester_visualization_task',
+      name: 'RequestVisualizationTask',
+      component: RequestVisualizationTask
     },
     {
       path: '/requester_visualization_answer',
