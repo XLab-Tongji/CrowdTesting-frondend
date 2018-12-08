@@ -56,8 +56,18 @@
       <el-row>
         <el-col style="border-style:solid;border-width:0.3vh;border-color:#E6E6E6">
           <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;padding-right: 3vw"><b>排序：</b></span>
-          <el-button type="success" style="color:#ffffff" @click="orderByReward" size="mini">报酬</el-button>
-          <el-button type="danger" style="color:#ffffff" @click="orderByDate" size="mini">创建时间</el-button>
+          <el-button type="success" style="color:#ffffff" @click="orderByReward" size="mini">
+            报酬
+            <i class="el-icon-d-caret" v-if="rewardOrder==0"></i>
+            <i class="el-icon-caret-top" v-if="rewardOrder==1"></i>
+            <i class="el-icon-caret-bottom" v-if="rewardOrder==2"></i>
+          </el-button>
+          <el-button type="danger" style="color:#ffffff" @click="orderByDate" size="mini">
+            创建时间
+            <i class="el-icon-d-caret" v-if="dateOrder==0"></i>
+            <i class="el-icon-caret-top" v-if="dateOrder==1"></i>
+            <i class="el-icon-caret-bottom" v-if="dateOrder==2"></i>
+          </el-button>
         </el-col>
       </el-row>
       <el-row style="background-color:#F2F0F0;height:5vh">
@@ -253,13 +263,41 @@
         this.$forceUpdate();
       },
       orderByReward(){
+        this.heatOrder = 0;
+        this.dateOrder = 0;
         this.showTaskList = newSort(this.showTaskList,'reward');
         this.activeNames = []
+        switch(this.rewardOrder){
+          case 0:
+            this.rewardOrder = 1;
+            break;
+          case 1:
+            this.rewardOrder = 2;
+            this.showTaskList.reverse();
+            break;
+          case 2:
+            this.rewardOrder = 1;
+            break;
+        }
         this.$forceUpdate();
       },
       orderByDate(){
+        this.heatOrder = 0;
+        this.rewardOrder = 0;
         this.showTaskList = newSort(this.showTaskList,'create_time');
         this.activeNames = []
+        switch(this.dateOrder){
+          case 0:
+            this.dateOrder = 1;
+            break;
+          case 1:
+            this.dateOrder = 2;
+            this.showTaskList.reverse();
+            break;
+          case 2:
+            this.dateOrder = 1;
+            break;
+        }
         this.$forceUpdate();
       },
       handleOpen(key, keyPath) {
@@ -319,6 +357,8 @@
         },
         value1: '',
         value2: '',
+        rewardOrder: 0,
+        dateOrder: 0,
       }
     },
     created()
