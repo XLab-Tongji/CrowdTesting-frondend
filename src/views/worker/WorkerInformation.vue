@@ -261,7 +261,6 @@
 <script>
   import * as Vue from 'autoprefixer'
   import axios from 'axios'
-
   export default {
     methods: {
       BasicInformation(){
@@ -315,7 +314,6 @@
         console.log('submit!');
       }
     },
-
     data() {
       return {
         user: {
@@ -361,7 +359,6 @@
         },
       }
     },
-
     created()
     {
       let that=this
@@ -383,5 +380,4 @@
 </script>
 
 <style scoped>
-
 </style>
