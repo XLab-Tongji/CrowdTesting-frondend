@@ -172,6 +172,7 @@
           wrong_pwd:'',
           button_disabled:false,
           radio:false,
+          logo:require("../../static/logo_black.png"),
         }
       }
     }
