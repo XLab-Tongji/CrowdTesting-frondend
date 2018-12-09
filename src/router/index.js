@@ -22,9 +22,6 @@ import WorkerTaskContinuation from '@/views/worker/WorkerTaskContinuation.vue'
 import WorkerInformation from '@/views/worker/WorkerInformation.vue'
 import WorkerPersonalTask from '@/views/worker/WorkerPersonalTask.vue'
 import WorkerTaskHelp from '@/views/worker/WorkerTaskHelp.vue'
-import RequesterVisualizationRelease from '@/views/requester/RequesterVisualizationRelease.vue'
-import RequesterVisualizationAnswer from '@/views/requester/RequesterVisualizationAnswer.vue'
-import RequestVisualizationTask from '@/views/requester/RequestVisualizationTask.vue'
 import * as MessageBox from 'element-ui'
 
 Vue.use(Router) // 注册vue-router
@@ -109,21 +106,6 @@ const router = new Router({
       name: 'RequesterHomepageBasic',
       meta: { login:true },
       component: RequesterHomepageBasic
-    },
-    {
-      path: '/requester_visualization_task',
-      name: 'RequestVisualizationTask',
-      component: RequestVisualizationTask
-    },
-    {
-      path: '/requester_visualization_answer',
-      name: 'RequesterVisualizationAnswer',
-      component: RequesterVisualizationAnswer
-    },
-    {
-      path: '/requester_visualization_release',
-      name: 'RequesterVisualizationRelease',
-      component: RequesterVisualizationRelease
     },
     {
       path: '/requester_homepage_detail',
