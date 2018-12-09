@@ -3,13 +3,13 @@
     <el-row type="flex" justify="center">
         <el-col :span="6">
             <!--logo-->
-            <div style="height=500px;width=104px;text-align:center;margin-left: auto；margin-right:auto;margin-top:30px;">
+            <div style="height:500px;width:104px;text-align:center;margin-left: auto;margin-right:auto;margin-top:30px;">
                 <img :src="logo" height=50%; width=50%; />
             </div>
             <!--login-->
             <div class="login_box">
                 <b style="font-size:22px">创建新的Requester账号</b>
-                 <el-form label-position="top" label-width="60px" :model="user" >                                            
+                 <el-form label-position="top" label-width="60px" :model="user" >
                     <el-form-item label="用户名">
                         <el-input v-model="user.name"></el-input>
                     </el-form-item>
@@ -29,12 +29,12 @@
                         <span>已经拥有账户？</span>
                         <div class="login_text"><b @click="login">登录</b></div>
                     </el-form-item>
-                    
+
                 </el-form>
             </div>
-            
+
         </el-col>
-       
+
     </el-row>
 </div>
 </template>
@@ -67,8 +67,8 @@
 
 .login_box{
     border-style:solid;
-    border-width: 1px; 
-    border-color:rgb(209, 209, 209); 
+    border-width: 1px;
+    border-color:rgb(209, 209, 209);
     border-radius: 10px;
     padding:30px 40px;
     margin-top: 20px;

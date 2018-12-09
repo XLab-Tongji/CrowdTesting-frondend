@@ -9,7 +9,7 @@
             <!--login-->
             <div class="login_box">
                 <b style="font-size:22px">登录</b>
-                 <el-form label-position="top" label-width="60px" :model="user" >
+                 <el-form label-position="top" label-width="60px">
                     <el-form-item label="邮箱">
                         <el-input v-model="email"></el-input>
                     </el-form-item>
@@ -63,6 +63,7 @@
         loginRequester:function () {
           let token_pointer = this
           this.button_disabled = true;
+          this.role = "ROLE_REQUESTER";
           if (this.email == "") {
             this.$message({
               message: '请输入用户名',
@@ -113,6 +114,7 @@
         loginWorker:function () {
           let token_pointer = this
           this.button_disabled = true;
+          this.role = "ROLE_WORKER";
           if (this.email == "") {
             this.$message({
               message: '请输入用户名',
@@ -127,6 +129,7 @@
             let param = new URLSearchParams();
             param.append('username',this.email);
             param.append('password',this.pwd);
+            param.append('role',this.role);
             axios({
               method:	'post',
               url: '/api/login',
@@ -164,7 +167,10 @@
         return {
           email:'',
           pwd:'',
+          role:'',
           wrong_pwd:'',
+          button_disabled:false,
+          radio:false,
         }
       }
     }
