@@ -79,6 +79,7 @@
             let self = this;
             param.append('username',this.email);
             param.append('password',this.pwd);
+            param.append('role',this.role);
             axios({
               method:	'post',
               url: '/api/login',
