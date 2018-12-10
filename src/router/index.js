@@ -12,13 +12,16 @@ import RequesterHomepageBalance from '@/views/requester/RequesterHomepageBalance
 import RequesterCreateMain from '@/views/requester/RequesterCreateMain.vue'
 import RequesterCreateMainpro1 from '@/views/requester/RequesterCreateMain_pro1.vue'
 import RequesterCreateMainpro2 from '@/views/requester/RequesterCreateMain_pro2.vue'
-import RequesterCreate from '@/views/requester/RequesterCreate.vue'
+import RequesterCreate1 from '@/views/requester/RequesterCreate_pro1.vue'
+import RequesterCreate2 from '@/views/requester/RequesterCreate_pro2.vue'
 import RequesterTaskManage from '@/views/requester/RequesterTaskManage.vue'
 import RequesterTask from '@/views/requester/RequesterTask.vue'
 import WorkerTaskDetails from '@/views/worker/WorkerTaskDetails.vue'
 import WorkerTaskTest from '@/views/worker/WorkerTaskTest.vue'
 import WorkerTaskPreview from '@/views/worker/WorkerTaskPreview.vue'
 import WorkerTaskContinuation from '@/views/worker/WorkerTaskContinuation.vue'
+import RequesterManageMain from '@/views/requester/RequesterManageMain.vue'
+import RequesterManageModify from '@/views/requester/RequesterManageModify.vue'
 import WorkerInformation from '@/views/worker/WorkerInformation.vue'
 import WorkerPersonalTask from '@/views/worker/WorkerPersonalTask.vue'
 import WorkerTaskHelp from '@/views/worker/WorkerTaskHelp.vue'
@@ -138,10 +141,28 @@ const router = new Router({
       component: RequesterCreateMainpro2
     },
     {
-      path: '/requester_create',
-      name: 'RequesterCreate',
+      path: '/requester_create_pro1',
+      name: 'RequesterCreate1',
       meta: { login:true },
-      component: RequesterCreate
+      component: RequesterCreate1
+    },
+    {
+      path: '/requester_create_pro2',
+      name: 'RequesterCreate2',
+      meta: { login:true },
+      component: RequesterCreate2
+    },
+    {
+      path: '/requester_manage_main',
+      name: 'RequesterManageMain',
+      meta: { login:true },
+      component: RequesterManageMain
+    },
+    {
+      path: '/requester_manage_modify',
+      name: 'RequesterManageModify',
+      meta: { login:true },
+      component: RequesterManageModify
     },
     {
       path: '/requester_task_manage',
@@ -186,4 +207,3 @@ router.beforeEach((to, from, next) => {
 })
 
 export default router
-

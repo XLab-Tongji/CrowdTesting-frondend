@@ -3,7 +3,7 @@
     <el-row type="flex" justify="center">
         <el-col :span="6">
             <!--logo-->
-            <div style="width:500px; height:104px;text-align:center;margin:0 auto;padding-top:40px;">
+            <div style="text-align:center;margin:0 auto;padding-top:40px;">
                 <img :src="logo" height=50%; width=50%; />
             </div>
             <!--login-->

@@ -43,7 +43,7 @@ export default {
         },
         methods:{
             create(){
-                this.$router.push('/requester_create')
+                this.$router.push('/requester_create_pro1')
             }
         }
 }
