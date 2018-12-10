@@ -13,16 +13,16 @@
                     <div class="box">
                         <el-form label-position="left" label-width="110px" :model="user" >                                            
                         <el-form-item label="用户名">
-                        <el-input ></el-input>
+                        <el-input v-model="username"></el-input>
                         </el-form-item>
                         <el-form-item label="密码">
-                            <el-input type="password"></el-input>
+                            <el-input type="password" v-model="pwd"></el-input>
                         </el-form-item>
                         <el-form-item label="邮箱">
-                        <el-input></el-input>
+                        <el-input v-model="email"></el-input>
                         </el-form-item>
                         <el-form-item label="手机号码">
-                        <el-input></el-input>
+                        <el-input v-model="tele"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button  type="primary" @click="modify" class="login_button">保存信息</el-button>
@@ -44,19 +44,69 @@
 <script>
 import RequesterHomepageTopbar from '@/components/RequesterNavi/RequesterHomepageTopbar.vue'
 import RequesterHomepageSidebar from '@/components/RequesterNavi/RequesterHomepageSidebar.vue'
-    export default {
+import axios from 'axios'   
+
+   export default {
         components:{
             RequesterHomepageTopbar,
             RequesterHomepageSidebar
         },
+        created:function(){
+            this.getBasics();
+        },
         methods: {
-            
+            getBasics(){
+                axios(
+                    {
+                        url:'http://localhost:8080/requester/find-by-username',
+                        method:'POST',
+                        params:{
+                            username:this.$route.query.name
+                        }
+                    }
+                ).then((response)=>{
+                    if (response.data.status == 200) {
+                    }
+                    else
+                        throw response;
+                    if (response.data.status == "200") {
+                        this.username=response.username;
+                        this.email=response.email;
+                        this.tele=response.teleNumber;
+                        this.pwd=response.password;
+                    }
+                }).catch(function (error) {
+                    if (error.status == 500) {
+                    swal("Error", "服务器错误！", "error");
+                    }
+                });     
+            },
+            modify(){
+                axios.post('http://localhost:8080/requester/find-by-username',{
+                    "username":this.username,
+                    "email":this.email,
+                    "tele":this.teleNumber,
+                    "pwd":this.password
+                }).then(function(response){
+                    if(response.status == 200) {
+                    this.$message({
+                    message: '修改成功',
+                    type: 'success'
+                    });
+                    }
+                }).catch(function(error){
+                   
+                    });
+            }
         },
         data(){
-            return{
-               
-            }
-        }
+           return{
+                username:username,
+                email:email,
+                tele:tele,
+                pwd:pwd
+           }
+        },
     }
 </script>
 
