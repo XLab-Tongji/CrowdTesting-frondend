@@ -1,34 +1,31 @@
 <template>
-<div class="login_main" >
+<div style="background-color:#E4E5E6;height:740px;" >
     <el-row type="flex" justify="center">
-        <el-col :span="6">
+        <el-col :span="7">
             <!--logo-->
-            <div style="text-align:center;margin:0 auto;padding-top:40px;">
-                <img :src="logo" height=50%; width=50%; />
-            </div>
+            <div style="height:120px"></div>
             <!--login-->
             <div class="login_box">
-                <b style="font-size:22px">登录</b>
-                 <el-form label-position="top" label-width="60px">
-                    <el-form-item label="邮箱">
-                        <el-input v-model="email"></el-input>
+                <b style="font-size:38px;color:#303133;margin-bottom:20px;">登录</b>
+                <br><span style="color:#909399;font-size:15px;">登录以进入你的账号</span>
+                 <el-form label-position="top" label-width="60px" style=" margin-top: 30px;">
+                    <el-form-item label="">
+                        <el-input v-model="email" placeholder="邮箱"><template slot="prepend">&nbsp;&nbsp;</template></el-input>
                     </el-form-item>
-                    <el-form-item label="密码">
-                        <el-input v-model="pwd" type="password"></el-input>
+                    <el-form-item label="">
+                        <el-input v-model="pwd" type="password" placeholder="密码"><template slot="prepend">&nbsp;&nbsp;</template></el-input>
                         <span style="color:#e4260c">{{wrong_pwd}}</span>
-                    </el-form-item>
+                    </el-form-item>      
                     <el-form-item >
-                        <el-radio v-model="radio" label="1">在这台电脑上保持登录</el-radio>
+                        <b class="forget" @click="forget">忘记密码？</b>
+                    </el-form-item>           
+                    <el-form-item>
+                        <el-button  @click="loginRequester" class="login_button login_requester">以Requester身份登录</el-button>
                     </el-form-item>
                     <el-form-item>
-                        <el-button  @click="loginRequester" :loading=this.button_disabled class="login_button">以Requester身份登录</el-button>
+                        <el-button  @click="loginWorker" class="login_button login_worker">以Worker身份登录</el-button>
                     </el-form-item>
-                    <el-form-item>
-                        <el-button  @click="loginWorker" :loading=this.button_disabled class="login_button">以Worker身份登录</el-button>
-                    </el-form-item>
-                    <el-form-item >
-                        <span>忘记密码？</span>
-                    </el-form-item>
+                    
                     <el-form-item>
                         <div class="sign_up">
                             <el-button  @click="register" style="width:100%;">注册新账户</el-button>
@@ -162,6 +159,24 @@
                 alert(error);
               });
           }
+        },
+        forget(){
+            this.$prompt('请输入邮箱', '找回密码', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+            inputErrorMessage: '邮箱格式不正确'
+          }).then(({ value }) => {
+            this.$message({
+              type: 'success',
+              message: '你的邮箱是: ' + value
+            });
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '取消输入'
+            });       
+          });
         }
       },
       data () {
@@ -184,9 +199,10 @@
     border-style:solid;
     border-width: 1px;
     border-color:rgb(209, 209, 209);
-    border-radius: 10px;
+    border-radius: 4px;
     padding:30px 40px;
     margin-top: 20px;
+    background-color:#fff;
 }
 .el-form--label-top .el-form-item__label{
     padding-bottom:0;
@@ -195,9 +211,7 @@
 .el-form-item{
     margin-bottom: 10px;
 }
-.el-input__inner{
-    border-radius: 12px;
-}
+
 .el-input__inner:hover{
     border-color: rgb(147, 206, 229);
 }
@@ -208,14 +222,28 @@
 }
 .login_button{
     width:100%;
-    background-color: rgb(70, 214, 250);
+    background-color: #00ACED;
     color: #fff;
+}
+.login_button:hover{
+    background-color: #0090C7
+}
+.login_worker{
+  background-color: #4DBD74
+}
+.login_worker:hover{
+  background-color: rgb(61, 168, 99)
 }
 .sign_up{
     border-top: solid 1px rgb(224, 224, 224);
     padding-top: 20px;
 }
-
+.forget{
+  font-size:13px;
+}
+.forget:hover{
+  color: rgb(22, 139, 185)
+}
 </style>
 
 

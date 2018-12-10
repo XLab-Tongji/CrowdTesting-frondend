@@ -57,17 +57,7 @@
                                 <el-form-item label="完成项目后多久自动支付给参与者"><!--限制：只可缩短付款期限-->
                                     <el-input-number v-model="auto_pay" 
                                     style="width:200px;margin-right:10px" :max="72"></el-input-number>小时                                   
-                                </el-form-item>                          
-                                <el-form-item label="参与者需要的额外资质"  >   <!--？：增加资质要求是否会对已参加项目的人产生影响？-->                            
-                                    <el-select v-model="ex_condition" filterable multiple placeholder="请选择" style="width:450px">
-                                        <el-option
-                                        v-for="item in condition_options"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
+                                </el-form-item>                                                         
                                 <el-form-item label="是否需要专家等级的参与者完成项目">
                                     <el-switch v-model="if_expert" disabled="true"></el-switch>
                                 </el-form-item>                           
@@ -145,8 +135,7 @@ export default {
                     "population":this.population,
                     "finish_time":this.finish_time,
                     "limitation":this.limitation,
-                    "pay_time":this.pay_time,
-                    "condition":this.condition,
+                    "pay_time":this.pay_time,                  
                     "if_expert":this.if_expert
                     
                 }).then(function(response){
@@ -173,7 +162,8 @@ export default {
                 limitation:limitation,
                 pay_time:pay_time,
                 condition:condition,
-                if_expert:if_expert
+                if_expert:if_expert,
+                condition:condition,             
            }
         },
 }

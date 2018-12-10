@@ -15,17 +15,17 @@
                     background-color="#313233"
                     text-color="#fff"
                     active-text-color="#5ED5D1">
-                <el-menu-item index="1">主页</el-menu-item>
-                <el-menu-item index="2">创建</el-menu-item>
-                <el-menu-item index="3">管理</el-menu-item>
+                <el-menu-item index="1" @click="main">主页</el-menu-item>
+                <el-menu-item index="2" @click="create">创建</el-menu-item>
+                <el-menu-item index="3" @click="manage">管理</el-menu-item>
             </el-menu>
         </el-col>
         <el-col :span="4">
             <el-card  class="topbar_user">  
                 <div >            
-                    <span>user name</span>
+                    <user @click="personal">user name</user>
                     <span>   |   </span>
-                    <span>sign out</span>     
+                    <user @click="signout">sign out</user>     
                 </div>          
             </el-card>
         </el-col>
@@ -36,7 +36,22 @@
 <script>
     export default { 
         methods: {
-            
+            create(){
+                this.$router.push('/requester_create_main')
+            },
+            manage(){
+                this.$router.push('/requester_manage_main')
+            },
+            personal(){
+                this.$router.push('/requester_homepage_basic')
+            },
+            signout(){
+                this.$router.push('/')
+            },
+            main(){
+               this.$router.push('/requester_main') 
+            }
+
         },
         data(){
             return{
@@ -70,8 +85,13 @@
     color: #fff;
     border: none;
 }
-.topbar_user span{
+.topbar_user user{
     padding-right: 20px;
+ 
+}
+.topbar_user user:hover{
+   cursor:pointer;
+   color: rgb(121, 185, 245)
 }
 
 </style>
