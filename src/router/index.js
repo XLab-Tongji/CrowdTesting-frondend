@@ -25,6 +25,10 @@ import RequesterManageModify from '@/views/requester/RequesterManageModify.vue'
 import WorkerInformation from '@/views/worker/WorkerInformation.vue'
 import WorkerPersonalTask from '@/views/worker/WorkerPersonalTask.vue'
 import WorkerTaskHelp from '@/views/worker/WorkerTaskHelp.vue'
+import RegisterRequesterInfo from '@/views/RegisterRequester_info.vue'
+import MainFeature from '@/views/MainFeature.vue'
+import MainPrice from '@/views/MainPrice.vue'
+import RequesterMain from '@/views/requester/RequesterMain.vue'
 import * as MessageBox from 'element-ui'
 
 Vue.use(Router) // 注册vue-router
@@ -55,6 +59,21 @@ const router = new Router({
       path: '/register_requester',
       name: 'RegisterRequester',
       component: RegisterRequester
+    },
+    {
+      path: '/register_requester_info',
+      name: 'RegisterRequesterInfo',
+      component: RegisterRequesterInfo
+    },
+    {
+      path: '/main_feature',
+      name: 'MainFeature',
+      component: MainFeature
+    },
+    {
+      path: '/main_price',
+      name: 'MainPrice',
+      component: MainPrice
     },
     {
       path: '/worker_task_square',
@@ -175,7 +194,13 @@ const router = new Router({
       name: 'RequesterTask',
       meta: { login:true },
       component: RequesterTask
-    },
+    },{
+      path: '/requester_main',
+      name: 'RequesterMain',
+      meta: { login:true },
+      component: RequesterMain
+      
+    }
   ]
 })
 
