@@ -1,74 +1,8 @@
 <template>
   <el-container>
     <!--导航-->
-    <el-header height="12vh" style="">
-      <el-row style = "background-color:#5ED5D1;height:80%">
-        <el-col :span="3">
-          <img :src="url_crowdsourcing"  style="width:100%;height:8vh;background-color: #4D4D4D"/>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh">
-            <span>Worker</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style = "background-color:#5ED5D1" v-if="page==1">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600" @click="taskSquarePage">
-            <span style="font-size:1.4vw">广场</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D" v-else>
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600" @click="taskSquarePage">
-            <span style="font-size:1.4vw">广场</span>
-          </el-button>
-        </el-col>
-        <el-col :span="1" style = "background-color:#4D4D4D">
-          <div style="color:#ffffff;width:100%;height:8vh"></div>
-        </el-col>
-        <el-col :span="2" style = "background-color:#5ED5D1" v-if="page==2">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600" @click="taskPage">
-            <span style="font-size:1.4vw">任务</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D" v-else>
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600"  @click="taskPage">
-            <span style="font-size:1.4vw">任务</span>
-          </el-button>
-        </el-col>
-        <el-col :span="1" style = "background-color:#4D4D4D">
-          <div style="color:#ffffff;width:100%;height:8vh"></div>
-        </el-col>
-        <el-col :span="2" style = "background-color:#5ED5D1" v-if="page==3">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600"  @click="helpPage">
-            <span style="font-size:1.4vw">帮助</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D" v-else>
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600" @click="helpPage">
-            <span style="font-size:1.4vw">帮助</span>
-          </el-button>
-        </el-col>
-        <el-col :span="8" style = "background-color:#4D4D4D">
-          <div style="color:#ffffff;width:100%;height:8vh"></div>
-        </el-col>
-
-        <el-col :span="2" style = "background-color:#5ED5D1" v-if="page==4">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600"  @click="informationPage">
-            <span style="font-size:1.4vw">{{user.username}}</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D" v-else>
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600" @click="informationPage">
-            <span style="font-size:1.4vw">{{user.username}}</span>
-          </el-button>
-        </el-col>
-
-        <el-col :span="1" style = "background-color:#4D4D4D">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh">
-            <span style="font-size:1.1vw">登出</span>
-          </el-button>
-        </el-col>
-      </el-row>
-    </el-header>
+    <WorkerHomepageTopbar/>
+    <el-header height="30px" style=""></el-header>
 
     <el-main v-if="page==4">
       <el-row>
@@ -106,12 +40,11 @@
         </el-col>
         <el-col span="17">
           <el-collapse accordion v-if="information_page_menu==0.0">
-            <el-collapse-item>
               <template>
                 <el-form ref="form" :model="form" label-width="80px" @submit.prevent="onSubmit" style="margin:20px;width:60%;min-width:600px;">
 
                   <el-form-item label="真实姓名">
-                    <el-input v-model="worker.name"></el-input>
+                    <el-input v-model="worker.username"></el-input>
                   </el-form-item>
                   <el-form-item label="性别">
                     <el-select v-model="form.gender" placeholder="">
@@ -139,7 +72,7 @@
               </template>
               <div>
               </div>
-            </el-collapse-item>
+        
           </el-collapse>
           <el-collapse accordion v-if="information_page_menu==1.1">
             <template>
@@ -153,46 +86,6 @@
                   </el-select>
                 </el-form-item>
 
-                <el-form-item label="入学年份">
-                  <el-select v-model="form.enrollment" placeholder="">
-                    <el-option label="2004" value="2004"></el-option>
-                    <el-option label="2005" value="2005"></el-option>
-                    <el-option label="2006" value="2006"></el-option>
-                    <el-option label="2007" value="2007"></el-option>
-                    <el-option label="2008" value="2008"></el-option>
-                    <el-option label="2009" value="2009"></el-option>
-                    <el-option label="2010" value="2010"></el-option>
-                    <el-option label="2011" value="2011"></el-option>
-                    <el-option label="2012" value="2012"></el-option>
-                    <el-option label="2013" value="2013"></el-option>
-                    <el-option label="2014" value="2014"></el-option>
-                    <el-option label="2015" value="2015"></el-option>
-                    <el-option label="2016" value="2016"></el-option>
-                    <el-option label="2017" value="2017"></el-option>
-                    <el-option label="2018" value="2018"></el-option>
-                  </el-select>
-                </el-form-item>
-
-                <el-form-item label="毕业年份">
-                  <el-select v-model="form.graduation" placeholder="">
-                    <el-option label="2004" value="2004"></el-option>
-                    <el-option label="2005" value="2005"></el-option>
-                    <el-option label="2006" value="2006"></el-option>
-                    <el-option label="2007" value="2007"></el-option>
-                    <el-option label="2008" value="2008"></el-option>
-                    <el-option label="2009" value="2009"></el-option>
-                    <el-option label="2010" value="2010"></el-option>
-                    <el-option label="2011" value="2011"></el-option>
-                    <el-option label="2012" value="2012"></el-option>
-                    <el-option label="2013" value="2013"></el-option>
-                    <el-option label="2014" value="2014"></el-option>
-                    <el-option label="2015" value="2015"></el-option>
-                    <el-option label="2016" value="2016"></el-option>
-                    <el-option label="2017" value="2017"></el-option>
-                    <el-option label="2018" value="2018"></el-option>
-                  </el-select>
-                </el-form-item>
-
                 <el-form-item label="专业">
                   <el-input v-model="form.major"></el-input>
                 </el-form-item>
@@ -200,37 +93,35 @@
                   <el-input v-model="worker.workArea"></el-input>
                 </el-form-item>
                 <el-form-item label="工作地点">
-                  <el-input v-model="form.workplace"></el-input>
+                  <el-input v-model="form.workPlace"></el-input>
                 </el-form-item>
-                <el-form-item label="在线时间">
-                  <el-input v-model="form.worktime"></el-input>
-                </el-form-item>
+            
                 <el-form-item label="上网时长">
-                  <el-select v-model="form.internettime" placeholder="">
-                    <el-option label="1" value="1"></el-option>
-                    <el-option label="2" value="2"></el-option>
-                    <el-option label="3" value="3"></el-option>
-                    <el-option label="4" value="4"></el-option>
-                    <el-option label="5" value="5"></el-option>
-                    <el-option label="6" value="6"></el-option>
-                    <el-option label="7" value="7"></el-option>
-                    <el-option label="8" value="8"></el-option>
-                    <el-option label="9" value="9"></el-option>
-                    <el-option label="10" value="10"></el-option>
-                    <el-option label="11" value="11"></el-option>
-                    <el-option label="12" value="12"></el-option>
-                    <el-option label="13" value="13"></el-option>
-                    <el-option label="14" value="14"></el-option>
-                    <el-option label="15" value="15"></el-option>
-                    <el-option label="16" value="16"></el-option>
-                    <el-option label="17" value="17"></el-option>
-                    <el-option label="18" value="18"></el-option>
-                    <el-option label="19" value="19"></el-option>
-                    <el-option label="20" value="20"></el-option>
-                    <el-option label="21" value="21"></el-option>
-                    <el-option label="22" value="22"></el-option>
-                    <el-option label="23" value="23"></el-option>
-                    <el-option label="24" value="24"></el-option>
+                  <el-select v-model="form.worktime" placeholder="">
+                    <el-option label="1h" value="1h"></el-option>
+                    <el-option label="2h" value="2h"></el-option>
+                    <el-option label="3h" value="3h"></el-option>
+                    <el-option label="4h" value="4h"></el-option>
+                    <el-option label="5h" value="5h"></el-option>
+                    <el-option label="6h" value="6h"></el-option>
+                    <el-option label="7h" value="7h"></el-option>
+                    <el-option label="8h" value="8h"></el-option>
+                    <el-option label="9h" value="9h"></el-option>
+                    <el-option label="10h" value="10h"></el-option>
+                    <el-option label="11h" value="11h"></el-option>
+                    <el-option label="12h" value="12h"></el-option>
+                    <el-option label="13h" value="13h"></el-option>
+                    <el-option label="14h" value="14h"></el-option>
+                    <el-option label="15h" value="15h"></el-option>
+                    <el-option label="16h" value="16h"></el-option>
+                    <el-option label="17h" value="17h"></el-option>
+                    <el-option label="18h" value="18h"></el-option>
+                    <el-option label="19h" value="19h"></el-option>
+                    <el-option label="20h" value="20h"></el-option>
+                    <el-option label="21h" value="21h"></el-option>
+                    <el-option label="22h" value="22h"></el-option>
+                    <el-option label="23h" value="23h"></el-option>
+                    <el-option label="24h" value="24h"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item>
@@ -242,15 +133,36 @@
           </el-collapse>
           <el-collapse accordion v-if="information_page_menu==1.2">
             <template>
-              <section>余额
-              </section>
+
+              <el-card class="box-card">
+              <div slot="header" class="clearfix">
+              <span>余额信息</span>
+              </div>
+
+              </el-card>
             </template>
           </el-collapse>
           <el-collapse accordion v-if="information_page_menu==1.3">
             <template>
-              <section>提现信息
-              </section>
-            </template>
+                  <el-table
+                  :data="tableData"
+                   style="width: 100%">
+                   <el-table-column
+                   prop="date"
+                   label="日期"
+                    width="180">
+                </el-table-column>
+                 <el-table-column
+                  prop="money"
+                   label="提现金额"
+                   width="180">
+                   </el-table-column>
+                    <el-table-column
+                   prop="method"
+                     label=提现方式>
+                  </el-table-column>
+                   </el-table>
+               </template>
           </el-collapse>
         </el-col>
       </el-row>
@@ -261,8 +173,12 @@
 <script>
   import * as Vue from 'autoprefixer'
   import axios from 'axios'
+  import WorkerHomepageTopbar from '@/components/WorkerNavi/WorkerHomepageTopbar.vue'
 
   export default {
+     components:{
+        WorkerHomepageTopbar,
+      },
     methods: {
       BasicInformation(){
         this.information_page_menu=0.0;
@@ -333,12 +249,10 @@
           {
             name: '',
             region: '',
-            enrollment: '',
             gender: '',
-            nickname: '',
             graduation: '',
             workdomain: '',
-            workplace: '',
+            workPlace: '',
             worktime: '',
             internettime: '',
             major: '',
@@ -346,6 +260,8 @@
             email: '',
             password: '',
             number: '',
+            money:'',
+            method:'',
           },
         worker: {
           age: 0,
@@ -360,6 +276,7 @@
           workerId:'',
         },
       }
+
     },
 
     created()
@@ -382,6 +299,25 @@
   }
 </script>
 
-<style scoped>
+<style>
+.text {
+    font-size: 14px;
+  }
 
+  .item {
+    margin-bottom: 18px;
+  }
+
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
+
+  .box-card {
+    width: 480px;
+  }
 </style>
