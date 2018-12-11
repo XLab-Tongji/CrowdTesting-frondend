@@ -15,6 +15,7 @@ import RequesterCreateMainpro2 from '@/views/requester/RequesterCreateMain_pro2.
 import RequesterCreate from '@/views/requester/RequesterCreate.vue'
 import RequesterTaskManage from '@/views/requester/RequesterTaskManage.vue'
 import RequesterTask from '@/views/requester/RequesterTask.vue'
+import RequesterTaskDataAnalysis from '@/views/requester/RequesterTaskDataAnalysis.vue'
 import WorkerTaskDetails from '@/views/worker/WorkerTaskDetails.vue'
 import WorkerTaskTest from '@/views/worker/WorkerTaskTest.vue'
 import WorkerTaskPreview from '@/views/worker/WorkerTaskPreview.vue'
@@ -154,6 +155,12 @@ const router = new Router({
       name: 'RequesterTask',
       meta: { login:true },
       component: RequesterTask
+    },
+    {
+      path: '/requester_task_data_analysis',
+      name: 'RequesterTaskDataAnalysis',
+      meta: { login:true },
+      component: RequesterTaskDataAnalysis
     },
   ]
 })

@@ -53,7 +53,7 @@
         logo: require('../../../static/logo_white.png'),
         user: {
           username: this.$store.state.username,
-          level: 2
+          level:this.$store.state.username,
         },
         navList: [
           {name: '/worker_task_square', navItem: '广场'},

@@ -63,7 +63,7 @@
 
                 <el-tab-pane label="设计布局" name="second">
                   <el-row type="flex" justify="center" style="margin-top:6vh;margin-bottom:6vh">
-                    <el-col span="16">
+                    <el-col :span="8">
                       <el-input
                         type="textarea"
                         :autosize="{ minRows: 20, maxRows: 20}"
@@ -72,26 +72,7 @@
                         id="input_area">
                       </el-input>
                     </el-col>
-                  </el-row>
-                  <el-row type="flex" justify="center" style="margin-bottom:6vh">
-                    <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
-                      <el-button type="primary" @click="open_help">
-                        <span style="font-size:1.2vw">帮助</span>
-                      </el-button>
-                    </el-col>
-                    <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
-                      <span style="font-size:1.2vw">&nbsp;</span>
-                    </el-col>
-                    <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
-                      <el-button type="primary">
-                        <span style="font-size:1.2vw">提交</span>
-                      </el-button>
-                    </el-col>
-                  </el-row>
-                </el-tab-pane>
-                <el-tab-pane label="项目预览" name="third">
-                  <el-row type="flex" justify="center" style="margin-top:6vh;margin-bottom:6vh">
-                    <el-col span="16">
+                    <el-col :span="8">
                       <template>
                         <el-table
                           :data="questions"
@@ -137,6 +118,21 @@
                       </template>
                     </el-col>
                   </el-row>
+                  <el-row type="flex" justify="center" style="margin-bottom:6vh">
+                    <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
+                      <el-button type="primary" @click="open_help">
+                        <span style="font-size:1.2vw">帮助</span>
+                      </el-button>
+                    </el-col>
+                    <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
+                      <span style="font-size:1.2vw">&nbsp;</span>
+                    </el-col>
+                    <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
+                      <el-button type="primary" @click="submit">
+                        <span style="font-size:1.2vw">提交</span>
+                      </el-button>
+                    </el-col>
+                  </el-row>
                 </el-tab-pane>
             </el-tabs>
             </div>
@@ -170,14 +166,15 @@ export default {
       }
       let questions = []
       let index = 0;
+      let num = 0;
       for(let i=0;i<lines.length;i++) {
         let line = lines[i];
         if(line==='')
           continue;
-        let num = 0;
         line = line.replace(" ","");
         let first = line.split(".")[0];
         if(!isNaN(parseInt(first,10))){
+          num = 0;
           let new_question = {
             question_title:{
               question_content:'',
@@ -241,8 +238,6 @@ export default {
             questions[index].options.push(option);
         }
       }
-      if(questions.length!==0)
-        console.log(questions[index].options);
       return questions;
     }
   },
@@ -250,9 +245,68 @@ export default {
     return {
       activeName2: 'first',
       text_area1: '',
+      task_id: 2,
     };
   },
   methods: {
+    submit() {
+      let questions = this.questions;
+      let task_id = this.task_id;
+      let resource_loading = 0;
+      let that = this;
+      console.log(questions);
+      for(let i=0;i<questions.length;i++){
+        let param = new URLSearchParams();
+        param.append('taskId',task_id);
+        param.append('content',questions[i].question_title.question_content);
+        param.append('resourceLoading',resource_loading);
+        param.append('type',questions[i].question_title.type);
+        console.log("1");
+        axios({
+          method:	'post',
+          url: '/api/question/add-question',
+          data:param
+        })
+          .then(function (response) {
+            console.log(response);
+            if(response.data.code[0] == "2") {
+              let question_id =response.data.questionId;
+              console.log(question_id);
+              for(let j=0;j<questions[i].options.length;j++) {
+                questions[i].options[j].question_id = question_id;
+                console.log(questions[i].options[j].question_id);
+                let parama = new URLSearchParams();
+
+                parama.append('content', questions[i].options[j].content);
+                parama.append('questionId', questions[i].options[j].question_id);
+                parama.append('openAnswerPermission', questions[i].options[j].open_answer_permission);
+                parama.append('optionNumber', questions[i].options[j].option_number);
+                console.log(parama);
+                axios({
+                  method: 'post',
+                  url: '/api/question/add-option',
+                  data: parama
+                })
+                  .then(function (response) {
+                    console.log(response);
+                    if (response.data.code[0] == "2") {
+                      console.log(response);
+                    }
+                  })
+                  .catch(function (error) {
+                    that.$message("上传失败");
+                    console.log(error);
+                  });
+              }
+            }
+          })
+          .catch(function (error) {
+            that.$message("上传失败");
+            console.log(error);
+          });
+      }
+      that.$message("上传成功");
+    },
     handleClick(tab, event) {
       console.log(tab, event);
     },
