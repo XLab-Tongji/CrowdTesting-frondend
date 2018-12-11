@@ -106,13 +106,13 @@
               <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.reward}}</span>
             </el-col>
             <el-col :span="3">
-              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(personalTask.start_time).slice(0,10)}}</span>
+              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.create_time}}</span>
             </el-col>
             <el-col :span="2">
               <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.status}}</span>
             </el-col>
             <el-col :span="2">
-              <el-button type="text" style="width:100%;font-weight:500;color:#ffffff;background-color:#015D73;margin-left:3vh" @click="continuation(personalTask.task_id)">
+              <el-button type="text" style="width:100%;height:5vh;font-weight:500;color:#ffffff;background-color:#015D73;margin-left:3vh" @click="continuation(personalTask.task_id)">
                 <span style="font-size:1.0vw">继续</span>
               </el-button>
             </el-col>
@@ -136,7 +136,7 @@
                 <span style="color:#4D4D4D;padding-left: 1vw" v-else>暂无</span>
               </el-col>
               <el-col :span="6">
-                <span style="color:#4D4D4D" v-if="personalTask.restrictions!=null">{{personalTask.restrictions}}</span>
+                <span style="color:#4D4D4D" v-if="personalTask.requests!=null">{{personalTask.requests}}</span>
                 <span style="color:#4D4D4D" v-else>暂无</span>
               </el-col>
             </el-row>
@@ -158,7 +158,7 @@
                 <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.reward}}</span>
               </el-col>
               <el-col :span="3">
-                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(personalTask.start_time).slice(0,10)}}</span>
+                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.create_time}}</span>
               </el-col>
               <el-col :span="2">
                 <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.status}}</span>
@@ -184,7 +184,7 @@
                 <span style="color:#ffffff;padding-left: 1vw" v-else>暂无</span>
               </el-col>
               <el-col :span="6">
-                <span style="color:#ffffff" v-if="personalTask.restrictions!=null">{{personalTask.restrictions}}</span>
+                <span style="color:#ffffff" v-if="personalTask.requests!=null">{{personalTask.requests}}</span>
                 <span style="color:#ffffff" v-else>暂无</span>
               </el-col>
             </el-row>
@@ -221,14 +221,14 @@
         if(this.checkList.indexOf("显示已完成任务") != -1){
           for(let taskIndex in showTaskListCopy){
             let aTask = showTaskListCopy[taskIndex];
-            if(aTask.status == '100%')
+            if(aTask.level <= this.user.level && aTask.status == '100%')
               this.showTaskList.push(aTask);
           }
         }
         if(this.checkList.indexOf("显示未完成任务") != -1) {
           for (let taskIndex in showTaskListCopy) {
             let aTask = showTaskListCopy[taskIndex];
-            if (aTask.status != '100%')
+            if (aTask.level <= this.user.level && aTask.status != '100%')
               this.showTaskList.push(aTask);
           }
         }
@@ -284,23 +284,23 @@
         for(let task in this.taskList){
           let aTask =this.taskList[task];
           if(aTask.reward >= minReward && aTask.reward <= maxReward){
-            if(this.startDate != '' && aTask.start_time >= dateToString(this.startDate)) {
-              if(this.endDate != '' && aTask.start_time <= dateToString(this.endDate)) {
-                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
+            if(this.startDate != '' && aTask.create_time >= dateToString(this.startDate)) {
+              if(this.endDate != '' && aTask.create_time <= dateToString(this.endDate)) {
+                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.requests != null && aTask.requests.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
               else if(this.endDate == ''){
-                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
+                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.requests != null && aTask.requests.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
             }
             else if(this.startDate == '') {
-              if(this.endDate != '' && aTask.start_time <= dateToString(this.endDate)) {
-                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
+              if(this.endDate != '' && aTask.create_time <= dateToString(this.endDate)) {
+                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.requests != null && aTask.requests.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
               else if(this.endDate == ''){
-                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
+                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.requests != null && aTask.requests.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
             }
@@ -330,7 +330,7 @@
       },
       orderByDate(){
         this.rewardOrder = 0;
-        this.showTaskList = newSort(this.showTaskList,'start_time');
+        this.showTaskList = newSort(this.showTaskList,'create_time');
         this.activeNames = []
         switch(this.dateOrder){
           case 0:
@@ -362,8 +362,8 @@
     data(){
       return{
         user:{
-          username:this.$store.state.username,
-          level:this.$store.state.level,
+          username :this.$store.state.username,
+          level:2
         },
         taskList:[],
         showTaskList:[],
@@ -411,12 +411,12 @@
       let that=this
       axios.get('/api/personal-task/find-my-task')
         .then(function (response) {
-          console.log(response);
           let personalTasks = response.data.tasks;
           console.log(personalTasks);
           that.taskList = personalTasks;
           that.showTaskList = personalTasks;
           that.showTaskListCopy = personalTasks;
+          that.$forceUpdate();
           that.$forceUpdate();
         })
         .catch(function (error) {

@@ -56,18 +56,8 @@
       <el-row>
         <el-col style="border-style:solid;border-width:0.3vh;border-color:#E6E6E6">
           <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;padding-right: 3vw"><b>排序：</b></span>
-          <el-button type="success" style="color:#ffffff" @click="orderByReward" size="mini">
-            报酬
-            <i class="el-icon-d-caret" v-if="rewardOrder==0"></i>
-            <i class="el-icon-caret-top" v-if="rewardOrder==1"></i>
-            <i class="el-icon-caret-bottom" v-if="rewardOrder==2"></i>
-          </el-button>
-          <el-button type="danger" style="color:#ffffff" @click="orderByDate" size="mini">
-            创建时间
-            <i class="el-icon-d-caret" v-if="dateOrder==0"></i>
-            <i class="el-icon-caret-top" v-if="dateOrder==1"></i>
-            <i class="el-icon-caret-bottom" v-if="dateOrder==2"></i>
-          </el-button>
+          <el-button type="success" style="color:#ffffff" @click="orderByReward" size="mini">报酬</el-button>
+          <el-button type="danger" style="color:#ffffff" @click="orderByDate" size="mini">创建时间</el-button>
         </el-col>
       </el-row>
       <el-row style="background-color:#F2F0F0;height:5vh">
@@ -91,7 +81,7 @@
         </el-col>
       </el-row>
       <el-collapse accordion v-for = "personalTask in showTaskList" :key="personalTask.task_id">
-        <el-collapse-item v-if="personalTask.status!='100%'">
+        <el-collapse-item>
           <template slot="title">
             <el-col :span="4">
               <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;">{{personalTask.requester_id}}</span>
@@ -106,14 +96,14 @@
               <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.reward}}</span>
             </el-col>
             <el-col :span="3">
-              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(personalTask.start_time).slice(0,10)}}</span>
+              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.create_time}}</span>
             </el-col>
             <el-col :span="2">
               <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.status}}</span>
             </el-col>
             <el-col :span="2">
-              <el-button type="text" style="width:100%;font-weight:500;color:#ffffff;background-color:#015D73;margin-left:3vh" @click="watch(personalTask.task_id)">
-                <span style="font-size:1.0vw">查看数据</span>
+              <el-button type="text" style="width:100%;height:5vh;font-weight:500;color:#ffffff;background-color:#015D73;margin-left:3vh" @click="manage(personalTask.task_id)">
+                <span style="font-size:1.0vw">管理任务</span>
               </el-button>
             </el-col>
           </template>
@@ -136,56 +126,8 @@
                 <span style="color:#4D4D4D;padding-left: 1vw" v-else>暂无</span>
               </el-col>
               <el-col :span="6">
-                <span style="color:#4D4D4D" v-if="personalTask.restrictions!=null">{{personalTask.restrictions}}</span>
+                <span style="color:#4D4D4D" v-if="personalTask.requests!=null">{{personalTask.requests}}</span>
                 <span style="color:#4D4D4D" v-else>暂无</span>
-              </el-col>
-            </el-row>
-          </div>
-        </el-collapse-item>
-        <el-collapse-item v-else>
-          <template slot="title">
-            <el-row style="background-color: #5ED5D1">
-              <el-col :span="4">
-                <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;">{{personalTask.requester_id}}</span>
-              </el-col>
-              <el-col :span="9" v-if="personalTask.type!=null">
-                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.type}}</span>
-              </el-col>
-              <el-col :span="9" v-else>
-                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">暂无</span>
-              </el-col>
-              <el-col :span="2">
-                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.reward}}</span>
-              </el-col>
-              <el-col :span="3">
-                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(personalTask.start_time).slice(0,10)}}</span>
-              </el-col>
-              <el-col :span="2">
-                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.status}}</span>
-              </el-col>
-            </el-row>
-          </template>
-          <div style="background-color: #4D8D9D">
-            <el-row>
-              <el-col :span="13">
-                <span style="color:#ffffff;padding-left: 1vw">简要描述:</span>
-              </el-col>
-              <el-col :span="6">
-                <span style="color:#ffffff">限制条件</span>
-              </el-col>
-              <el-col :span="5">
-                <i class="el-icon-success"></i>
-                <span style="color:#ffffff">已完成</span>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="13">
-                <span style="color:#ffffff;padding-left: 1vw" v-if="personalTask.description!=null">{{personalTask.description}}</span>
-                <span style="color:#ffffff;padding-left: 1vw" v-else>暂无</span>
-              </el-col>
-              <el-col :span="6">
-                <span style="color:#ffffff" v-if="personalTask.restrictions!=null">{{personalTask.restrictions}}</span>
-                <span style="color:#ffffff" v-else>暂无</span>
               </el-col>
             </el-row>
           </div>
@@ -221,14 +163,14 @@
         if(this.checkList.indexOf("显示已完成任务") != -1){
           for(let taskIndex in showTaskListCopy){
             let aTask = showTaskListCopy[taskIndex];
-            if(aTask.status == '100%')
+            if(aTask.level <= this.user.level && aTask.status == '100%')
               this.showTaskList.push(aTask);
           }
         }
         if(this.checkList.indexOf("显示未完成任务") != -1) {
           for (let taskIndex in showTaskListCopy) {
             let aTask = showTaskListCopy[taskIndex];
-            if (aTask.status != '100%')
+            if (aTask.level <= this.user.level && aTask.status != '100%')
               this.showTaskList.push(aTask);
           }
         }
@@ -311,43 +253,14 @@
         this.$forceUpdate();
       },
       orderByReward(){
-        this.dateOrder = 0;
         this.showTaskList = newSort(this.showTaskList,'reward');
         this.activeNames = []
-        switch(this.rewardOrder){
-          case 0:
-            this.rewardOrder = 1;
-            break;
-          case 1:
-            this.rewardOrder = 2;
-            this.showTaskList.reverse();
-            break;
-          case 2:
-            this.rewardOrder = 1;
-            break;
-        }
         this.$forceUpdate();
       },
       orderByDate(){
-        this.rewardOrder = 0;
-        this.showTaskList = newSort(this.showTaskList,'start_time');
+        this.showTaskList = newSort(this.showTaskList,'create_time');
         this.activeNames = []
-        switch(this.dateOrder){
-          case 0:
-            this.dateOrder = 1;
-            break;
-          case 1:
-            this.dateOrder = 2;
-            this.showTaskList.reverse();
-            break;
-          case 2:
-            this.dateOrder = 1;
-            break;
-        }
         this.$forceUpdate();
-      },
-      watch(task_id){
-        this.$router.push({name: 'RequesterTaskDataAnalysis'})
       },
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
@@ -366,7 +279,8 @@
       return{
         user:{
           username :this.$store.state.username,
-          requester_id: 34,
+          requesterId: 21,
+          level:2
         },
         taskList:[],
         showTaskList:[],
@@ -405,14 +319,12 @@
         },
         value1: '',
         value2: '',
-        rewardOrder: 0,
-        dateOrder: 0,
       }
     },
     created()
     {
       let that=this
-      axios.get('/api/task/find-by-requester-id',{ params:{ requesterid: that.user.requester_id}})
+      axios.get('/api/task/find-by-requester-id',{ params:{ requester_id: that.user.requester_id}})
         .then(function (response) {
           let personalTasks = response.data.tasks;
           console.log(personalTasks);
