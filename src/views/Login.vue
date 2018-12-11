@@ -43,7 +43,6 @@
 <script>
     import * as axios from 'axios'
 
-    let self = this;
     export default {
       computed: {
         getToken () {
@@ -58,6 +57,12 @@
           this.$router.push('/register')
         },
         loginRequester:function () {
+          console.log(localStorage.token);
+          delete localStorage.token;
+          delete localStorage.username;
+          this.$store.state.username = '';
+          this.$store.state.token = '';
+          console.log(localStorage.token);
           let token_pointer = this
           this.button_disabled = true;
           this.role = "ROLE_REQUESTER";
@@ -74,6 +79,7 @@
           {
             let param = new URLSearchParams();
             let self = this;
+            let login = false;
             param.append('username',this.email);
             param.append('password',this.pwd);
             param.append('role',this.role);
@@ -85,13 +91,30 @@
               .then(function (response) {
                 console.log(response);
                 if(response.data.code[0] == "2") {
+                  window.sessionStorage.removeItem('token');
                   let token = response.data.X_Auth_Token;
-                  let username = self.email;
+                  let email = self.email;
                   let user_information = {
                     token: token,
-                    username: username
+                    email: email
                   }
                   token_pointer.$store.commit('UserLogin', user_information);
+                  axios({
+                    method:	'get',
+                    url: '/api/requester/find-myself',
+                  })
+                    .then(function (response) {
+                      console.log(response);
+                      if(response.data.code[0] == "2") {
+                        let requester_information = {
+                          username: response.data.requester.username
+                        }
+                        token_pointer.$store.commit('RequesterLogin', requester_information);
+                      }
+                    })
+                    .catch(function (error) {
+                      alert(error);
+                    });
                   token_pointer.button_disabled = false;
                 }
                 else if(response.data.code[0] == "4") {
@@ -110,7 +133,9 @@
           }
         },
         loginWorker:function () {
-          let token_pointer = this
+          delete localStorage.token;
+          delete localStorage.username;
+          let self = this
           this.button_disabled = true;
           this.role = "ROLE_WORKER";
           if (this.email == "") {
@@ -134,30 +159,53 @@
               data:param
             })
               .then(function (response) {
+                window.localStorage.getItem('token');
                 if(response.data.code[0] == "2") {
                   let token = response.data.X_Auth_Token;
-                  let username = self.email;
+                  console.log(token);
                   let user_information = {
                     token: token,
-                    username: username
+                    email: self.email
                   }
-                  token_pointer.$store.commit('UserLogin', user_information);
-                  token_pointer.wrong_pwd = "";
-                  token_pointer.$router.replace("/worker_task_square");
-                  token_pointer.button_disabled = false;
+                  self.$store.commit('UserLogin', user_information);
+                  axios({
+                    method:	'get',
+                    url: '/api/worker/find-myself',
+                  })
+                    .then(function (response) {
+                      console.log(response);
+                      if(response.data.code[0] == "2") {
+                        console.log(response);
+                        let worker_information = {
+                          username: response.data.worker.username,
+                          level:response.data.worker.level,
+                        }
+                        self.$store.commit('WorkerLogin', worker_information);
+                        self.$router.replace("/worker_task_square");
+                      }
+                    })
+                    .catch(function (error) {
+                      alert(error);
+                    });
+                  self.$router.replace("/worker_task_square");
+                  self.wrong_pwd = "";
+                  self.button_disabled = false;
                 }
                 else if(response.data.code[0] == "4") {
-                  token_pointer.wrong_pwd = "用户名或密码错误";
-                  token_pointer.button_disabled = false;
+                  self.wrong_pwd = "用户名或密码错误";
+                  self.button_disabled = false;
                 }
                 else if(response.data.code[0] == "5") {
-                  token_pointer.wrong_pwd("服务器错误")
-                  token_pointer.button_disabled = false;
+                  self.wrong_pwd("服务器错误")
+                  self.button_disabled = false;
                 }
               })
               .catch(function (error) {
                 alert(error);
               });
+            if(login == 'true'){
+              console.log(a);
+            }
           }
         },
         forget(){
