@@ -15,17 +15,17 @@
                     <el-form-item label="">
                         <el-input v-model="pwd" type="password" placeholder="密码"><template slot="prepend">&nbsp;&nbsp;</template></el-input>
                         <span style="color:#e4260c">{{wrong_pwd}}</span>
-                    </el-form-item>      
+                    </el-form-item>
                     <el-form-item >
                         <b class="forget" @click="forget">忘记密码？</b>
-                    </el-form-item>           
+                    </el-form-item>
                     <el-form-item>
                         <el-button  @click="loginRequester" class="login_button login_requester">以Requester身份登录</el-button>
                     </el-form-item>
                     <el-form-item>
                         <el-button  @click="loginWorker" class="login_button login_worker">以Worker身份登录</el-button>
                     </el-form-item>
-                    
+
                     <el-form-item>
                         <div class="sign_up">
                             <el-button  @click="register" style="width:100%;">注册新账户</el-button>
@@ -41,8 +41,9 @@
 </template>
 
 <script>
-    import * as axios from 'axios'
+    import axios from 'axios'
 
+    let self = this;
     export default {
       computed: {
         getToken () {
@@ -57,13 +58,7 @@
           this.$router.push('/register')
         },
         loginRequester:function () {
-          console.log(localStorage.token);
-          delete localStorage.token;
-          delete localStorage.username;
-          this.$store.state.username = '';
-          this.$store.state.token = '';
-          console.log(localStorage.token);
-          let token_pointer = this
+          let that = this
           this.button_disabled = true;
           this.role = "ROLE_REQUESTER";
           if (this.email == "") {
@@ -79,7 +74,6 @@
           {
             let param = new URLSearchParams();
             let self = this;
-            let login = false;
             param.append('username',this.email);
             param.append('password',this.pwd);
             param.append('role',this.role);
@@ -91,39 +85,35 @@
               .then(function (response) {
                 console.log(response);
                 if(response.data.code[0] == "2") {
-                  window.sessionStorage.removeItem('token');
                   let token = response.data.X_Auth_Token;
-                  let email = self.email;
-                  let user_information = {
-                    token: token,
-                    email: email
-                  }
-                  token_pointer.$store.commit('UserLogin', user_information);
-                  axios({
-                    method:	'get',
-                    url: '/api/requester/find-myself',
-                  })
+                  that.$store.commit('UserLogin', token);
+                  that.wrong_pwd = "";
+                  console.log(that.$store.state.token);
+                  axios.defaults.headers.common['X_Auth_Token'] = that.$store.state.token;
+                  axios.get('/api/requester/find-myself')
                     .then(function (response) {
                       console.log(response);
-                      if(response.data.code[0] == "2") {
-                        let requester_information = {
-                          username: response.data.requester.username
-                        }
-                        token_pointer.$store.commit('RequesterLogin', requester_information);
+                      let username = response.data.requester.username;
+                      let user_information = {
+                        username :'',
+                        level:0,
                       }
+                      user_information.username = username;
+                      that.$store.commit('UserInfo', user_information);
+                      that.$router.replace("/requester_manage_main");
+                      that.button_disabled = false;
                     })
                     .catch(function (error) {
-                      alert(error);
+                      console.log(error);
                     });
-                  token_pointer.button_disabled = false;
                 }
                 else if(response.data.code[0] == "4") {
-                  token_pointer.wrong_pwd = "用户名或密码错误";
-                  token_pointer.button_disabled = false;
+                  that.wrong_pwd = "用户名或密码错误";
+                  that.button_disabled = false;
                 }
                 else if(response.data.code[0] == "5") {
-                  token_pointer.wrong_pwd("服务器错误")
-                  token_pointer.button_disabled = false;
+                  that.wrong_pwd("服务器错误")
+                  that.button_disabled = false;
                 }
               })
               .catch(function (error) {
@@ -133,9 +123,7 @@
           }
         },
         loginWorker:function () {
-          delete localStorage.token;
-          delete localStorage.username;
-          let self = this
+          let that = this
           this.button_disabled = true;
           this.role = "ROLE_WORKER";
           if (this.email == "") {
@@ -159,53 +147,45 @@
               data:param
             })
               .then(function (response) {
-                window.localStorage.getItem('token');
                 if(response.data.code[0] == "2") {
+                  console.log(response);
                   let token = response.data.X_Auth_Token;
-                  console.log(token);
-                  let user_information = {
-                    token: token,
-                    email: self.email
-                  }
-                  self.$store.commit('UserLogin', user_information);
-                  axios({
-                    method:	'get',
-                    url: '/api/worker/find-myself',
-                  })
+                  that.$store.commit('UserLogin', token);
+                  that.wrong_pwd = "";
+                  console.log(that.$store.state.token);
+                  axios.defaults.headers.common['X_Auth_Token'] = that.$store.state.token;
+                  axios.get('/api/worker/find-myself')
                     .then(function (response) {
                       console.log(response);
-                      if(response.data.code[0] == "2") {
-                        console.log(response);
-                        let worker_information = {
-                          username: response.data.worker.username,
-                          level:response.data.worker.level,
-                        }
-                        self.$store.commit('WorkerLogin', worker_information);
-                        self.$router.replace("/worker_task_square");
+                      let username = response.data.worker.username;
+                      let level = response.data.worker.level
+                      let user_information = {
+                        username :'',
+                        level:0,
                       }
+                      user_information.username = username;
+                      user_information.level = level;
+                      that.$store.commit('UserInfo', user_information);
+                      console.log(that.$store.state.username)
+                      that.$router.replace("/worker_task_square");
+                      that.button_disabled = false;
                     })
                     .catch(function (error) {
-                      alert(error);
+                      console.log(error);
                     });
-                  self.$router.replace("/worker_task_square");
-                  self.wrong_pwd = "";
-                  self.button_disabled = false;
                 }
                 else if(response.data.code[0] == "4") {
-                  self.wrong_pwd = "用户名或密码错误";
-                  self.button_disabled = false;
+                  that.wrong_pwd = "用户名或密码错误";
+                  that.button_disabled = false;
                 }
                 else if(response.data.code[0] == "5") {
-                  self.wrong_pwd("服务器错误")
-                  self.button_disabled = false;
+                  that.wrong_pwd("服务器错误")
+                  that.button_disabled = false;
                 }
               })
               .catch(function (error) {
                 alert(error);
               });
-            if(login == 'true'){
-              console.log(a);
-            }
           }
         },
         forget(){
@@ -223,7 +203,7 @@
             this.$message({
               type: 'info',
               message: '取消输入'
-            });       
+            });
           });
         }
       },

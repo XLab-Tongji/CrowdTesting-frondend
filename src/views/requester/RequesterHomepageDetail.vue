@@ -2,16 +2,16 @@
 <div>
     <RequesterHomepageTopbar/>
     <el-row>
-        <el-col :span="4">          
+        <el-col :span="4">
             <RequesterHomepageSidebar/>
         </el-col>
-        <el-col :span="20" style="background-color:#F7F6F6">         
+        <el-col :span="20" style="background-color:#F7F6F6">
                 <div class="basic_info">
                     <div class="basic_info_title">
                         <span>详细信息</span>
                     </div>
                     <div class="box">
-                        <el-form label-position="left" label-width="110px" :model="user" >                                            
+                        <el-form label-position="left" label-width="110px" :model="user" >
                         <el-form-item label="公司/机构名称">
                         <el-input v-model="inst"></el-input>
                         </el-form-item>
@@ -27,16 +27,13 @@
                         <el-form-item>
                             <el-button  type="primary" @click="modify" class="login_button">保存信息</el-button>
                         </el-form-item>
-                        
-                        
-                    </el-form-item>
                 </el-form>
                     </div>
                 </div>
-            
+
         </el-col>
     </el-row>
-       
+
 </div>
 </template>
 
@@ -77,7 +74,7 @@ import RequesterHomepageSidebar from '@/components/RequesterNavi/RequesterHomepa
                     if (error.status == 500) {
                     swal("Error", "服务器错误！", "error");
                     }
-                });     
+                });
             },
             modify(){
                 axios.post('http://localhost:8080/requester/find-by-username',{
@@ -93,7 +90,7 @@ import RequesterHomepageSidebar from '@/components/RequesterNavi/RequesterHomepa
                     });
                     }
                 }).catch(function(error){
-                   
+
                     });
             }
         },

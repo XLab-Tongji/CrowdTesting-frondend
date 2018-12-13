@@ -1,11 +1,11 @@
-<template>   
+<template>
 <el-row>
     <div class="topbar">
         <el-col :span="4">
                 <div class="topbar_title">
                     <img :src="logo">
                 </div>
-                
+
             </el-col>
         <el-col :span="16">
             <el-menu :default-active="activeIndex2"
@@ -20,21 +20,23 @@
                 <el-menu-item index="3" @click="manage">管理</el-menu-item>
             </el-menu>
         </el-col>
-        <el-col :span="4">
-            <el-card  class="topbar_user">  
-                <div >            
-                    <user @click="personal">user name</user>
-                    <span>   |   </span>
-                    <user @click="signout">sign out</user>     
-                </div>          
-            </el-card>
+        <el-col :span="3">
+          <el-button type="text" style="color:#ffffff;width:100%;height:60px" @click="informationPage">
+            <span>{{user.username}}</span>
+          </el-button>
+        </el-col>
+
+        <el-col :span="1" style = "background-color:#4D4D4D">
+          <el-button type="text" style="color:#ffffff;width:100%;height:60px" @click="logout">
+            <span>登出</span>
+          </el-button>
         </el-col>
     </div>
 </el-row>
 </template>
 
 <script>
-    export default { 
+    export default {
         methods: {
             create(){
                 this.$router.push('/requester_create_main')
@@ -49,13 +51,19 @@
                 this.$router.push('/')
             },
             main(){
-               this.$router.push('/requester_main') 
-            }
-
+               this.$router.push('/requester_main')
+            },
+            logout(){
+              this.$store.commit('UserLogout');
+              this.$router.replace('/login')
+            },
         },
         data(){
             return{
-                logo:require('../../../static/logo_white.png')
+              user:{
+                username:this.$store.state.username,
+              },
+              logo:require('../../../static/logo_white.png')
             }
         }
     }
@@ -69,7 +77,7 @@
     height: 60px;
 }
 .topbar_title{
-    color:#fff; 
+    color:#fff;
     margin-left:50px;
     margin-top: 13px;
     font-size: 70%;
@@ -77,8 +85,8 @@
 .topbar_control{
     font-size: 120%;
 }
-.topbar_user{ 
-    /*margin-top:23px;  */ 
+.topbar_user{
+    /*margin-top:23px;  */
     font-size: 15px;
     font-weight: 200;
     background-color: rgba(0,0,0,0);
@@ -87,7 +95,7 @@
 }
 .topbar_user user{
     padding-right: 20px;
- 
+
 }
 .topbar_user user:hover{
    cursor:pointer;

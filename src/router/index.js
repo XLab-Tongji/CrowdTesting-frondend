@@ -12,24 +12,18 @@ import RequesterHomepageBalance from '@/views/requester/RequesterHomepageBalance
 import RequesterCreateMain from '@/views/requester/RequesterCreateMain.vue'
 import RequesterCreateMainpro1 from '@/views/requester/RequesterCreateMain_pro1.vue'
 import RequesterCreateMainpro2 from '@/views/requester/RequesterCreateMain_pro2.vue'
-import RequesterCreate1 from '@/views/requester/RequesterCreate_pro1.vue'
-import RequesterCreate2 from '@/views/requester/RequesterCreate_pro2.vue'
-import RequesterTaskManage from '@/views/requester/RequesterTaskManage.vue'
+import RequesterCreatePro1 from '@/views/requester/RequesterCreate_pro1.vue'
+import RequesterCreatePro2 from '@/views/requester/RequesterCreate_pro2.vue'
+import RequesterCreate from '@/views/requester/RequesterCreate.vue'
+import RequesterManageMain from '@/views/requester/RequesterManageMain.vue'
 import RequesterTask from '@/views/requester/RequesterTask.vue'
-import RequesterTaskDataAnalysis from '@/views/requester/RequesterTaskDataAnalysis.vue'
 import WorkerTaskDetails from '@/views/worker/WorkerTaskDetails.vue'
 import WorkerTaskTest from '@/views/worker/WorkerTaskTest.vue'
 import WorkerTaskPreview from '@/views/worker/WorkerTaskPreview.vue'
 import WorkerTaskContinuation from '@/views/worker/WorkerTaskContinuation.vue'
-import RequesterManageMain from '@/views/requester/RequesterManageMain.vue'
-import RequesterManageModify from '@/views/requester/RequesterManageModify.vue'
 import WorkerInformation from '@/views/worker/WorkerInformation.vue'
 import WorkerPersonalTask from '@/views/worker/WorkerPersonalTask.vue'
 import WorkerTaskHelp from '@/views/worker/WorkerTaskHelp.vue'
-import RegisterRequesterInfo from '@/views/RegisterRequester_info.vue'
-import MainFeature from '@/views/MainFeature.vue'
-import MainPrice from '@/views/MainPrice.vue'
-import RequesterMain from '@/views/requester/RequesterMain.vue'
 import * as MessageBox from 'element-ui'
 
 Vue.use(Router) // 注册vue-router
@@ -60,21 +54,6 @@ const router = new Router({
       path: '/register_requester',
       name: 'RegisterRequester',
       component: RegisterRequester
-    },
-    {
-      path: '/register_requester_info',
-      name: 'RegisterRequesterInfo',
-      component: RegisterRequesterInfo
-    },
-    {
-      path: '/main_feature',
-      name: 'MainFeature',
-      component: MainFeature
-    },
-    {
-      path: '/main_price',
-      name: 'MainPrice',
-      component: MainPrice
     },
     {
       path: '/worker_task_square',
@@ -162,15 +141,21 @@ const router = new Router({
     },
     {
       path: '/requester_create_pro1',
-      name: 'RequesterCreate1',
+      name: 'RequesterCreatePro1',
       meta: { login:true },
-      component: RequesterCreate1
+      component: RequesterCreatePro1
     },
     {
       path: '/requester_create_pro2',
-      name: 'RequesterCreate2',
+      name: 'RequesterCreatePro2',
       meta: { login:true },
-      component: RequesterCreate2
+      component: RequesterCreatePro2
+    },
+    {
+      path: '/requester_create',
+      name: 'RequesterCreate',
+      meta: { login:true },
+      component: RequesterCreate
     },
     {
       path: '/requester_manage_main',
@@ -179,35 +164,10 @@ const router = new Router({
       component: RequesterManageMain
     },
     {
-      path: '/requester_manage_modify',
-      name: 'RequesterManageModify',
-      meta: { login:true },
-      component: RequesterManageModify
-    },
-    {
-      path: '/requester_task_manage',
-      name: 'RequesterTaskManage',
-      meta: { login:true },
-      component: RequesterTaskManage
-    },
-    {
       path: '/requester_task',
       name: 'RequesterTask',
       meta: { login:true },
       component: RequesterTask
-    },
-    {
-      path: '/requester_main',
-      name: 'RequesterMain',
-      meta: { login:true },
-      component: RequesterMain
-      
-    },
-    {
-      path: '/requester_task_data_analysis',
-      name: 'RequesterTaskDataAnalysis',
-      meta: { login:true },
-      component: RequesterTaskDataAnalysis
     },
   ]
 })
@@ -240,3 +200,4 @@ router.beforeEach((to, from, next) => {
 })
 
 export default router
+
