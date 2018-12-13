@@ -5,18 +5,27 @@
                         <h5 > 个人信息</h5>
                     </div>
                     <el-menu 
-                    default-active="1" class="el-menu-vertical-demo" 
+                    :default-active="activeIndex" 
                     background-color="#4D4D4D" text-color="#fff"  
-                    active-text-color="#5ED5D1">
-                    <el-menu-item index="1" @click="basic">                       
-                        <span slot="title">基本信息</span>
+                    active-text-color="#5ED5D1"
+                    @select="handleSelect" router>
+                    <el-menu-item index="requester_homepage_basic" >
+                        <i class="el-icon-menu"></i>                       
+                        <span slot="title">基本信息{{path}}</span>
                     </el-menu-item>
-                    <el-menu-item index="2" @click="detail">                       
+                    <el-menu-item index="requester_homepage_detail">  
+                        <i class="el-icon-menu"></i>                     
                         <span slot="title">详细信息</span>
                     </el-menu-item>
-                    <el-menu-item index="3" @click="balance">                      
+                    <el-menu-item index="requester_homepage_pic" > 
+                        <i class="el-icon-menu"></i>                     
+                        <span slot="title">图片仓库</span>
+                    </el-menu-item>
+                    <el-menu-item index="requester_homepage_balance" >   
+                        <i class="el-icon-menu"></i>                   
                         <span slot="title">我的钱包</span>
                     </el-menu-item>
+                    
                     </el-menu>
               </div>
       
@@ -24,16 +33,20 @@
 
 <script>
 export default {
-    methods:{
-        basic(){
-            this.$router.push('/requester_homepage_basic')
-        },
-        detail(){
-            this.$router.push('/requester_homepage_detail')
-        },
-        balance(){
-            this.$router.push('/requester_homepage_balance')
-        }
+    data() {
+      return {
+      }
+    },
+   computed:{
+      activeIndex(){       
+            return this.$route.path.replace('/','');
+      }
+    },
+    methods: {
+      handleSelect(key, keyPath) {
+        console.log(this);
+        console.log(key,keyPath);
+      }
     }
 }
 </script>
@@ -44,6 +57,7 @@ export default {
     background-color: #4D4D4D;
     color: #fff;
     height:700px;
+    padding-left: 10px;
 }
 .sidebar_title{
     font:#fff;
@@ -53,5 +67,8 @@ export default {
     border-bottom:solid 1px rgb(168, 168, 168);
     margin: 0;
     padding-bottom: 20px;
+}
+.el-menu {
+    border: 0px;
 }
 </style>
