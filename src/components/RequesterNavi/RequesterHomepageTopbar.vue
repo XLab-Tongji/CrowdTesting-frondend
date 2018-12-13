@@ -8,16 +8,17 @@
 
             </el-col>
         <el-col :span="16">
-            <el-menu :default-active="activeIndex2"
+            <el-menu :default-active="activeIndex"
                     class="el-menu-demo"
                     mode="horizontal"
                     @select="handleSelect"
+                     router
                     background-color="#313233"
                     text-color="#fff"
                     active-text-color="#5ED5D1">
-                <el-menu-item index="1" @click="main">主页</el-menu-item>
-                <el-menu-item index="2" @click="create">创建</el-menu-item>
-                <el-menu-item index="3" @click="manage">管理</el-menu-item>
+                <el-menu-item index="requester_manage_main" @click="manage">管理</el-menu-item>
+                <el-menu-item index="requester_create_pro1" @click="create">创建</el-menu-item>
+                
             </el-menu>
         </el-col>
         <el-col :span="3">
@@ -37,26 +38,23 @@
 
 <script>
     export default {
-        methods: {
-            create(){
-                this.$router.push('/requester_create_main')
-            },
-            manage(){
-                this.$router.push('/requester_manage_main')
-            },
-            personal(){
+        methods: {          
+            informationPage(){
                 this.$router.push('/requester_homepage_basic')
-            },
-            signout(){
-                this.$router.push('/')
-            },
-            main(){
-               this.$router.push('/requester_main')
-            },
+            },        
             logout(){
               this.$store.commit('UserLogout');
               this.$router.replace('/login')
             },
+            handleSelect(key, keyPath) {
+                console.log(this);
+                console.log(key,keyPath);
+            }
+        },
+        computed:{
+            activeIndex(){       
+                    return this.$route.path.replace('/','');
+            }
         },
         data(){
             return{
