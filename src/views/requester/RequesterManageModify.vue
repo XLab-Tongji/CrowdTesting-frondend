@@ -1,0 +1,200 @@
+<template>
+<div>
+    <!--top bar-->
+    <RequesterHomepageTopbar/>
+    
+    <el-row>
+        <!--main-->
+        <el-col :span="24" class="row_requester_main">         
+                <div class="manage_modify">
+                    <div class="title">
+                        <el-breadcrumb separator-class="el-icon-arrow-right">
+                        <el-breadcrumb-item :to="{ path: '/requester_manage_main' }">管理</el-breadcrumb-item>                       
+                        <el-breadcrumb-item>项目设置</el-breadcrumb-item>
+                        </el-breadcrumb>
+                    </div>  
+
+                    <div class="manage_modify_box">
+                         <div class="attribute box_containing">
+                            <el-form label-position="left" label-width="150px" :model="user" style="width: 600px;" >  
+                                <el-form-item label="项目id">
+                                <el-input v-model="id" disabled="true"></el-input>
+                                </el-form-item>                                             
+                                <el-form-item label="项目名称">
+                                <el-input v-model="name" disabled="true"></el-input>
+                                </el-form-item>
+                                <el-form-item label="项目描述">
+                                    <el-input v-model="discribe"  type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
+                                </el-form-item>
+                                <el-form-item label="项目标签">
+                                    <el-input v-model="tag" placeholder="标签请用空格隔开"></el-input>
+                                </el-form-item>
+                                <el-form-item label="项目报酬">
+                                    <el-input-number v-model="reward_per" :precision="2" 
+                                    :step="0.1" style="width:200px;margin-right:10px" disabled="true"></el-input-number>元
+                                </el-form-item>
+                                <el-form-item label="完成每个问题的人数">
+                                    <el-input-number v-model="population_per" 
+                                    style="width:200px;margin-right:10px"></el-input-number>人
+                                </el-form-item>
+                                <el-form-item label="完成项目的最长时限"><!--限制：不能小于目前已经参与项目的人数-->
+                                    <el-input-number v-model="time_per" 
+                                    style="width:200px;margin-right:10px"></el-input-number>小时                             
+                                </el-form-item>                           
+                                <el-form-item label="项目有效期">
+                                    <!--限制：若缩短有效期，修改后的结束日期不能小于当前日期 + 完成项目的时限。不能更改开始日期-->
+                                    <div class="block">                                   
+                                        {{limi_value}}
+                                        <el-date-picker
+                                        v-model="limi_value"
+                                        type="daterange"
+                                        range-separator="至"
+                                        start-placeholder="开始日期"
+                                        end-placeholder="结束日期">
+                                        </el-date-picker>
+                                    </div>
+                                </el-form-item>
+                                <el-form-item label="完成项目后多久自动支付给参与者"><!--限制：只可缩短付款期限-->
+                                    <el-input-number v-model="auto_pay" 
+                                    style="width:200px;margin-right:10px" :max="72"></el-input-number>小时                                   
+                                </el-form-item>                                                         
+                                <el-form-item label="是否需要专家等级的参与者完成项目">
+                                    <el-switch v-model="if_expert" disabled="true"></el-switch>
+                                </el-form-item>                           
+                                <el-form-item>
+                                    <el-button  @click="" :loading=this.button_disabled class="next_step1" type="primary">
+                                        保存修改
+                                    </el-button>
+                                </el-form-item> 
+                            </el-form>
+                        </div><!--attribute-->
+                    </div>                                    
+                </div>
+
+                
+            
+        </el-col>
+
+    </el-row>
+
+
+</div>
+</template>
+
+<script>
+import RequesterHomepageTopbar from '@/components/RequesterNavi/RequesterHomepageTopbar.vue'
+
+export default {
+    components:{
+            RequesterHomepageTopbar,        
+        },
+        created:function(){
+            this.getBasics();
+        },
+        methods: {
+            getBasics(){
+                axios(
+                    {
+                        url:'http://localhost:8080/task/attribute',
+                        method:'POST',
+                        params:{
+                            //输入id
+                        }
+                    }
+                ).then((response)=>{
+                    if (response.data.status == 200) {
+                    }
+                    else
+                        throw response;
+                    if (response.data.status == "200") {
+                        this.id=response.id;
+                        this.name=response.name;
+                        this.discribe=response.discribe;
+                        this.tag=response.tag;
+                        this.reward=response.reward;
+                        this.population=response.population;
+                        this.finish_time=response.finish_time;
+                        this.limitation=response.limitation;
+                        this.pay_time=response.pay_time;
+                        this.condition=response.condition;
+                        this.if_expert=response.if_expert;
+                    }
+                }).catch(function (error) {
+                    if (error.status == 500) {
+                    swal("Error", "服务器错误！", "error");
+                    }
+                });     
+            },
+            modify(){
+                axios.post('http://localhost:8080/task/attribute',{
+                    "id":this.id,
+                    "name":this.name,
+                    "discribe":this.discribe,
+                    "tag":this.tag,
+                    "reward":this.reward,
+                    "population":this.population,
+                    "finish_time":this.finish_time,
+                    "limitation":this.limitation,
+                    "pay_time":this.pay_time,                  
+                    "if_expert":this.if_expert
+                    
+                }).then(function(response){
+                    if(response.status == 200) {
+                    this.$message({
+                    message: '修改成功',
+                    type: 'success'
+                    });
+                    }
+                }).catch(function(error){
+                   
+                    });
+            }
+        },
+        data(){
+           return{
+                id:id,
+                name:name,
+                discribe:discribe,
+                tag:tag,
+                reward:reward,
+                population:population,
+                finish_time:finish_time,
+                limitation:limitation,
+                pay_time:pay_time,
+                condition:condition,
+                if_expert:if_expert,
+                condition:condition,             
+           }
+        },
+}
+</script>
+
+<style scoped>
+template {
+    height: 100%;
+    width:100%
+    }
+.manage_modify{
+    margin:30px;
+    background-color: #fff;
+    border: solid 1px #DCDFE6;
+    
+}
+.title{
+    width: 600px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    margin-left: 30px;
+    font-size: 25px;
+    color: #303133;
+}
+.manage_modify_box{
+   margin-left: 50px;
+   margin-top: 10px;
+   width: 800px;
+}
+
+</style>
+

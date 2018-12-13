@@ -28,7 +28,7 @@
       </el-col>
 
       <el-col :span="1" style = "background-color:#4D4D4D">
-        <el-button type="text" style="color:#ffffff;width:100%;height:60px">
+        <el-button type="text" style="color:#ffffff;width:100%;height:60px" @click="logout">
           <span>登出</span>
         </el-button>
       </el-col>
@@ -47,13 +47,17 @@
       informationPage(){
         this.$router.replace('/worker_information')
       },
+      logout(){
+        this.$store.commit('UserLogout');
+        this.$router.replace('/login')
+      },
     },
     data () {
       return {
         logo: require('../../../static/logo_white.png'),
-        user: {
-          username: this.$store.state.username,
-          level: 2
+        user:{
+          username:this.$store.state.username,
+          level:this.$store.state.level,
         },
         navList: [
           {name: '/worker_task_square', navItem: '广场'},

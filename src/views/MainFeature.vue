@@ -1,8 +1,7 @@
 <template>  
-    <div class="main_bg" :style="{backgroundImage: 'url(' + bgImg + ')' }" style="height: 740px;width:100%">
+    <div >
         <!--导航--> 
-        <div class="main-topbar">
-            <el-row >
+            <el-row class="main_topbar">
                 <el-col :span="3">
                     <div class="topbar_title">
                         <img :src="logo_small"/>
@@ -11,7 +10,7 @@
                  <el-col :span="18" >
                      <div >
                 <el-menu :default-active="activeIndex"  mode="horizontal" @select="handleSelect"
-                            background-color=rgba(0,0,0,0) text-color="#fff"  active-text-color="#ffd04b">
+                            background-color="#313233" text-color="#fff"  active-text-color="#ffd04b">
                   <el-menu-item index="1" @click="homepage">主页</el-menu-item>
                   <el-menu-item index="2" @click='feature'>简介</el-menu-item>
                   <el-menu-item index="3" @click="price">定价</el-menu-item>
@@ -19,30 +18,32 @@
                  </div>
                 </el-col>
                 <!--登录--> 
-                <el-col :span="3">
-                    <p style="margin-left:60px;">
-                        <el-button  @click="login" style="background-color:rgba(255,255,255,0.3);color:#fff;width:80px;">
+                <el-col :span="3">                  
+                    <el-button  @click="login" type="text"
+                        style="color:#DCDFE6;margin-left:60px;margin-top:10px" >
                         登录
-                        </el-button></p>
+                    </el-button>
                 </el-col>
-            </el-row>  
-        </div><!--topbar end--> 
-      
+            </el-row><!--topbar end-->          
         
-        <div class="main_reg">
-            <el-row type="flex" justify="center">
-                <el-col :span="6">   
-                    <div style="text-align: center;"  >
-                        <div style="margin:0 auto;">
-                            <h1 style="color:#fff"><img :src="logo"></h1>   
-                            
-                            <el-button class="register_button" @click="register">现在注册加入TJ众测平台</el-button>
+            <el-row>
+                <el-col :span="24">   
+                    <div class="main_reg">
+                        <div class="reg1">
+                            <h2>简介</h2>
+                            <p>
+                                TJ众测是一个众包市场，允许个人和企业(称为Requester)使用24/7、
+                                全球分布的劳动力(称为Worker)执行任务。您可以在平台上法宝宝项目，如
+                                “识别水果篮图像中的红苹果”，“完成调查问卷”等。Worker可以使用这个网站查找要处理的任务、
+                                提交问题并管理他们的帐户。
+                            </p>
+                        </div>
+                        <div class="reg2">
+
                         </div>
                     </div>
-                    
                 </el-col>
             </el-row>
-        </div>
     
     
     </div>
@@ -72,15 +73,19 @@
                 bgImg:require("../../static/bg.jpg"),
                 logo:require('../../static/logo_white_big.png'),
                 logo_small:require('../../static/logo_white.png'),
-                activeIndex:'1'
+                activeIndex:'2'
             }
         }
     }
 </script>
 
-<style>
+<style scoped>
 .main_reg{
-    margin-top: 100px;
+    margin:50px 0;
+}
+.main_topbar{
+    background-color: rgb(49, 50, 51);
+     height: 60px;
 }
 .topbar_title{
     color:#fff; 
@@ -88,13 +93,22 @@
     margin-top: 15px;
     font-size: 70%;
 }
-.el-button--primary{
-    margin-left: 40px;
-}
 .register_button{
     width: 250px;
     height: 50px;
     font-size: 17px;
+}
+h2{
+    font-weight: 300;
+    color: #DC8C1B;
+}
+p{
+    line-height: 35px;
+}
+.reg1{
+    padding:0  170px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #E4E7ED;
 }
 </style>
 

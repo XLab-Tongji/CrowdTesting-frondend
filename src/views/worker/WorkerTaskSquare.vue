@@ -423,8 +423,8 @@
       data(){
         return{
           user:{
-            username :this.$store.state.username,
-            level:2
+            username:this.$store.state.username,
+            level:this.$store.state.level,
           },
           input_advice: '',
           taskList:[],

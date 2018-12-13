@@ -4,28 +4,31 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 
 //初始化时用sessionStore.getItem('token'),这样子刷新页面就无需重新登录
-const state = {
-  token: window.sessionStorage.getItem('token'),
-  username: ''
-};
 
 const store = new Vuex.Store({
   state: {
     // 存储token
     token: window.localStorage.getItem('token'),
-    username: window.localStorage.getItem('username')
+    username: window.localStorage.getItem('username'),
+    level: 0,
   },
 
   mutations: {
-    UserLogin(state,user_information){
-      state.token = user_information.token;
-      window.localStorage.setItem('token', user_information.token);
-      state.username = user_information.username;
+    UserLogin(state,token){
+      window.localStorage.setItem('token', token);
+      state.token = token;
+    },
+    UserInfo(state,user_information){
       window.localStorage.setItem('username', user_information.username);
+      state.username = user_information.username;
+      state.level = user_information.level;
     },
     UserLogout(state){
-      state.token = '';
-      state.username = '';
+      window.localStorage.removeItem("token");
+      window.localStorage.removeItem("username");
+      while(window.localStorage.getItem('token') != undefined || window.localStorage.getItem('username') !=undefined){
+        console.log(window.localStorage.getItem('token'));
+      };
     },
   }
 });

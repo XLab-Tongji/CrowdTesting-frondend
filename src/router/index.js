@@ -12,8 +12,10 @@ import RequesterHomepageBalance from '@/views/requester/RequesterHomepageBalance
 import RequesterCreateMain from '@/views/requester/RequesterCreateMain.vue'
 import RequesterCreateMainpro1 from '@/views/requester/RequesterCreateMain_pro1.vue'
 import RequesterCreateMainpro2 from '@/views/requester/RequesterCreateMain_pro2.vue'
+import RequesterCreatePro1 from '@/views/requester/RequesterCreate_pro1.vue'
+import RequesterCreatePro2 from '@/views/requester/RequesterCreate_pro2.vue'
 import RequesterCreate from '@/views/requester/RequesterCreate.vue'
-import RequesterTaskManage from '@/views/requester/RequesterTaskManage.vue'
+import RequesterManageMain from '@/views/requester/RequesterManageMain.vue'
 import RequesterTask from '@/views/requester/RequesterTask.vue'
 import WorkerTaskDetails from '@/views/worker/WorkerTaskDetails.vue'
 import WorkerTaskTest from '@/views/worker/WorkerTaskTest.vue'
@@ -138,16 +140,28 @@ const router = new Router({
       component: RequesterCreateMainpro2
     },
     {
+      path: '/requester_create_pro1',
+      name: 'RequesterCreatePro1',
+      meta: { login:true },
+      component: RequesterCreatePro1
+    },
+    {
+      path: '/requester_create_pro2',
+      name: 'RequesterCreatePro2',
+      meta: { login:true },
+      component: RequesterCreatePro2
+    },
+    {
       path: '/requester_create',
       name: 'RequesterCreate',
       meta: { login:true },
       component: RequesterCreate
     },
     {
-      path: '/requester_task_manage',
-      name: 'RequesterTaskManage',
+      path: '/requester_manage_main',
+      name: 'RequesterManageMain',
       meta: { login:true },
-      component: RequesterTaskManage
+      component: RequesterManageMain
     },
     {
       path: '/requester_task',
