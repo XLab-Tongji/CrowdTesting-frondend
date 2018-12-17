@@ -15,7 +15,7 @@
                 <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
                 <el-tab-pane label="项目属性" name="first">
                     <div class="attribute box_containing">
-                        <el-form label-position="left" label-width="150px" :model="user" style="width: 600px;" >
+                        <el-form label-position="left" label-width="120px" :model="user" style="width: 600px;" >
                             <el-form-item label="项目名称">
                              <el-input v-model="name"></el-input>
                             </el-form-item>
@@ -23,23 +23,47 @@
                                 <el-input v-model="describe"  type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
                             </el-form-item>
                             <el-form-item label="项目标签">
-                                <el-input v-model="describe" placeholder="标签请用空格隔开"></el-input>
+                                <el-input v-model="tag" placeholder="标签请用空格隔开"></el-input>
                             </el-form-item>
-                            <el-form-item label="项目报酬">
+                            <el-form-item label="问题单价">
                                 <el-input-number v-model="reward_per" :precision="2"
-                                :step="0.1" style="width:200px;margin-right:10px"></el-input-number>元
+                                :step="0.1" :min="0" style="width:200px;margin-right:10px"></el-input-number>元
+                                 <el-popover
+                                    placement="right-start"
+                                    title="属性说明"
+                                    width="200"
+                                    trigger="hover"
+                                    content="回答每个问题（注意：不是每个项目）参与者可以获得的报酬">
+                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
+                                  </el-popover>    
                             </el-form-item>
-                             <el-form-item label="完成每个问题的人数">
+                             <el-form-item label="完成人数">
                                 <el-input-number v-model="population_per"
-                                 style="width:200px;margin-right:10px"></el-input-number>人
+                                 style="width:200px;margin-right:10px"></el-input-number>人  
+                                 <el-popover
+                                    placement="right-start"
+                                    title="属性说明"
+                                    width="200"
+                                    trigger="hover"
+                                    content="每个问题由多少人完成">
+                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
+                                  </el-popover>                                 
                             </el-form-item>
-                            <el-form-item label="完成项目的最长时限">
+                            <el-form-item label="完成时限">
                                 <el-input-number v-model="time_per"
                                  style="width:200px;margin-right:10px"></el-input-number>小时
+                                 <el-popover
+                                    placement="right-start"
+                                    title="属性说明"
+                                    width="200"
+                                    trigger="hover"
+                                    content="参与者从开始答题到提交项目的时间限制">
+                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
+                                  </el-popover>                               
                             </el-form-item>
                             <el-form-item label="项目有效期"><!--限制：开始日期不能小于当前日期-->
                                 <div class="block">
-                                    {{limi_value}}
+                                    <!--{{limi_value}}-->
                                     <el-date-picker
                                     v-model="limi_value"
                                     type="daterange"
@@ -49,12 +73,36 @@
                                     </el-date-picker>
                                 </div>
                             </el-form-item>
-                            <el-form-item label="完成项目后多久自动支付给参与者">
+                            <el-form-item label="自动支付时间">
                                 <el-input-number v-model="auto_pay"
-                                 style="width:200px;margin-right:10px" :max="72"></el-input-number>小时
+                                 style="width:200px;margin-right:10px" :max="72" :min="0"></el-input-number>小时
+                                  <el-popover
+                                    placement="right-start"
+                                    title="属性说明"
+                                    width="200"
+                                    trigger="hover"
+                                    content="参与者完成项目后多久系统自动支付酬金给参与者">
+                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
+                                  </el-popover>       
                             </el-form-item>
-                            <el-form-item label="参与者需要的额外资质"  >
-                                <el-select v-model="ex_condition" filterable multiple placeholder="请选择" style="width:450px">
+                            <el-form-item label="额外要求">
+                              <el-switch
+                                v-model="worker_condition_seen"
+                                active-color="#13ce66"
+                                >
+                              </el-switch>
+                              <el-popover
+                                    placement="right-start"
+                                    title="属性说明"
+                                    width="200"
+                                    trigger="hover"
+                                    content="对参与者是否有额外的条件限制">
+                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
+                                  </el-popover>  
+                            </el-form-item>
+                            <div v-if="worker_condition_seen">
+                            <el-form-item label="资质要求"  >
+                                <el-select v-model="ex_condition" filterable multiple placeholder="请选择" style="width:400px">
                                     <el-option
                                     v-for="item in condition_options"
                                     :key="item.value"
@@ -62,12 +110,38 @@
                                     :value="item.value">
                                     </el-option>
                                 </el-select>
+                                <el-popover
+                                    placement="right-start"
+                                    title="属性说明"
+                                    width="200"
+                                    trigger="hover"
+                                    content="参与者需要拥有哪些领域的知识才能更好地参与该项目（多选）">
+                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
+                                  </el-popover>       
                             </el-form-item>
-                             <el-form-item label="是否需要专家等级的参与者完成项目">
-                                <el-switch v-model="if_expert" ></el-switch>
+                             <el-form-item label="经验要求">
+                                <el-input-number v-model="worker_exp" 
+                                 :min="0" style="width:200px;margin-right:10px"></el-input-number>
+                                 <el-popover
+                                    placement="right-start"
+                                    title="属性说明"
+                                    width="200"
+                                    trigger="hover"
+                                    content="参与者需要多高的经验才能更好地完成项目">
+                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
+                                  </el-popover>    
                             </el-form-item>
+                            <el-form-item label="年龄要求">
+                                <el-input-number v-model="worker_age" 
+                                 :min="0" style="width:200px;margin-right:10px"></el-input-number>
+                                
+                            </el-form-item>
+                            </div>
                             <el-form-item>
-                                <el-button  @click="" :loading=this.button_disabled class="next_step1" type="primary">
+                              <el-button  @click="" :loading=this.button_disabled class="next_step1">
+                                    提交
+                                </el-button>
+                                <el-button  @click="toDesign" :loading=this.button_disabled class="next_step1" type="primary">
                                     下一步
                                 </el-button>
                             </el-form-item>
@@ -268,6 +342,9 @@ export default {
             if_expert:0,
             ex_condition:'',
             name:'',
+            tag:'',
+            worker_exp:'',
+            worker_age:'',
             condition_options: [{
                 value: '1',
                 label: '计算机'
@@ -284,7 +361,7 @@ export default {
                 value: '5',
                 label: '设计'
                 }],
-          activeName2: 'first',
+          worker_condition_seen:0,
           text_area1: '',
           task_id: 2,
         };
@@ -349,6 +426,9 @@ export default {
           },
         handleClick(tab, event) {
             console.log(tab, event);
+        },
+        toDesign(){
+          this.activeName2='second';
         },
         created() {
 

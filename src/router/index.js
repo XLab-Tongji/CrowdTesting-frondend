@@ -19,6 +19,7 @@ import WorkerTaskContinuation from '@/views/worker/WorkerTaskContinuation.vue'
 import WorkerInformation from '@/views/worker/WorkerInformation.vue'
 import WorkerPersonalTask from '@/views/worker/WorkerPersonalTask.vue'
 import WorkerTaskHelp from '@/views/worker/WorkerTaskHelp.vue'
+import RequesterHomepagePic from '@/views/requester/RequesterHomepagePic'
 
 Vue.use(Router) // 注册vue-router
 
@@ -132,6 +133,12 @@ const router = new Router({
       name: 'RequesterTask',
       meta: { login: true },
       component: RequesterTask
+    },
+    {
+      path: '/requester_homepage_pic',
+      name: 'RequesterHomepagePic',
+      meta: { login: true },
+      component: RequesterHomepagePic
     }
   ]
 })
