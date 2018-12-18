@@ -12,6 +12,7 @@ import RequesterHomepageBalance from '@/views/requester/RequesterHomepageBalance
 import RequesterCreatePro1 from '@/views/requester/RequesterCreate_pro1.vue'
 import RequesterManageMain from '@/views/requester/RequesterManageMain.vue'
 import RequesterTask from '@/views/requester/RequesterTask.vue'
+import RequesterTaskDataAnalysis from '@/views/requester/RequesterTaskDataAnalysis.vue'
 import WorkerTaskDetails from '@/views/worker/WorkerTaskDetails.vue'
 import WorkerTaskTest from '@/views/worker/WorkerTaskTest.vue'
 import WorkerTaskPreview from '@/views/worker/WorkerTaskPreview.vue'
@@ -132,6 +133,12 @@ const router = new Router({
       name: 'RequesterTask',
       meta: { login: true },
       component: RequesterTask
+    },
+    {
+      path: '/requester_task_data_analysis',
+      name: 'RequesterTaskDataAnalysis',
+      meta: { login: true },
+      component: RequesterTaskDataAnalysis
     }
   ]
 })

@@ -23,21 +23,6 @@
         </el-col>
       </el-row>
       <el-row type="flex" justify="center" style="margin-top:6vh">
-        <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
-          <el-button type="text" style="width:100%;font-weight:500;color:#ffffff;background-color:#015D73">
-            <span style="font-size:1.2vw">测试</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
-          <span style="font-size:1.2vw">&nbsp;</span>
-        </el-col>
-        <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
-          <el-button type="text" style="width:100%;font-weight:500;color:#ffffff;background-color:#015D73">
-            <span style="font-size:1.2vw">练习</span>
-          </el-button>
-        </el-col>
-      </el-row>
-      <el-row type="flex" justify="center" style="margin-top:6vh">
         <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 2vh">
             <span style="font-size:1.0vw">项目类型：</span>
@@ -55,7 +40,7 @@
         <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
             <span style="font-size:1.0vw">创建时间：</span>
-            <span style="font-size:1.0vw">{{task.create_time}}</span>
+            <span style="font-size:1.0vw">{{String(task.start_time).slice(0,10)}}</span>
           </div>
         </el-col>
         <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
@@ -67,17 +52,30 @@
       </el-row>
       <el-row type="flex" justify="center">
         <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
-          <div style="margin-top: 1vh;margin-bottom: 2vh">
-            <span style="font-size:1.0vw">项目限制：</span>
-            <span style="font-size:1.0vw" v-if="task.restrictions!=null">{{task.restrictions}}</span>
+          <div style="margin-top: 1vh">
+            <span style="font-size:1.0vw">终止时间：</span>
+            <span style="font-size:1.0vw">{{String(task.end_time).slice(0,10)}}</span>
+          </div>
+        </el-col>
+        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+          <div style="margin-top: 1vh">
+            <span style="font-size:1.0vw">任务限制：</span>
+            <span style="font-size:1.0vw"  v-if="task.restrictions!=null">{{task.restrictions}}</span>
             <span style="font-size:1.0vw" v-else>暂无</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
+        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+          <div style="margin-top: 1vh;margin-bottom: 2vh">
+            <span style="font-size:1.0vw">时间限制（小时）：</span>
+            <span style="font-size:1.0vw">{{task.time_limitation}}</span>
           </div>
         </el-col>
         <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh;margin-bottom: 2vh">
-            <span style="font-size:1.0vw">任务要求：</span>
-            <span style="font-size:1.0vw"  v-if="task.requests!=null">{{task.requests}}</span>
-            <span style="font-size:1.0vw" v-else>暂无</span>
+            <span style="font-size:1.0vw">支付时长（小时）：</span>
+            <span style="font-size:1.0vw">{{task.pay_time}}</span>
           </div>
         </el-col>
       </el-row>
@@ -99,6 +97,24 @@
           <span>样例</span>
         </el-col>
       </el-row>
+      <el-row type="flex" justify="center" style="margin-top:6vh">
+        <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
+          <el-button type="text" style="width:100%;font-weight:500;color:#ffffff;background-color:#015D73" @click="accept" v-if="accepted==0">
+            <span style="font-size:1.2vw">参与</span>
+          </el-button>
+          <el-button type="text" style="width:100%;font-weight:500;color:#ffffff;background-color:#015D73" @click="begin" v-if="accepted==1">
+            <span style="font-size:1.2vw">开始</span>
+          </el-button>
+        </el-col>
+        <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
+          <span style="font-size:1.2vw">&nbsp;</span>
+        </el-col>
+        <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
+          <el-button type="text" style="width:100%;font-weight:500;color:#ffffff;background-color:#015D73" @click="back">
+            <span style="font-size:1.2vw">返回</span>
+          </el-button>
+        </el-col>
+      </el-row>
     </el-main>
   </el-container>
 </template>
@@ -106,21 +122,53 @@
 <script>
   import axios from 'axios'
   import WorkerHomepageTopbar from '@/components/WorkerNavi/WorkerHomepageTopbar.vue'
-
-
   export default {
     components:{
       WorkerHomepageTopbar,
     },
     methods: {
-      taskSquarePage () {
-        this.$router.push({ name: 'WorkerTaskSquare', params: { page: 1 }})
+      back(){
+        this.$router.push('worker_task_square')
       },
-      taskPage () {
-        this.$router.push({ name: 'WorkerTaskSquare', params: { page: 2 }})
+      begin(){
+        this.$router.push({ name: 'WorkerTaskContinuation', params: { task_id: this.task.task_id }});
       },
-      helpPage () {
-        this.$router.push({ name: 'WorkerTaskSquare', params: { page: 3 }})
+      accept(){
+        let that = this;
+        this.$confirm('是否确认接受该任务?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let param = new URLSearchParams();
+          param.append('taskId',this.task.task_id);
+          axios({
+            method:	'post',
+            url: '/api/personal-task/add',
+            data:param
+          })
+            .then(function (response) {
+              if(response.data.code[0] == "2") {
+                that.accepted = 1;
+                that.$message({
+                  type: 'success',
+                  message: '参与成功!'
+                });
+                that.$forceUpdate();
+              }
+              else{
+                that.$message('参与失败！');
+              }
+            })
+            .catch(function (error) {
+              alert(error);
+            });
+        }).catch(() => {
+          that.$message({
+            type: 'info',
+            message: '取消参与'
+          });
+        });
       },
       handleOpen (key, keyPath) {
         console.log(key, keyPath);
@@ -129,7 +177,6 @@
         console.log(key, keyPath);
       }
     },
-
     data () {
       return {
         user: {
@@ -144,6 +191,7 @@
         task:
           {
           },
+        accepted:0,
       }
     },
     created()
@@ -167,5 +215,4 @@
 </script>
 
 <style scoped>
-
 </style>

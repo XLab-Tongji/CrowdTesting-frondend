@@ -15,9 +15,9 @@
                  background-color="#4D4D4D"
                  text-color="#fff"
                  active-text-color="#5ED5D1">
-          <el-menu-item index="worker_task_square">广场</el-menu-item>
-          <el-menu-item index="worker_personal_task">任务</el-menu-item>
-          <el-menu-item index="worker_task_help">帮助</el-menu-item>
+          <el-menu-item index="worker_task_square">任务广场</el-menu-item>
+          <el-menu-item index="worker_personal_task">我的任务</el-menu-item>
+          <el-menu-item index="worker_task_help">问题帮助</el-menu-item>
         </el-menu>
       </el-col>
 

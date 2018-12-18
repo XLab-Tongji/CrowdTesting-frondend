@@ -2,23 +2,23 @@
 <div>
     <!--top bar-->
     <RequesterHomepageTopbar/>
-    
+
     <el-row>
         <!--main-->
-        <el-col :span="24" class="row_requester_main">         
+        <el-col :span="24" class="row_requester_main">
                 <div class="manage_main">
                     <div class="manage_main_title">
                         <span>管理项目</span>
                     </div>
                     <span class="manage_main_explain">查看项目结果，对正在进行的项目部分设置进行修改</span>
                     <div class="box">
-                        
+
                     </div>
                 </div>
 
                 <div class="manage_main_box">
-                    
-                    <div style="float:right;width=500px">
+
+                    <div style="float:right;width:500px">
                         <el-input v-model="search" suffix-icon="el-icon-search" placeholder="输入关键词"></el-input>
                     </div>
                     <div>
@@ -55,7 +55,7 @@
                             label="参与人数"
                             width="180">
                             </el-table-column>
-                            <el-table-column                           
+                            <el-table-column
                             label="操作"
                             width="180">
                             <template slot-scope="scope">
@@ -66,7 +66,7 @@
                         </el-table>
                      </div>
                 </div>
-            
+
         </el-col>
 
     </el-row>
@@ -80,7 +80,7 @@ import RequesterHomepageTopbar from '@/components/RequesterNavi/RequesterHomepag
 
 export default {
     components:{
-            RequesterHomepageTopbar,        
+            RequesterHomepageTopbar,
         },
         data(){
             return{
@@ -125,7 +125,7 @@ template {
     background-color: #fff;
     height: 140px;
     border: solid 1px #DCDFE6;
-    
+
 }
 .manage_main_title{
     width: 600px;
