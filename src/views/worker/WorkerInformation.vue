@@ -47,7 +47,7 @@
                     <el-input v-model="worker.username"></el-input>
                   </el-form-item>
                   <el-form-item label="性别">
-                    <el-select v-model="form.gender" placeholder="">
+                    <el-select v-model="worker.gender" placeholder="">
                       <el-option label="女" value="女"></el-option>
                       <el-option label="男" value="男"></el-option>
                     </el-select>
@@ -93,10 +93,11 @@
                 </el-form-item>
 
                 <el-form-item label="专业">
-                  <el-input v-model="form.major"></el-input>
+                  <el-input v-model="worker.major"></el-input>
                 </el-form-item>
+
                 <el-form-item label="工作领域">
-                   <el-select v-model="form.workArea" placeholder="">
+                   <el-select v-model="worker.workArea" placeholder="">
                     <el-option label="软件" value="软件"></el-option>
                     <el-option label="医药" value="医药"></el-option>
                     <el-option label="教育" value="教育"></el-option>
@@ -109,9 +110,7 @@
                     <el-option label="其他" value="其他"></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="工作地点">
-                  <el-input v-model="form.workPlace"></el-input>
-                </el-form-item>
+               
             
                 <el-form-item label="上网时长">
                   <el-select v-model="form.worktime" placeholder="">
@@ -267,7 +266,7 @@
             gender: '',
             graduation: '',
             workdomain: '',
-            workPlace: '',
+            workArea: '',
             worktime: '',
             internettime: '',
             major: '',
@@ -281,16 +280,20 @@
             level:'',
           },
         worker: {
-          age: 0,
-          balance: 0,
+          age: '',
+          balance: '',
           education: '',
           email: '',
           name: '',
           teleNumber: '',
-          username: "good_day",
+          username: '',
           withdrawnMethod: '',
           workArea: '',
           workerId:'',
+          level:'',
+          password:'',
+          gender:'男',
+          major:'',
         },
       }
     },
