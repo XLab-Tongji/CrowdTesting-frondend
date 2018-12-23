@@ -326,7 +326,7 @@ export default {
               param.append('content',questions[i].question_title.question_content);
               param.append('resourceLoading',resource_loading);
               param.append('type',questions[i].question_title.type);
-              console.log("1");
+              param.append('compulsory',questions[i].question_title.must);
               axios({
                 method:	'post',
                 url: '/api/question/add-question',

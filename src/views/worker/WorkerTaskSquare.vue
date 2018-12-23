@@ -43,7 +43,7 @@
         <el-col style="border-style:solid;border-width:0.3vh;border-color:#E6E6E6">
           <template>
             <el-checkbox-group v-model="checkList" size="mini" @change="handleCheckedChange">
-              <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;padding-right: 3vw"><b>只显示：</b></span>
+              <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;padding-right: 2vw"><b>只显示：</b></span>
               <el-checkbox label="可接受任务" border></el-checkbox>
               <el-checkbox label="推荐任务" border></el-checkbox>
               <el-checkbox label="未完成任务" border></el-checkbox>
@@ -85,7 +85,7 @@
           <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">参与人数</span>
         </el-col>
         <el-col :span="2">
-          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">每单位工资</span>
+          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">单位工资</span>
         </el-col>
         <el-col :span="4">
           <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">开始时间</span>
@@ -98,7 +98,6 @@
         </el-col>
       </el-row>
       <el-collapse accordion v-for = "task in showTaskList" id = "collapse" v-model="activeNames" :key="task.task_id">
-        <div v-if="personalTaskList != null && personalTaskList.indexOf(task.task_id)===-1">
           <el-collapse-item v-if="user.level<task.level">
             <template slot="title">
               <el-col :span="7" v-if="task.name!=null">
@@ -114,7 +113,7 @@
                 <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.population}}</span>
               </el-col>
               <el-col :span="2">
-                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.reward}}</span>
+                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.reward}}元/题</span>
               </el-col>
               <el-col :span="4">
                 <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(task.start_time).slice(0,10)}}</span>
@@ -130,24 +129,36 @@
             </template>
             <div style="background-color: #F2F0F0">
               <el-row>
-                <el-col :span="13">
-                  <span style="color:#4D4D4D;padding-left: 1vw">描述:</span>
-                </el-col>
                 <el-col :span="6">
+                  <span style="color:#4D4D4D;padding-left: 1vw">项目领域:</span>
+                </el-col>
+                <el-col :span="7">
                   <span style="color:#4D4D4D">限制条件:</span>
+                </el-col>
+                <el-col :span="3">
+                  <span style="color:#4D4D4D">最低年龄:</span>
+                </el-col>
+                <el-col :span="3">
+                  <span style="color:#4D4D4D">最高年龄:</span>
                 </el-col>
                 <el-col :span="5">
                   <span style="color:#4D4D4D">Level:&nbsp;&nbsp;{{task.level}}</span>
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="13">
-                  <span style="color:#4D4D4D;padding-left: 1vw" v-if="task.description!=null">{{task.description}}</span>
+                <el-col :span="6">
+                  <span style="color:#4D4D4D;padding-left: 1vw" v-if="task.area!=null">{{task.area}}</span>
                   <span style="color:#4D4D4D;padding-left: 1vw" v-else>暂无</span>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="7">
                   <span style="color:#4D4D4D" v-if="task.restrictions!=null">{{task.restrictions}}</span>
                   <span style="color:#4D4D4D" v-else>暂无</span>
+                </el-col>
+                <el-col :span="3">
+                  <span style="color:#4D4D4D">{{task.min_age}}</span>
+                </el-col>
+                <el-col :span="3">
+                  <span style="color:#4D4D4D">{{task.max_age}}</span>
                 </el-col>
                 <el-col :span="4">
                   <i class="el-icon-error"></i>
@@ -172,7 +183,7 @@
                   <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.population}}</span>
                 </el-col>
                 <el-col :span="2">
-                  <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.reward}}</span>
+                  <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.reward}}元/题</span>
                 </el-col>
                 <el-col :span="4">
                   <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(task.start_time).slice(0,10)}}</span>
@@ -189,24 +200,36 @@
             </template>
             <div style="background-color: #4D8D9D">
               <el-row>
-                <el-col :span="13">
-                  <span style="color:#ffffff;padding-left: 1vw">描述:</span>
-                </el-col>
                 <el-col :span="6">
+                  <span style="color:#ffffff;padding-left: 1vw">项目领域:</span>
+                </el-col>
+                <el-col :span="7">
                   <span style="color:#ffffff">限制条件:</span>
+                </el-col>
+                <el-col :span="3">
+                  <span style="color:#ffffff">最低年龄:</span>
+                </el-col>
+                <el-col :span="3">
+                  <span style="color:#ffffff">最高年龄:</span>
                 </el-col>
                 <el-col :span="5">
                   <span style="color:#ffffff">Level:&nbsp;&nbsp;{{task.level}}</span>
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="13">
-                  <span style="color:#ffffff;padding-left: 1vw" v-if="task.description!=null">{{task.description}}</span>
+                <el-col :span="6">
+                  <span style="color:#ffffff;padding-left: 1vw" v-if="task.area!=null">{{task.area}}</span>
                   <span style="color:#ffffff;padding-left: 1vw" v-else>暂无</span>
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="7">
                   <span style="color:#ffffff" v-if="task.restrictions!=null">{{task.restrictions}}</span>
                   <span style="color:#ffffff" v-else>暂无</span>
+                </el-col>
+                <el-col :span="3">
+                  <span style="color:#ffffff">{{task.min_age}}</span>
+                </el-col>
+                <el-col :span="3">
+                  <span style="color:#ffffff">{{task.max_age}}</span>
                 </el-col>
                 <el-col :span="4">
                   <i class="el-icon-success"></i>
@@ -215,7 +238,6 @@
               </el-row>
             </div>
           </el-collapse-item>
-        </div>
       </el-collapse>
       <div class="block" style="text-align: center;margin-top:6vh">
         <el-pagination
@@ -241,7 +263,6 @@
         let newShowTaskListCopy = [];
         this.showTaskList = [];
         if(this.checkList.indexOf("可接受任务") != -1) {
-          console.log('a');
           for (let taskIndex in showTaskListCopy) {
             let aTask = showTaskListCopy[taskIndex];
             if (aTask.level <= this.user.level && aTask.status == '100%')
@@ -308,30 +329,32 @@
           maxReward = minReward;
           minReward = change_num;
         }
-        if(this.endDate < this.startDate) {
+        if(this.endDate != '' && this.endDate < this.startDate) {
           let change = this.startDate;
           this.startDate = this.endDate;
           this.endDate = change;
         }
+        console.log(this.endDate);
+        console.log(this.startDate);
         for(let task in this.taskList){
           let aTask =this.taskList[task];
           if(aTask.reward >= minReward && aTask.reward <= maxReward){
-            if(this.startDate != '' && aTask.start_time >= dateToString(this.startDate)) {
-              if(this.endDate != '' && aTask.start_time <= dateToString(this.endDate)) {
+            if(this.startDate != '' && this.startDate != null && aTask.start_time >= dateToString(this.startDate)) {
+              if(this.endDate != ''&& this.endDate != null && aTask.start_time <= dateToString(this.endDate)) {
                 if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
-              else if(this.endDate == ''){
+              else if(this.endDate == ''|| this.endDate != null){
                 if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
             }
-            else if(this.startDate == '') {
-              if(this.endDate != '' && aTask.start_time <= dateToString(this.endDate)) {
+            else if(this.startDate == '' || this.startDate == null) {
+              if(this.endDate != '' && this.endDate != null && aTask.start_time <= dateToString(this.endDate)) {
                 if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
-              else if(this.endDate == ''){
+              else if(this.endDate == '' || this.endDate == null ){
                 if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
@@ -343,7 +366,6 @@
         this.$forceUpdate();
       },
       orderByWorkerNum(){
-        console.log(this.personalTaskList);
         this.rewardOrder = 0;
         this.dateOrder = 0;
         this.showTaskList = newSort(this.showTaskList,'population');
@@ -409,10 +431,10 @@
         console.log(key, keyPath);
       },
       preview(task_id){
-        this.$router.push({ name: 'WorkerTaskPreview', params: { task_id: task_id }})
+        this.$router.push({ path: 'worker_task_preview', query: { task_id: task_id }})
       },
       accept(task_id){
-        this.$router.push({ name: 'WorkerTaskDetails', params: { task_id: task_id }})
+        this.$router.push({ path: 'worker_task_details', query: { task_id: task_id }})
       },
     },
     data(){
@@ -474,29 +496,34 @@
       }
       axios.get('/api/task/find-all')
         .then(function (response) {
-          console.log(response);
           let tasks = response.data.tasks;
-          that.taskList = tasks;
-          that.showTaskList = tasks;
-          that.showTaskListCopy = that.showTaskList;
-          that.$forceUpdate();
+          axios.get('/api/personal-task/find-my-task')
+            .then(function (response) {
+              let personalTasks = response.data.tasks;
+              let personalTaskList = [];
+              for(let i=0;i<personalTasks.length;i++){
+                personalTaskList.push(personalTasks[i].id);
+              }
+              that.personalTaskList = personalTaskList;
+              let other_tasks = [];
+              for(let i=0;i<tasks.length;i++){
+                if(personalTaskList != null && personalTaskList.indexOf(tasks[i].task_id)===-1){
+                  other_tasks.push(tasks[i]);
+                }
+              }
+              that.taskList = other_tasks;
+              that.showTaskList = other_tasks;
+              that.showTaskListCopy = other_tasks;
+              that.$forceUpdate();
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
         })
         .catch(function (error) {
           console.log(error);
         });
-      axios.get('/api/personal-task/find-my-task')
-        .then(function (response) {
-          let personalTasks = response.data.tasks;
-          let personalTaskList = [];
-          for(let i=0;i<personalTasks.length;i++){
-            personalTaskList.push(personalTasks[i].id);
-          }
-          that.personalTaskList = personalTaskList;
-          that.$forceUpdate();
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      console.log(that.user.level);
     }
   }
   function newSort(array,key){

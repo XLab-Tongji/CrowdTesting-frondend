@@ -67,6 +67,36 @@
       </el-row>
       <el-row type="flex" justify="center">
         <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+          <div style="margin-top: 1vh">
+            <span style="font-size:1.0vw">最低年龄：</span>
+            <span style="font-size:1.0vw">{{task.min_age}}</span>
+          </div>
+        </el-col>
+        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+          <div style="margin-top: 1vh">
+            <span style="font-size:1.0vw">最高年龄：</span>
+            <span style="font-size:1.0vw">{{task.max_age}}</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
+        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+          <div style="margin-top: 1vh">
+            <span style="font-size:1.0vw">项目领域：</span>
+            <span style="font-size:1.0vw" v-if="task.area!=''&&task.area!=null">{{task.area}}</span>
+            <span style="font-size:1.0vw" v-else>暂无</span>
+          </div>
+        </el-col>
+        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+          <div style="margin-top: 1vh">
+            <span style="font-size:1.0vw">项目用途：</span>
+            <span style="font-size:1.0vw" v-if="task.usage!=''&&task.usage!=null">{{task.usage}}</span>
+            <span style="font-size:1.0vw" v-else>暂无</span>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center">
+        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh;margin-bottom: 2vh">
             <span style="font-size:1.0vw">时间限制（小时）：</span>
             <span style="font-size:1.0vw">{{task.time_limitation}}</span>
@@ -95,6 +125,54 @@
         <el-col :span="3" style="font-size:1.3vw;font-weight:500;letter-spacing: 0.1vh;color:#4D4D4D;padding-left:1vw">
           <i class="el-icon-document"></i>
           <span>样例</span>
+        </el-col>
+      </el-row>
+      <el-row type="flex" justify="center" style="margin-top:6vh;margin-bottom:6vh">
+        <el-col :span="16">
+          <template>
+            <el-table
+              :data="questions"
+              :show-header=false
+              :border=false
+              stripe
+              style="width: 100%;height:100%"
+              id="show_table">
+              <el-table-column>
+                <template slot-scope="scope">
+                  <div v-if="scope.row.question.type===0">
+                    <span>{{ question_index[scope.row.question.id] }}.{{ scope.row.question.content }}【单选题】</span>
+                    <template>
+                      <div v-for="option in scope.row.options">
+                        <el-radio :label="String(option.id)">{{option.content}}
+                        </el-radio>
+                        <div v-if="option.openAnswerPermission===1">
+                          <el-input placeholder="请输入内容" size="small" style="width:50%"></el-input>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                  <div v-else-if="scope.row.question.type===1">
+                    <span>{{ question_index[scope.row.question.id] }}.{{ scope.row.question.content }}【多选题】</span>
+                    <template>
+                      <div v-for="option in scope.row.options">
+                        <el-checkbox :label="String(option.id)">{{option.content}}
+                        </el-checkbox>
+                        <div v-if="option.openAnswerPermission===1">
+                          <el-input placeholder="请输入内容" size="small" style="width:50%"></el-input>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                  <div v-else-if="scope.row.question.type===2">
+                    <span>{{ question_index[scope.row.question.id] }}.{{ scope.row.question.content }}【简答题】</span>
+                    <el-row>
+                      <el-input type="textarea" :rows="3" placeholder="请输入内容" size="small" style="width:100%"></el-input>
+                    </el-row>
+                  </div>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
         </el-col>
       </el-row>
       <el-row type="flex" justify="center" style="margin-top:6vh">
@@ -181,9 +259,12 @@
       return {
         user: {
           username: this.$store.state.username,
-          level: 2
+          level: this.$store.state.level,
         },
         page: 1,
+        questions: [],
+        answer:[],
+        question_index:[],
         help_page_menu: "0.0",
         url_crowdsourcing: require("../../../static/crowdTestingTag.png"),
         input_search: '',
@@ -196,7 +277,7 @@
     },
     created()
     {
-      let task_id = this.$route.params.task_id;
+      let task_id = this.$route.query.task_id;
       let that=this;
       let param = new URLSearchParams();
       param.append('id',task_id);
@@ -206,6 +287,30 @@
           let task = response.data.task;
           that.task = task;
           that.$forceUpdate();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      axios.get('/api/question/see-all-question',
+        {params:{'taskId': task_id}})
+        .then(function (response) {
+          let questions = response.data.Questions;
+          if(questions.length >= 10){
+            that.questions = questions.slice(0,10);
+          }
+          else{
+            that.questions = questions;
+          }
+          for (let i = 0; i < that.questions.length; i++) {
+            that.question_index[that.questions[i].question.id] = i + 1;
+            let an_answer = {
+              type: that.questions[i].question.type,
+              radio: '',
+              checkList: [],
+              open_answer: '',
+            }
+            that.answer.push(an_answer);
+          }
         })
         .catch(function (error) {
           console.log(error);
