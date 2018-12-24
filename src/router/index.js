@@ -22,7 +22,6 @@ import WorkerPersonalTask from '@/views/worker/WorkerPersonalTask.vue'
 import WorkerTaskHelp from '@/views/worker/WorkerTaskHelp.vue'
 import RequesterHomepagePic from '@/views/requester/RequesterHomepagePic'
 import RequesterHomepagePicList from '@/views/requester/RequesterHomepagePicList.vue'
-import RequesterManageModify from '@/views/requester/RequesterManageModify.vue'
 
 Vue.use(Router) // 注册vue-router
 
@@ -148,6 +147,19 @@ const router = new Router({
       name: 'RequesterTaskDataAnalysis',
       meta: { login: true },
       component: RequesterTaskDataAnalysis
+    },
+    {
+      path: '/requester_homepage_pic',
+      name: 'RequesterHomepagePic',
+      meta: { login: true },
+      component: RequesterHomepagePic
+    },
+    {
+      path: '/requester_homepage_pic/:id',
+      props: true,
+      name: 'RequesterHomepagePicList',
+      meta: { login: true },
+      component: RequesterHomepagePicList
     }
   ]
 })
