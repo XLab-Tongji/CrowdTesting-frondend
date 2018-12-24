@@ -55,11 +55,6 @@
                             label="参与人数"
                             width="180">
                             </el-table-column>
-                            <el-table-column
-                            prop="population"
-                            label="需求人数"
-                            width="180">
-                            </el-table-column>
                             <el-table-column                           
                             label="操作"
                             width="180">

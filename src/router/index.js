@@ -131,6 +131,12 @@ const router = new Router({
       component: RequesterManageMain
     },
     {
+      path: '/requester_task_data_analysis',
+      name: 'RequesterTaskDataAnalysis',
+      meta: { login: true },
+      component: RequesterTaskDataAnalysis
+    },
+    {
       path: '/requester_task',
       name: 'RequesterTask',
       meta: { login: true },
