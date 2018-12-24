@@ -101,7 +101,12 @@
                             <el-table-column>
                               <template slot-scope="scope">
                                 <div v-if="scope.row.question_title.type===0">
-                                  <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【单选题】</span>
+                                  <div v-if="scope.row.question_title.must===0">
+                                    <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【单选题】(选填)</span>
+                                  </div>
+                                  <div v-else>
+                                    <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【单选题】(必填)</span>
+                                  </div>
                                   <template>
                                     <div v-for="option in scope.row.options">
                                       <el-radio  :label=option.option_number>{{option.content}}
@@ -113,7 +118,12 @@
                                   </template>
                                 </div>
                                 <div v-else-if="scope.row.question_title.type===1">
-                                  <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【多选题】</span>
+                                  <div v-if="scope.row.question_title.must===0">
+                                    <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【多选题】(选填)</span>
+                                  </div>
+                                  <div v-else>
+                                    <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【多选题】(必填)</span>
+                                  </div>
                                   <template>
                                     <div v-for="option in scope.row.options">
                                       <el-checkbox  :label=option.option_number>{{option.content}}
@@ -125,7 +135,12 @@
                                   </template>
                                 </div>
                                 <div v-else-if="scope.row.question_title.type===2">
-                                  <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【简答题】</span>
+                                  <div v-if="scope.row.question_title.must===0">
+                                    <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【简答题】（选填）</span>
+                                  </div>
+                                  <div v-else>
+                                    <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【简答题】（必填）</span>
+                                  </div>
                                 </div>
                               </template>
                             </el-table-column>
@@ -195,6 +210,7 @@ export default {
               question_content:'',
               resource_loading:0,
               type:0,
+              must:1,
             },
             options:[]
           }
@@ -215,6 +231,14 @@ export default {
           else if (line.indexOf("【简答题】") !== -1){
             questions[index].question_title.type = 2;
             line = line.replace('【简答题】','');
+          }
+          if(line.indexOf("（选填）") !== -1){
+            questions[index].question_title.must = 0;
+            line = line.replace('（选填）','');
+          }
+          else if(line.indexOf("（必填）") !== -1){
+            questions[index].question_title.must = 1;
+            line = line.replace('（选填）','');
           }
           if(line.split(".").length<2)
             questions[index].question_title.question_content = '';
@@ -302,7 +326,7 @@ export default {
               param.append('content',questions[i].question_title.question_content);
               param.append('resourceLoading',resource_loading);
               param.append('type',questions[i].question_title.type);
-              console.log("1");
+              param.append('compulsory',questions[i].question_title.must);
               axios({
                 method:	'post',
                 url: '/api/question/add-question',

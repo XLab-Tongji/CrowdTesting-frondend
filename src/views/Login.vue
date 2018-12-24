@@ -159,6 +159,7 @@
                       console.log(response);
                       let username = response.data.worker.username;
                       let level = response.data.worker.level
+                      console.log(level);
                       let user_information = {
                         username :'',
                         level:0,
