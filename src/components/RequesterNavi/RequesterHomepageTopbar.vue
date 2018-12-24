@@ -68,14 +68,16 @@
 </script>
 
 
-<style>
+<style >
 .topbar{
     background-color: rgb(49, 50, 51);
     color: #fff;
     height: 60px;
 }
 .topbar_title{
-    color:#fff;
+    
+    color: #fff;
+   
     margin-left:50px;
     margin-top: 13px;
     font-size: 70%;

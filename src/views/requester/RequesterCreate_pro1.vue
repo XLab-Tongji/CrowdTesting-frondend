@@ -119,7 +119,7 @@
                                      <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
                                   </el-popover>       
                             </el-form-item>
-                             <el-form-item label="经验要求">
+                             <el-form-item label="等级要求">
                                 <el-input-number v-model="worker_exp" 
                                  :min="0" style="width:200px;margin-right:10px"></el-input-number>
                                  <el-popover
@@ -346,21 +346,50 @@ export default {
             worker_exp:'',
             worker_age:'',
             condition_options: [{
-                value: '1',
+                value: '计算机',
                 label: '计算机'
                 }, {
-                value: '2',
-                label: '经济'
+                value: '医药',
+                label: '医药'
                 }, {
-                value: '3',
-                label: '医学'
+                value: '教育',
+                label: '教育'
                 }, {
-                value: '4',
+                value: '财经',
+                label: '财经'
+                }, {
+                value: '政法',
+                label: '政法'
+                },
+                {
+                value: '科研',
+                label: '科研'
+                },
+                {
+                value: '公益',
+                label: '公益'
+                },
+                {
+                value: '音乐',
                 label: '音乐'
-                }, {
-                value: '5',
+                },
+                {
+                value: '设计',
                 label: '设计'
-                }],
+                },
+                {
+                value: '行政',
+                label: '行政'
+                },
+                {
+                value: '交通',
+                label: '交通'
+                },
+                {
+                value: '交通',
+                label: '交通'
+                }
+                ],
           worker_condition_seen:0,
           text_area1: '',
           task_id: 2,

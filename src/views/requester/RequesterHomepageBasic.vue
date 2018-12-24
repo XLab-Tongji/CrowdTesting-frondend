@@ -12,6 +12,9 @@
                     </div>
                     <div class="box">
                         <el-form label-position="left" label-width="110px">
+                            <el-form-item label="邮箱">
+                        <el-input v-model="requester.eMail" disabled="true"></el-input>
+                        </el-form-item>
                         <el-form-item label="用户名">
                           <el-input v-model="requester.username"></el-input>
                         </el-form-item>
@@ -23,10 +26,7 @@
                         </el-form-item>
                           <el-form-item label="年龄">
                             <el-input v-model="requester.age"></el-input>
-                          </el-form-item>
-                        <el-form-item label="邮箱">
-                        <el-input v-model="requester.eMail"></el-input>
-                        </el-form-item>
+                          </el-form-item>                       
                         <el-form-item label="手机号码">
                         <el-input v-model="requester.teleNumber"></el-input>
                         </el-form-item>
@@ -34,9 +34,21 @@
                             <el-button  type="primary" @click="modify" class="login_button">保存信息</el-button>
                         </el-form-item>
                       </el-form>
+
+                      <el-dialog                      
+                        :visible.sync="dialogVisible"
+                        width="30%"
+                        :before-close="handleClose">
+                        <span>{{message}}</span>
+                        <span slot="footer" class="dialog-footer">                        
+                            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                        </span>
+                        </el-dialog>
+
                     </div>
                 </div>
 
+                
         </el-col>
     </el-row>
 
@@ -55,12 +67,25 @@ import * as axios from 'axios'
             RequesterHomepageSidebar
         },
         methods: {
-
+            modify(){
+                let that = this;
+            axios({
+                method:	'get',
+                url: '/api/requester/find-myself',
+            })
+                .then(function (response) {
+                console.log(response);
+                that.requester = response.data.requester;
+                })
+                .catch(function (error) {
+                alert(error);
+                });
+            }
         },
         data(){
             return{
                requester:{
-                 requesterId: 0,
+                 requesterId: '',
                  username: "",
                  name: "",
                  teleNumber: "",
@@ -70,10 +95,11 @@ import * as axios from 'axios'
                  address: "",
                  payMethod: "",
                  gender:"",
-                 age: 30,
-                 balance:0,
+                 age: '',
+                 balance:"",
                  email:'',
-               }
+               },
+               dialogVisible:false
             }
         },
         created(){

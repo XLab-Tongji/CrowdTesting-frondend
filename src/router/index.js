@@ -20,6 +20,8 @@ import WorkerInformation from '@/views/worker/WorkerInformation.vue'
 import WorkerPersonalTask from '@/views/worker/WorkerPersonalTask.vue'
 import WorkerTaskHelp from '@/views/worker/WorkerTaskHelp.vue'
 import RequesterHomepagePic from '@/views/requester/RequesterHomepagePic'
+import RequesterHomepagePicList from '@/views/requester/RequesterHomepagePicList.vue'
+import RequesterManageModify from '@/views/requester/RequesterManageModify.vue'
 
 Vue.use(Router) // 注册vue-router
 
@@ -139,6 +141,19 @@ const router = new Router({
       name: 'RequesterHomepagePic',
       meta: { login: true },
       component: RequesterHomepagePic
+    },
+    {
+      path: '/requester_homepage_pic/:id',
+      props: true,
+      name: 'RequesterHomepagePicList',
+      meta: { login: true },
+      component: RequesterHomepagePicList
+    },
+    {
+      path: '/requester_manage_modify',
+      name: 'RequesterManageModify',
+      meta: { login: true },
+      component: RequesterManageModify
     }
   ]
 })
