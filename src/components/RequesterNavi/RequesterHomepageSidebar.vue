@@ -47,7 +47,9 @@ export default {
         console.log(this);
         console.log(key,keyPath);
       }
-    }
+    },
+    created:{
+      }
 }
 </script>
 

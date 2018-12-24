@@ -51,7 +51,7 @@
                             width="180">
                             </el-table-column>
                             <el-table-column
-                            prop="population"
+                            prop="real_popul"
                             label="参与人数"
                             width="180">
                             </el-table-column>
@@ -59,8 +59,7 @@
                             label="操作"
                             width="180">
                             <template slot-scope="scope">
-                                <el-button @click="handleClick(scope.row)"  size="small">查看结果</el-button>
-                                <el-button type="text" size="small">编辑</el-button>
+                                <el-button @click="showResult"  size="small">查看结果</el-button>                            
                             </template>
                             </el-table-column>
                         </el-table>
@@ -97,7 +96,8 @@ export default {
                         start_time:'2018-5',
                         end_time:'2018-8',
                         status:'进行中',
-                        population:'100'
+                        population:'100',
+                        real_popul:'50'
                     },
                     {
                         id:'12345',
@@ -105,12 +105,14 @@ export default {
                         start_time:'2018-5',
                         end_time:'2018-8',
                         status:'进行中',
-                        population:'100'
+                        population:'100',
+                        real_popul:'50'
                     }
                 ]
             }
         },
         methods:{
+            showResult(){}
         }
 }
 </script>

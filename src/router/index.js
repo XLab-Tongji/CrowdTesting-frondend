@@ -20,6 +20,9 @@ import WorkerTaskContinuation from '@/views/worker/WorkerTaskContinuation.vue'
 import WorkerInformation from '@/views/worker/WorkerInformation.vue'
 import WorkerPersonalTask from '@/views/worker/WorkerPersonalTask.vue'
 import WorkerTaskHelp from '@/views/worker/WorkerTaskHelp.vue'
+import RequesterHomepagePic from '@/views/requester/RequesterHomepagePic'
+import RequesterHomepagePicList from '@/views/requester/RequesterHomepagePicList.vue'
+import RequesterManageModify from '@/views/requester/RequesterManageModify.vue'
 
 Vue.use(Router) // 注册vue-router
 
@@ -127,6 +130,12 @@ const router = new Router({
       name: 'RequesterManageMain',
       meta: { login: true },
       component: RequesterManageMain
+    },
+    {
+      path: '/requester_task_data_analysis',
+      name: 'RequesterTaskDataAnalysis',
+      meta: { login: true },
+      component: RequesterTaskDataAnalysis
     },
     {
       path: '/requester_task',

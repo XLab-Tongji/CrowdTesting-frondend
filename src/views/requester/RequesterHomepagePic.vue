@@ -11,9 +11,38 @@
                         <span>图片仓库</span>
                     </div>
                     <div class="box">
-                        
+                        <!--相册列表-->
+                        <div class="wrapper" >
+                        <el-card class="pic_box " v-for="item in picFile" 
+                            :key="item.id"
+                            >
+                            <img class="img" :src="item.url" @click="show_list(item.id)">
+                            <!-- <img :src="item.url" alt="照片"> -->
+                            <!--<span class="count">{{item.list.length}}</span>-->
+                            
+                            <div class="names">{{item.title}}</div>
+                        </el-card>
+                        <div class="addAlbum" @click="dialogFormVisible = true">
+                            <i class="el-icon-plus" style="padding-top:63px;color:#8C939D;font-size:25px;"></i>
+                        </div>
+
+                        <el-dialog title="创建新相簿" :visible.sync="dialogFormVisible">
+                        <el-form :model="newAlbum">
+                            <el-form-item label="相簿名称">
+                            <el-input v-model="newAlbum.name" autocomplete="off"></el-input>
+                            </el-form-item>                          
+                        </el-form>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button @click="dialogFormVisible = false">取 消</el-button>
+                            <el-button type="primary" @click="addAlbum">确 定</el-button>
+                        </div>
+                        </el-dialog>
+                        </div>
+
+                       
                     </div>
                 </div>
+                
 
         </el-col>
     </el-row>
@@ -35,24 +64,55 @@ import * as axios from 'axios'
         methods: {
 
         },
-        data(){
+        data(){           
             return{
-              
+                dialogFormVisible: false,
+                picFile:[
+                  {
+                      id:'1',
+                      title:'album1',
+                      url:'../../../static/pics/album1/1.jpg'
+                  },
+                  {
+                      id:'2',
+                      title:'album2',
+                      url:'../../../static/pics/album2/6.jpg'
+                  }
+                ],
+                newAlbum:{
+                    name:''
+                }
             }
         },
-        created(){
-          let that = this;
-          axios({
-            method:	'get',
-            url: '/api/requester/find-myself',
-          })
-            .then(function (response) {
-              console.log(response);
-             that.requester = response.data.requester;
+        created() {
+           
+        },
+        methods: {
+           show_list(id){
+               this.$router.push('/requester_homepage_pic/'+id );
+           },
+           addAlbum(){    
+            let that = this;
+            let param = new URLSearchParams();
+            param.append('name',that.newAlbum.name);        
+            axios({
+              method:'post',
+              url: '/api/image/add-album',
+              data:param
+            })
+            .then(function(response){
+                if(response.data.code[0] == "2"){
+                    that.$message('添加成功');
+                    that.dialogFormVisible = false;
+                }
+                else if(response.data.code[0] == "5") {
+                  that.wrong_pwd("服务器错误")              
+                }               
             })
             .catch(function (error) {
-              alert(error);
-            });
+                alert(error);
+              });
+           }
         }
     }
 </script>
@@ -65,8 +125,8 @@ template {
 .basic_info{
     margin:30px;
     background-color: #fff;
-    height: 640px;
     border: solid 1px #DCDFE6;
+    padding-bottom: 40px;
 }
 .basic_info_title{
     width: 600px;
@@ -78,8 +138,24 @@ template {
     border-bottom:solid 1px #E4E7ED;
 }
 .box{
-    width: 30%;
     padding-left: 60px;
     padding-top: 50px;
+}
+.pic_box{
+    width: 180px;
+    margin: 0px
+}
+.img{
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+}
+.addAlbum{
+    height: 150px;
+    width: 150px;
+    text-align: center;
+    border: dashed 1px #DCDFE6;
+    border-radius: 5px;
+    background-color: #FBFDFF
 }
 </style>

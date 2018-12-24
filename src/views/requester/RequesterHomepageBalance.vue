@@ -22,18 +22,15 @@
                                     余额:
                                 </span><br>
                                 <p style="font-size:30px;">
-                                    <span >{{balance}}</span> 元
+                                    <span>{{requester.balance}}</span> 元
                                 </p>
                             </div>
                         </el-card>
                         <!--operation-->
                         <div class="operation">
                             <span>
-                                <el-button type="success" style="width:170px;">充值</el-button>
-                            </span>
-                            <span>
-                                <el-button >提现</el-button>
-                            </span>
+                                <el-button type="success" style="width:170px;height:50px;">充值</el-button>
+                            </span>                           
                         </div>
                     </div>                    
                 </div>
@@ -48,43 +45,48 @@
 <script>
 import RequesterHomepageTopbar from '@/components/RequesterNavi/RequesterHomepageTopbar.vue'
 import RequesterHomepageSidebar from '@/components/RequesterNavi/RequesterHomepageSidebar.vue'
+import * as axios from 'axios'
     export default {
         components:{
             RequesterHomepageTopbar,
             RequesterHomepageSidebar
         },
-        created:function(){
-            this.getBalance();
-        },
         methods: {
-            getBalance(){
-                axios(
-                    {
-                        url:'http://localhost:8080/requester/find-by-username',
-                        method:'POST',
-                        params:{
-                            username:this.$route.query.name
-                        }
-                    }
-                ).then((response)=>{
-                    if (response.data.status == 200) {
-                    }
-                    else
-                        throw response;
-                    if (response.data.status == "200") {
-                        this.balance=response.institutionName;//还没写                      
-                    }
-                }).catch(function (error) {
-                    if (error.status == 500) {
-                    swal("Error", "服务器错误！", "error");
-                    }
-                });     
-            },  
+
         },
-        data(){
+        data(){      
             return{
-                balance:balance
+               requester:{
+                 requesterId: '',
+                 username: "",
+                 name: "",
+                 teleNumber: "",
+                 eMail: "",
+                 research_field:"",
+                 institutionName:'',
+                 address: "",
+                 payMethod: "",
+                 gender:"",
+                 age: '',
+                 balance:'',
+                 email:'',
+               }
             }
+        },
+        created(){
+          let that = this;
+          axios({
+            method:	'get',
+            url: '/api/requester/find-myself',
+          })
+            .then(function (response) {
+              console.log(response);
+             that.requester = response.data.requester;
+             console.log(that.requester)
+            })
+            .catch(function (error) {
+              alert(error);
+            });
         }
     }
 </script>
@@ -116,8 +118,5 @@ template {
 }
 .operation{
     margin-top: 50px;
-}
-.operation span{
-    margin:0 10px;
 }
 </style>
