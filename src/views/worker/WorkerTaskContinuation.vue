@@ -3,14 +3,7 @@
     <WorkerHomepageTopbar/>
     <el-header height="12px" style=""></el-header>
     <el-main>
-      <el-row>
-        <el-col :span="12">
-          <el-button type="text" style="color:#019ED3;padding-left: 2vw;font-size:1.2vw;font-weight:500;line-height: 5vh" @click="taskSquarePage">广场</el-button>
-          <i class="el-icon-caret-right"></i>
-          <el-button type="text" style="color:#019ED3;font-size:1.2vw;font-weight:500;line-height: 5vh">{{task.name}}</el-button>
-        </el-col>
-      </el-row>
-      <el-row type="flex" justify="center">
+      <el-row type="flex" justify="center" style="margin-top: 2vh">
         <el-col :span="14" style="text-align: center">
           <span style="font-size:2.5vw;font-weight:600;letter-spacing: 0.2vh;color:#015D73">{{task.name}}</span>
         </el-col>

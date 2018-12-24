@@ -4,14 +4,7 @@
     <WorkerHomepageTopbar/>
     <el-header height="12px"></el-header>
     <el-main>
-      <el-row>
-        <el-col :span="12">
-          <el-button type="text" style="color:#019ED3;padding-left: 2vw;font-size:1.2vw;font-weight:500;line-height: 5vh" @click="taskSquarePage">广场</el-button>
-          <i class="el-icon-caret-right"></i>
-          <el-button type="text" style="color:#019ED3;font-size:1.2vw;font-weight:500;line-height: 5vh">{{task.name}}</el-button>
-        </el-col>
-      </el-row>
-      <el-row type="flex" justify="center">
+      <el-row type="flex" justify="center" style="margin-top: 2vh">
         <el-col :span="14" style="text-align: center">
           <span style="font-size:2.5vw;font-weight:600;letter-spacing: 0.2vh;color:#015D73">{{task.name}}</span>
         </el-col>
@@ -32,7 +25,7 @@
         <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 2vh">
             <span style="font-size:1.0vw">资质：</span>
-            <span style="font-size:1.0vw">Level 3</span>
+            <span style="font-size:1.0vw">{{task.level}}</span>
           </div>
         </el-col>
       </el-row>
@@ -269,9 +262,7 @@
         url_crowdsourcing: require("../../../static/crowdTestingTag.png"),
         input_search: '',
         input_advice: '',
-        task:
-          {
-          },
+        task: {},
         accepted:0,
       }
     },
@@ -280,6 +271,8 @@
       let task_id = this.$route.query.task_id;
       let that=this;
       let param = new URLSearchParams();
+      console.log("a");
+      console.log(task_id);
       param.append('id',task_id);
       axios.get('/api/task/find-by-id',
         {params:{'id': task_id}})

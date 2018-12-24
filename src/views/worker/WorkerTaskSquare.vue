@@ -97,7 +97,7 @@
           <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">行为</span>
         </el-col>
       </el-row>
-      <el-collapse accordion v-for = "task in showTaskList" id = "collapse" v-model="activeNames" :key="task.task_id">
+      <el-collapse accordion v-for = "task in showTaskList" id = "collapse" v-model="activeNames" :key="task.id">
           <el-collapse-item v-if="user.level<task.level">
             <template slot="title">
               <el-col :span="7" v-if="task.name!=null">
@@ -122,7 +122,7 @@
                 <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(task.end_time).slice(0,10)}}</span>
               </el-col>
               <el-col :span="3">
-                <el-button type="text" style="vertical-align:middle;width:100%;font-weight:500;color:#000000;background-color:#ffffff" @click="preview(task.task_id)">
+                <el-button type="text" style="vertical-align:middle;width:100%;font-weight:500;color:#000000;background-color:#ffffff" @click="preview(task.id)">
                   <span style="font-size:1.0vw">预览</span>
                 </el-button>
               </el-col>
@@ -192,7 +192,7 @@
                   <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(task.end_time).slice(0,10)}}</span>
                 </el-col>
                 <el-col :span="3">
-                  <el-button type="text" style="vertical-align:middle;width:100%;font-weight:500;color:#ffffff;background-color:#015D73" @click="accept(task.task_id)">
+                  <el-button type="text" style="vertical-align:middle;width:100%;font-weight:500;color:#ffffff;background-color:#015D73" @click="accept(task.id)">
                     <span style="vertical-align:middle;font-size:1.0vw">预览</span>
                   </el-button>
                 </el-col>
@@ -265,7 +265,7 @@
         if(this.checkList.indexOf("可接受任务") != -1) {
           for (let taskIndex in showTaskListCopy) {
             let aTask = showTaskListCopy[taskIndex];
-            if (aTask.level <= this.user.level && aTask.status == '100%')
+            if (aTask.level <= this.user.level && aTask.status != '100%')
               newShowTaskListCopy.push(aTask);
           }
         }
@@ -285,6 +285,7 @@
           newShowTaskListCopy = copy;
         }
         this.showTaskList = newShowTaskListCopy;
+        console.log(this.showTaskList);
       },
       search(){
         function dateToString(draftTimeV){
@@ -431,9 +432,11 @@
         console.log(key, keyPath);
       },
       preview(task_id){
+        console.log(task_id);
         this.$router.push({ path: 'worker_task_preview', query: { task_id: task_id }})
       },
       accept(task_id){
+        console.log(task_id);
         this.$router.push({ path: 'worker_task_details', query: { task_id: task_id }})
       },
     },
@@ -497,6 +500,14 @@
       axios.get('/api/task/find-all')
         .then(function (response) {
           let tasks = response.data.tasks;
+          let tasks_copy = tasks;
+          tasks = [];
+          for(let i=0;i<tasks_copy.length;i++){
+            if(tasks_copy[i].status != '100%'){
+              tasks.push(tasks_copy[i]);
+            }
+          }
+          console.log(tasks);
           axios.get('/api/personal-task/find-my-task')
             .then(function (response) {
               let personalTasks = response.data.tasks;

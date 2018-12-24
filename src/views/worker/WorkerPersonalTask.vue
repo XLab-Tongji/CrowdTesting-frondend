@@ -93,7 +93,7 @@
           <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">行为</span>
         </el-col>
       </el-row>
-      <el-collapse accordion v-for = "personalTask in showTaskList" :key="personalTask.task_id">
+      <el-collapse accordion v-for = "personalTask in showTaskList" :key="personalTask.id">
         <el-collapse-item v-if="personalTask.status!='100%'">
           <template slot="title">
             <el-col :span="7">
@@ -118,7 +118,7 @@
               <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(personalTask.end_time).slice(0,10)}}</span>
             </el-col>
             <el-col :span="2">
-              <el-button type="text" style="width:100%;font-weight:500;color:#ffffff;background-color:#015D73;margin-left:3vh" @click="continuation(personalTask.task_id)">
+              <el-button type="text" style="width:100%;font-weight:500;color:#ffffff;background-color:#015D73;margin-left:3vh" @click="continuation(personalTask.id)">
                 <span style="font-size:1.0vw">继续</span>
               </el-button>
             </el-col>
