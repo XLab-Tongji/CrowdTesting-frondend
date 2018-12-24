@@ -35,10 +35,10 @@
             </el-submenu>
           </el-menu>
         </el-col>
-        <el-col span="1">
+        <el-col :span="1">
           <div style="color:#ffffff;width:100%;height:8vh"></div>
         </el-col>
-        <el-col span="17">
+        <el-col :span="17">
           <el-collapse accordion v-if="information_page_menu==0.0">
               <template>
                 <el-form ref="form" :model="form" label-width="80px" @submit.prevent="onSubmit" style="margin:20px;width:60%;min-width:600px;">
@@ -47,7 +47,7 @@
                     <el-input v-model="worker.username"></el-input>
                   </el-form-item>
                   <el-form-item label="性别">
-                    <el-select v-model="form.gender" placeholder="">
+                    <el-select v-model="worker.gender" placeholder="">
                       <el-option label="女" value="女"></el-option>
                       <el-option label="男" value="男"></el-option>
                     </el-select>
@@ -62,17 +62,17 @@
                     <el-input v-model="worker.teleNumber"></el-input>
                   </el-form-item>
                   <el-form-item label="邮箱">
-                    <el-input v-model="worker.email"></el-input>
+                    {{worker.email}}
                   </el-form-item>
-                  <el-form-item label="密码">
-                    <el-input v-model="form.password"></el-input>
-                  </el-form-item>
+                  <!--<el-form-item label="密码">
+                    <el-button plain @click="updatepassword">修改密码</el-button>
+                  </el-form-item>-->
                    <el-form-item label="经验值">
-                    <el-input v-model="worker.level"></el-input>
+                    {{  worker.level}}
                   </el-form-item>
                   <el-form-item>
-                    <el-button type="primary">保存</el-button>
-                    <el-button @click.native.prevent>取消</el-button>
+                    <el-button type="primary" @click="confirmupdate">保存</el-button>
+                    <el-button plain @click="cancel">取消</el-button>
                   </el-form-item>
                 </el-form>
               </template>
@@ -93,11 +93,12 @@
                 </el-form-item>
 
                 <el-form-item label="专业">
-                  <el-input v-model="form.major"></el-input>
+                  <el-input v-model="worker.major"></el-input>
                 </el-form-item>
+
                 <el-form-item label="工作领域">
-                   <el-select v-model="form.workArea" placeholder="">
-                    <el-option label="软件" value="软件"></el-option>
+                   <el-select v-model="worker.workArea" placeholder="">
+                    <el-option label="计算机" value="计算机"></el-option>
                     <el-option label="医药" value="医药"></el-option>
                     <el-option label="教育" value="教育"></el-option>
                     <el-option label="财经" value="财经"></el-option>
@@ -106,44 +107,14 @@
                     <el-option label="公益" value="公益"></el-option>
                     <el-option label="行政" value="行政"></el-option>
                     <el-option label="交通" value="交通"></el-option>
-                    <el-option label="其他" value="其他"></el-option>
+                    <el-option label="音乐" value="音乐"></el-option>
+                    <el-option label="设计" value="设计"></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="工作地点">
-                  <el-input v-model="form.workPlace"></el-input>
-                </el-form-item>
-            
-                <el-form-item label="上网时长">
-                  <el-select v-model="form.worktime" placeholder="">
-                    <el-option label="1h" value="1h"></el-option>
-                    <el-option label="2h" value="2h"></el-option>
-                    <el-option label="3h" value="3h"></el-option>
-                    <el-option label="4h" value="4h"></el-option>
-                    <el-option label="5h" value="5h"></el-option>
-                    <el-option label="6h" value="6h"></el-option>
-                    <el-option label="7h" value="7h"></el-option>
-                    <el-option label="8h" value="8h"></el-option>
-                    <el-option label="9h" value="9h"></el-option>
-                    <el-option label="10h" value="10h"></el-option>
-                    <el-option label="11h" value="11h"></el-option>
-                    <el-option label="12h" value="12h"></el-option>
-                    <el-option label="13h" value="13h"></el-option>
-                    <el-option label="14h" value="14h"></el-option>
-                    <el-option label="15h" value="15h"></el-option>
-                    <el-option label="16h" value="16h"></el-option>
-                    <el-option label="17h" value="17h"></el-option>
-                    <el-option label="18h" value="18h"></el-option>
-                    <el-option label="19h" value="19h"></el-option>
-                    <el-option label="20h" value="20h"></el-option>
-                    <el-option label="21h" value="21h"></el-option>
-                    <el-option label="22h" value="22h"></el-option>
-                    <el-option label="23h" value="23h"></el-option>
-                    <el-option label="24h" value="24h"></el-option>
-                  </el-select>
-                </el-form-item>
+               
                 <el-form-item>
-                  <el-button type="primary">保存</el-button>
-                  <el-button @click.native.prevent>取消</el-button>
+                  <el-button type="primary" @click="confirmupdate">保存</el-button>
+                  <el-button plain  @click="cancel">取消</el-button>
                 </el-form-item>
               </el-form>
             </template>
@@ -153,7 +124,17 @@
 
               <el-card class="box-card">
               <div slot="header" class="clearfix">
-              <span>余额信息</span>
+               <span style="font-size:15px; ">
+                                    余额:
+                                </span><br>
+                                <p style="font-size:30px;">
+                                    <span >{{worker.balance}}</span>  元
+                                </p>
+                <div class="operation">
+                            <span>
+                                <el-button type="success"  @click="open">提现</el-button>
+                            </span>
+                        </div>
               </div>
 
               </el-card>
@@ -191,11 +172,19 @@
   import * as Vue from 'autoprefixer'
   import axios from 'axios'
   import WorkerHomepageTopbar from '@/components/WorkerNavi/WorkerHomepageTopbar.vue'
+  
+  let self = this;
   export default {
      components:{
         WorkerHomepageTopbar,
       },
     methods: {
+      open() {
+        this.$message('余额不足，无法提现');
+      },
+      cancel() {
+        this.$message('系统将不会保留你的任何更改');
+      },
       BasicInformation(){
         this.information_page_menu=0.0;
       },
@@ -245,8 +234,105 @@
       },
       onSubmit() {
         console.log('submit!');
-      }
-    },
+      },
+      updatepassword() {
+        let that = this
+        this.button_disabled = true;
+        this.role = ""
+        if(this.password == ""){
+          this.$message({
+            message: '请输入原密码',
+            type: 'warning'
+          })
+        }
+        else{
+          let param = new URLSearchParams();
+          let self = this;
+          param.append('password',this.password);
+          axios({
+            method: 'put',
+            url: '/api/worker/find-myself',
+            data:param
+          })
+          .then(function(reponse) {
+            console.log(reponse);
+            if(reponse.data.code[0] == "2") {
+              let token = response.data.X_Auth_Token;
+              that.$store.commit('password', token);
+                  that.wrong_pwd = "";
+                  console.log(that.$store.state.token);
+                  axios.defaults.headers.common['X_Auth_Token'] = that.$store.state.token;
+                  axios.get('/api/worker/find-myself')
+                    .then(function (response) {
+                      console.log(response);
+                      let username = response.data.worker.username;
+                      let user_information = {
+                        username :'',
+                        level:0,
+                      }
+                      user_information.username = username;
+                      that.$store.commit('password', user_information);
+                      that.$router.replace("/worker_information");
+                      that.button_disabled = false;
+                    })
+                    .catch(function (error) {
+                      console.log(error);
+                    });
+                }
+                else if(response.data.code[0] == "4") {
+                  that.wrong_pwd = "用户名或密码错误";
+                  that.button_disabled = false;
+                }
+                else if(response.data.code[0] == "5") {
+                  that.wrong_pwd("服务器错误")
+                  that.button_disabled = false;
+                }
+              })
+              .catch(function (error) {
+                alert(error);
+                token_pointer.button_disabled = false;
+              })
+        }
+      },
+      confirmupdate() {
+        let that = this
+        this.button_disabled = true;
+          let param = new URLSearchParams();
+          let self = this;
+          param.append('username',this.worker.username);
+          param.append('name',this.worker.name);
+          param.append('teleNumber',this.worker.teleNumber);
+          param.append('eMail',this.worker.eMail);
+          param.append('education',this.worker.education);
+          param.append('workArea',this.worker.workArea);
+          param.append('age',this.worker.age);
+          param.append('gender',this.worker.gender);
+          param.append('major',this.worker.major);
+          axios({
+            method: 'put',
+            url: '/api/worker/update',
+            data:param
+          })
+          .then(function(reponse) {
+            console.log(reponse);
+            if(reponse.data.code[0] == "2") {
+                   self.$message("修改成功")
+                }
+                else if(response.data.code[0] == "4") {
+                  that.wrong_pwd = "用户名或密码错误";
+                  that.button_disabled = false;
+                }
+                else if(response.data.code[0] == "5") {
+                  that.wrong_pwd("服务器错误")
+                  that.button_disabled = false;
+                }
+              })
+              .catch(function (error) {
+                alert(error);
+                token_pointer.button_disabled = false;
+              })
+        }
+      },
     data() {
       return {
         user: {
@@ -267,9 +353,8 @@
             gender: '',
             graduation: '',
             workdomain: '',
-            workPlace: '',
+            workArea: '',
             worktime: '',
-            internettime: '',
             major: '',
             background: '',
             email: '',
@@ -281,16 +366,20 @@
             level:'',
           },
         worker: {
-          age: 0,
-          balance: 0,
+          age: '',
+          balance: '',
           education: '',
           email: '',
           name: '',
           teleNumber: '',
-          username: "good_day",
+          username: '',
           withdrawnMethod: '',
           workArea: '',
           workerId:'',
+          level:'',
+          password:'',
+          gender:'男',
+          major:'',
         },
       }
     },
@@ -330,6 +419,12 @@
     clear: both
   }
   .box-card {
-    width: 480px;
+    width: 640px;
   }
+  .operation{
+    margin-top: 50px;
+}
+.operation span{
+    margin:0 10px;
+}
 </style>
