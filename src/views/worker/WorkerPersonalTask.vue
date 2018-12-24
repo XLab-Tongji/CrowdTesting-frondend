@@ -71,59 +71,71 @@
         </el-col>
       </el-row>
       <el-row style="background-color:#F2F0F0;height:5vh">
-        <el-col :span="4">
-          <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh">需求方</span>
-        </el-col>
-        <el-col :span="9">
-          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">项目描述</span>
+        <el-col :span="7">
+          <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh">项目名称</span>
         </el-col>
         <el-col :span="2">
-          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">报酬</span>
+          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">项目类型</span>
+        </el-col>
+        <el-col :span="2">
+          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">参与人数</span>
+        </el-col>
+        <el-col :span="2">
+          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">单位工资</span>
+        </el-col>
+        <el-col :span="4">
+          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">开始时间</span>
+        </el-col>
+        <el-col :span="4">
+          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">预结束时间</span>
         </el-col>
         <el-col :span="3">
-          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">创建时间</span>
-        </el-col>
-        <el-col :span="3">
-          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">完成度</span>
-        </el-col>
-        <el-col :span="3">
-          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">备注</span>
+          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">行为</span>
         </el-col>
       </el-row>
-      <el-collapse accordion v-for = "personalTask in showTaskList" :key="personalTask.task_id">
+      <el-collapse accordion v-for = "personalTask in showTaskList" :key="personalTask.id">
         <el-collapse-item v-if="personalTask.status!='100%'">
           <template slot="title">
-            <el-col :span="4">
-              <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;">{{personalTask.requester_id}}</span>
+            <el-col :span="7">
+              <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;">{{personalTask.name}}</span>
             </el-col>
-            <el-col :span="9" v-if="personalTask.type!=null">
+            <el-col :span="2" v-if="personalTask.type!=null">
               <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.type}}</span>
             </el-col>
-            <el-col :span="9" v-else>
+            <el-col :span="2" v-else>
               <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">暂无</span>
+            </el-col>
+            <el-col :span="2">
+              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.population}}</span>
             </el-col>
             <el-col :span="2">
               <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.reward}}</span>
             </el-col>
+            <el-col :span="4">
+              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(personalTask.start_time).slice(0,10)}}</span>
+            </el-col>
             <el-col :span="3">
-              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.create_time}}</span>
+              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(personalTask.end_time).slice(0,10)}}</span>
             </el-col>
             <el-col :span="2">
-              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.status}}</span>
-            </el-col>
-            <el-col :span="2">
-              <el-button type="text" style="width:100%;height:5vh;font-weight:500;color:#ffffff;background-color:#015D73;margin-left:3vh" @click="continuation(personalTask.task_id)">
+              <el-button type="text" style="width:100%;font-weight:500;color:#ffffff;background-color:#015D73;margin-left:3vh" @click="continuation(personalTask.id)">
                 <span style="font-size:1.0vw">继续</span>
               </el-button>
             </el-col>
           </template>
           <div style="background-color: #F2F0F0">
             <el-row>
-              <el-col :span="13">
-                <span style="color:#4D4D4D;padding-left: 1vw">简要描述：</span>
-              </el-col>
               <el-col :span="6">
+                <span style="color:#4D4D4D;padding-left: 1vw">项目领域：</span>
+              </el-col>
+              <el-col :span="7">
                 <span style="color:#4D4D4D">限制条件：</span>
+              </el-col>
+              <el-col :span="3">
+                <span style="color:#4D4D4D">最低年龄:</span>
+              </el-col>
+              <el-col :span="3">
+                <span style="color:#4D4D4D">最高年龄:</span>
               </el-col>
               <el-col :span="5">
                 <i class="el-icon-error"></i>
@@ -131,13 +143,19 @@
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="13">
-                <span style="color:#4D4D4D;padding-left: 1vw" v-if="personalTask.description!=null">{{personalTask.description}}</span>
+              <el-col :span="6">
+                <span style="color:#4D4D4D;padding-left: 1vw" v-if="personalTask.area!=null">{{personalTask.area}}</span>
                 <span style="color:#4D4D4D;padding-left: 1vw" v-else>暂无</span>
               </el-col>
-              <el-col :span="6">
-                <span style="color:#4D4D4D" v-if="personalTask.requests!=null">{{personalTask.requests}}</span>
+              <el-col :span="7">
+                <span style="color:#4D4D4D" v-if="personalTask.restrictions!=null">{{personalTask.restrictions}}</span>
                 <span style="color:#4D4D4D" v-else>暂无</span>
+              </el-col>
+              <el-col :span="3">
+                <span style="color:#4D4D4D">{{personalTask.min_age}}</span>
+              </el-col>
+              <el-col :span="3">
+                <span style="color:#4D4D4D">{{personalTask.max_age}}</span>
               </el-col>
             </el-row>
           </div>
@@ -145,33 +163,42 @@
         <el-collapse-item v-else>
           <template slot="title">
             <el-row style="background-color: #5ED5D1">
-              <el-col :span="4">
-                <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;">{{personalTask.requester_id}}</span>
+              <el-col :span="7">
+                <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;">{{personalTask.name}}</span>
               </el-col>
-              <el-col :span="9" v-if="personalTask.type!=null">
+              <el-col :span="2" v-if="personalTask.type!=null">
                 <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.type}}</span>
               </el-col>
-              <el-col :span="9" v-else>
+              <el-col :span="2" v-else>
                 <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">暂无</span>
+              </el-col>
+              <el-col :span="2">
+                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.population}}</span>
               </el-col>
               <el-col :span="2">
                 <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.reward}}</span>
               </el-col>
-              <el-col :span="3">
-                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.create_time}}</span>
+              <el-col :span="4">
+                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(personalTask.start_time).slice(0,10)}}</span>
               </el-col>
-              <el-col :span="2">
-                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.status}}</span>
+              <el-col :span="3">
+                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(personalTask.end_time).slice(0,10)}}</span>
               </el-col>
             </el-row>
           </template>
           <div style="background-color: #4D8D9D">
             <el-row>
-              <el-col :span="13">
-                <span style="color:#ffffff;padding-left: 1vw">简要描述:</span>
-              </el-col>
               <el-col :span="6">
+                <span style="color:#ffffff;padding-left: 1vw">项目领域:</span>
+              </el-col>
+              <el-col :span="7">
                 <span style="color:#ffffff">限制条件</span>
+              </el-col>
+              <el-col :span="3">
+                <span style="color:#ffffff">最低年龄:</span>
+              </el-col>
+              <el-col :span="3">
+                <span style="color:#ffffff">最高年龄:</span>
               </el-col>
               <el-col :span="5">
                 <i class="el-icon-success"></i>
@@ -179,13 +206,19 @@
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="13">
-                <span style="color:#ffffff;padding-left: 1vw" v-if="personalTask.description!=null">{{personalTask.description}}</span>
+              <el-col :span="6">
+                <span style="color:#ffffff;padding-left: 1vw" v-if="personalTask.area!=null">{{personalTask.area}}</span>
                 <span style="color:#ffffff;padding-left: 1vw" v-else>暂无</span>
               </el-col>
-              <el-col :span="6">
-                <span style="color:#ffffff" v-if="personalTask.requests!=null">{{personalTask.requests}}</span>
+              <el-col :span="7">
+                <span style="color:#ffffff" v-if="personalTask.restrictions!=null">{{personalTask.restrictions}}</span>
                 <span style="color:#ffffff" v-else>暂无</span>
+              </el-col>
+              <el-col :span="3">
+                <span style="color:#ffffff">{{personalTask.min_age}}</span>
+              </el-col>
+              <el-col :span="3">
+                <span style="color:#ffffff">{{personalTask.max_age}}</span>
               </el-col>
             </el-row>
           </div>
@@ -207,8 +240,6 @@
   import * as Vue from 'autoprefixer'
   import axios from 'axios'
   import WorkerHomepageTopbar from '@/components/WorkerNavi/WorkerHomepageTopbar.vue'
-
-
   export default {
     components:{
       WorkerHomepageTopbar,
@@ -221,14 +252,14 @@
         if(this.checkList.indexOf("显示已完成任务") != -1){
           for(let taskIndex in showTaskListCopy){
             let aTask = showTaskListCopy[taskIndex];
-            if(aTask.level <= this.user.level && aTask.status == '100%')
+            if(aTask.status == '100%')
               this.showTaskList.push(aTask);
           }
         }
         if(this.checkList.indexOf("显示未完成任务") != -1) {
           for (let taskIndex in showTaskListCopy) {
             let aTask = showTaskListCopy[taskIndex];
-            if (aTask.level <= this.user.level && aTask.status != '100%')
+            if (aTask.status != '100%')
               this.showTaskList.push(aTask);
           }
         }
@@ -284,23 +315,23 @@
         for(let task in this.taskList){
           let aTask =this.taskList[task];
           if(aTask.reward >= minReward && aTask.reward <= maxReward){
-            if(this.startDate != '' && aTask.create_time >= dateToString(this.startDate)) {
-              if(this.endDate != '' && aTask.create_time <= dateToString(this.endDate)) {
-                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.requests != null && aTask.requests.indexOf(this.keyword) >= 0))
+            if(this.startDate != ''&& this.startDate != null  && aTask.start_time >= dateToString(this.startDate)) {
+              if(this.endDate != '' && this.endDate != null && aTask.start_time <= dateToString(this.endDate)) {
+                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
-              else if(this.endDate == ''){
-                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.requests != null && aTask.requests.indexOf(this.keyword) >= 0))
+              else if(this.endDate == ''|| this.endDate == null ){
+                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
             }
-            else if(this.startDate == '') {
-              if(this.endDate != '' && aTask.create_time <= dateToString(this.endDate)) {
-                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.requests != null && aTask.requests.indexOf(this.keyword) >= 0))
+            else if(this.startDate == '' || this.startDate != null ) {
+              if(this.endDate != '' && this.endDate != null && aTask.start_time <= dateToString(this.endDate)) {
+                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
-              else if(this.endDate == ''){
-                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.requests != null && aTask.requests.indexOf(this.keyword) >= 0))
+              else if(this.endDate == '' || this.endDate == null ){
+                if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
             }
@@ -330,7 +361,7 @@
       },
       orderByDate(){
         this.rewardOrder = 0;
-        this.showTaskList = newSort(this.showTaskList,'create_time');
+        this.showTaskList = newSort(this.showTaskList,'start_time');
         this.activeNames = []
         switch(this.dateOrder){
           case 0:
@@ -353,17 +384,16 @@
         console.log(key, keyPath);
       },
       click(){
-
       },
       continuation(task_id){
-        this.$router.push({name: 'WorkerTaskContinuation', params: {task_id: task_id}})
+        this.$router.push({path: 'worker_task_continuation', query: {task_id: task_id}})
       }
     },
     data(){
       return{
         user:{
-          username :this.$store.state.username,
-          level:2
+          username:this.$store.state.username,
+          level:this.$store.state.level,
         },
         taskList:[],
         showTaskList:[],
@@ -411,12 +441,12 @@
       let that=this
       axios.get('/api/personal-task/find-my-task')
         .then(function (response) {
+          console.log(response);
           let personalTasks = response.data.tasks;
           console.log(personalTasks);
           that.taskList = personalTasks;
           that.showTaskList = personalTasks;
           that.showTaskListCopy = personalTasks;
-          that.$forceUpdate();
           that.$forceUpdate();
         })
         .catch(function (error) {
@@ -433,5 +463,4 @@
 </script>
 
 <style scoped>
-
 </style>

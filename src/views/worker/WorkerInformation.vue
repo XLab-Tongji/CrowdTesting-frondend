@@ -1,74 +1,8 @@
 <template>
   <el-container>
     <!--导航-->
-    <el-header height="12vh" style="">
-      <el-row style = "background-color:#5ED5D1;height:80%">
-        <el-col :span="3">
-          <img :src="url_crowdsourcing"  style="width:100%;height:8vh;background-color: #4D4D4D"/>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh">
-            <span>Worker</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style = "background-color:#5ED5D1" v-if="page==1">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600" @click="taskSquarePage">
-            <span style="font-size:1.4vw">广场</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D" v-else>
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600" @click="taskSquarePage">
-            <span style="font-size:1.4vw">广场</span>
-          </el-button>
-        </el-col>
-        <el-col :span="1" style = "background-color:#4D4D4D">
-          <div style="color:#ffffff;width:100%;height:8vh"></div>
-        </el-col>
-        <el-col :span="2" style = "background-color:#5ED5D1" v-if="page==2">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600" @click="taskPage">
-            <span style="font-size:1.4vw">任务</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D" v-else>
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600"  @click="taskPage">
-            <span style="font-size:1.4vw">任务</span>
-          </el-button>
-        </el-col>
-        <el-col :span="1" style = "background-color:#4D4D4D">
-          <div style="color:#ffffff;width:100%;height:8vh"></div>
-        </el-col>
-        <el-col :span="2" style = "background-color:#5ED5D1" v-if="page==3">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600"  @click="helpPage">
-            <span style="font-size:1.4vw">帮助</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D" v-else>
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600" @click="helpPage">
-            <span style="font-size:1.4vw">帮助</span>
-          </el-button>
-        </el-col>
-        <el-col :span="8" style = "background-color:#4D4D4D">
-          <div style="color:#ffffff;width:100%;height:8vh"></div>
-        </el-col>
-
-        <el-col :span="2" style = "background-color:#5ED5D1" v-if="page==4">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600"  @click="informationPage">
-            <span style="font-size:1.4vw">{{user.username}}</span>
-          </el-button>
-        </el-col>
-        <el-col :span="2" style = "background-color:#4D4D4D" v-else>
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh;font-weight:600" @click="informationPage">
-            <span style="font-size:1.4vw">{{user.username}}</span>
-          </el-button>
-        </el-col>
-
-        <el-col :span="1" style = "background-color:#4D4D4D">
-          <el-button type="text" style="color:#ffffff;width:100%;height:8vh">
-            <span style="font-size:1.1vw">登出</span>
-          </el-button>
-        </el-col>
-      </el-row>
-    </el-header>
+    <WorkerHomepageTopbar/>
+    <el-header height="30px" style=""></el-header>
 
     <el-main v-if="page==4">
       <el-row>
@@ -101,20 +35,19 @@
             </el-submenu>
           </el-menu>
         </el-col>
-        <el-col span="1">
+        <el-col :span="1">
           <div style="color:#ffffff;width:100%;height:8vh"></div>
         </el-col>
-        <el-col span="17">
+        <el-col :span="17">
           <el-collapse accordion v-if="information_page_menu==0.0">
-            <el-collapse-item>
               <template>
                 <el-form ref="form" :model="form" label-width="80px" @submit.prevent="onSubmit" style="margin:20px;width:60%;min-width:600px;">
 
                   <el-form-item label="真实姓名">
-                    <el-input v-model="worker.name"></el-input>
+                    <el-input v-model="worker.username"></el-input>
                   </el-form-item>
                   <el-form-item label="性别">
-                    <el-select v-model="form.gender" placeholder="">
+                    <el-select v-model="worker.gender" placeholder="">
                       <el-option label="女" value="女"></el-option>
                       <el-option label="男" value="男"></el-option>
                     </el-select>
@@ -122,24 +55,30 @@
                   <el-form-item label="昵称">
                     <el-input v-model="worker.name"></el-input>
                   </el-form-item>
+                   <el-form-item label="年龄">
+                    <el-input v-model="worker.age"></el-input>
+                  </el-form-item>
                   <el-form-item label="手机号">
                     <el-input v-model="worker.teleNumber"></el-input>
                   </el-form-item>
                   <el-form-item label="邮箱">
-                    <el-input v-model="worker.email"></el-input>
+                    {{worker.email}}
                   </el-form-item>
-                  <el-form-item label="密码">
-                    <el-input v-model="form.password"></el-input>
+                  <!--<el-form-item label="密码">
+                    <el-button plain @click="updatepassword">修改密码</el-button>
+                  </el-form-item>-->
+                   <el-form-item label="经验值">
+                    {{  worker.level}}
                   </el-form-item>
                   <el-form-item>
-                    <el-button type="primary">保存</el-button>
-                    <el-button @click.native.prevent>取消</el-button>
+                    <el-button type="primary" @click="confirmupdate">保存</el-button>
+                    <el-button plain @click="cancel">取消</el-button>
                   </el-form-item>
                 </el-form>
               </template>
               <div>
               </div>
-            </el-collapse-item>
+        
           </el-collapse>
           <el-collapse accordion v-if="information_page_menu==1.1">
             <template>
@@ -153,104 +92,75 @@
                   </el-select>
                 </el-form-item>
 
-                <el-form-item label="入学年份">
-                  <el-select v-model="form.enrollment" placeholder="">
-                    <el-option label="2004" value="2004"></el-option>
-                    <el-option label="2005" value="2005"></el-option>
-                    <el-option label="2006" value="2006"></el-option>
-                    <el-option label="2007" value="2007"></el-option>
-                    <el-option label="2008" value="2008"></el-option>
-                    <el-option label="2009" value="2009"></el-option>
-                    <el-option label="2010" value="2010"></el-option>
-                    <el-option label="2011" value="2011"></el-option>
-                    <el-option label="2012" value="2012"></el-option>
-                    <el-option label="2013" value="2013"></el-option>
-                    <el-option label="2014" value="2014"></el-option>
-                    <el-option label="2015" value="2015"></el-option>
-                    <el-option label="2016" value="2016"></el-option>
-                    <el-option label="2017" value="2017"></el-option>
-                    <el-option label="2018" value="2018"></el-option>
-                  </el-select>
-                </el-form-item>
-
-                <el-form-item label="毕业年份">
-                  <el-select v-model="form.graduation" placeholder="">
-                    <el-option label="2004" value="2004"></el-option>
-                    <el-option label="2005" value="2005"></el-option>
-                    <el-option label="2006" value="2006"></el-option>
-                    <el-option label="2007" value="2007"></el-option>
-                    <el-option label="2008" value="2008"></el-option>
-                    <el-option label="2009" value="2009"></el-option>
-                    <el-option label="2010" value="2010"></el-option>
-                    <el-option label="2011" value="2011"></el-option>
-                    <el-option label="2012" value="2012"></el-option>
-                    <el-option label="2013" value="2013"></el-option>
-                    <el-option label="2014" value="2014"></el-option>
-                    <el-option label="2015" value="2015"></el-option>
-                    <el-option label="2016" value="2016"></el-option>
-                    <el-option label="2017" value="2017"></el-option>
-                    <el-option label="2018" value="2018"></el-option>
-                  </el-select>
-                </el-form-item>
-
                 <el-form-item label="专业">
-                  <el-input v-model="form.major"></el-input>
+                  <el-input v-model="worker.major"></el-input>
                 </el-form-item>
+
                 <el-form-item label="工作领域">
-                  <el-input v-model="worker.workArea"></el-input>
-                </el-form-item>
-                <el-form-item label="工作地点">
-                  <el-input v-model="form.workplace"></el-input>
-                </el-form-item>
-                <el-form-item label="在线时间">
-                  <el-input v-model="form.worktime"></el-input>
-                </el-form-item>
-                <el-form-item label="上网时长">
-                  <el-select v-model="form.internettime" placeholder="">
-                    <el-option label="1" value="1"></el-option>
-                    <el-option label="2" value="2"></el-option>
-                    <el-option label="3" value="3"></el-option>
-                    <el-option label="4" value="4"></el-option>
-                    <el-option label="5" value="5"></el-option>
-                    <el-option label="6" value="6"></el-option>
-                    <el-option label="7" value="7"></el-option>
-                    <el-option label="8" value="8"></el-option>
-                    <el-option label="9" value="9"></el-option>
-                    <el-option label="10" value="10"></el-option>
-                    <el-option label="11" value="11"></el-option>
-                    <el-option label="12" value="12"></el-option>
-                    <el-option label="13" value="13"></el-option>
-                    <el-option label="14" value="14"></el-option>
-                    <el-option label="15" value="15"></el-option>
-                    <el-option label="16" value="16"></el-option>
-                    <el-option label="17" value="17"></el-option>
-                    <el-option label="18" value="18"></el-option>
-                    <el-option label="19" value="19"></el-option>
-                    <el-option label="20" value="20"></el-option>
-                    <el-option label="21" value="21"></el-option>
-                    <el-option label="22" value="22"></el-option>
-                    <el-option label="23" value="23"></el-option>
-                    <el-option label="24" value="24"></el-option>
+                   <el-select v-model="worker.workArea" placeholder="">
+                    <el-option label="计算机" value="计算机"></el-option>
+                    <el-option label="医药" value="医药"></el-option>
+                    <el-option label="教育" value="教育"></el-option>
+                    <el-option label="财经" value="财经"></el-option>
+                    <el-option label="政法" value="政法"></el-option>
+                    <el-option label="科研" value="科研"></el-option>
+                    <el-option label="公益" value="公益"></el-option>
+                    <el-option label="行政" value="行政"></el-option>
+                    <el-option label="交通" value="交通"></el-option>
+                    <el-option label="音乐" value="音乐"></el-option>
+                    <el-option label="设计" value="设计"></el-option>
                   </el-select>
                 </el-form-item>
+               
                 <el-form-item>
-                  <el-button type="primary">保存</el-button>
-                  <el-button @click.native.prevent>取消</el-button>
+                  <el-button type="primary" @click="confirmupdate">保存</el-button>
+                  <el-button plain  @click="cancel">取消</el-button>
                 </el-form-item>
               </el-form>
             </template>
           </el-collapse>
           <el-collapse accordion v-if="information_page_menu==1.2">
             <template>
-              <section>余额
-              </section>
+
+              <el-card class="box-card">
+              <div slot="header" class="clearfix">
+               <span style="font-size:15px; ">
+                                    余额:
+                                </span><br>
+                                <p style="font-size:30px;">
+                                    <span >{{worker.balance}}</span>  元
+                                </p>
+                <div class="operation">
+                            <span>
+                                <el-button type="success"  @click="open">提现</el-button>
+                            </span>
+                        </div>
+              </div>
+
+              </el-card>
             </template>
           </el-collapse>
           <el-collapse accordion v-if="information_page_menu==1.3">
             <template>
-              <section>提现信息
-              </section>
-            </template>
+                  <el-table
+                  :data="tableData"
+                   style="width: 100%">
+                   <el-table-column
+                   prop="date"
+                   label="日期"
+                    width="180">
+                </el-table-column>
+                 <el-table-column
+                  prop="money"
+                   label="提现金额"
+                   width="180">
+                   </el-table-column>
+                    <el-table-column
+                   prop="method"
+                     label=提现方式>
+                  </el-table-column>
+                   </el-table>
+               </template>
           </el-collapse>
         </el-col>
       </el-row>
@@ -261,9 +171,20 @@
 <script>
   import * as Vue from 'autoprefixer'
   import axios from 'axios'
-
+  import WorkerHomepageTopbar from '@/components/WorkerNavi/WorkerHomepageTopbar.vue'
+  
+  let self = this;
   export default {
+     components:{
+        WorkerHomepageTopbar,
+      },
     methods: {
+      open() {
+        this.$message('余额不足，无法提现');
+      },
+      cancel() {
+        this.$message('系统将不会保留你的任何更改');
+      },
       BasicInformation(){
         this.information_page_menu=0.0;
       },
@@ -313,9 +234,105 @@
       },
       onSubmit() {
         console.log('submit!');
-      }
-    },
-
+      },
+      updatepassword() {
+        let that = this
+        this.button_disabled = true;
+        this.role = ""
+        if(this.password == ""){
+          this.$message({
+            message: '请输入原密码',
+            type: 'warning'
+          })
+        }
+        else{
+          let param = new URLSearchParams();
+          let self = this;
+          param.append('password',this.password);
+          axios({
+            method: 'put',
+            url: '/api/worker/find-myself',
+            data:param
+          })
+          .then(function(reponse) {
+            console.log(reponse);
+            if(reponse.data.code[0] == "2") {
+              let token = response.data.X_Auth_Token;
+              that.$store.commit('password', token);
+                  that.wrong_pwd = "";
+                  console.log(that.$store.state.token);
+                  axios.defaults.headers.common['X_Auth_Token'] = that.$store.state.token;
+                  axios.get('/api/worker/find-myself')
+                    .then(function (response) {
+                      console.log(response);
+                      let username = response.data.worker.username;
+                      let user_information = {
+                        username :'',
+                        level:0,
+                      }
+                      user_information.username = username;
+                      that.$store.commit('password', user_information);
+                      that.$router.replace("/worker_information");
+                      that.button_disabled = false;
+                    })
+                    .catch(function (error) {
+                      console.log(error);
+                    });
+                }
+                else if(response.data.code[0] == "4") {
+                  that.wrong_pwd = "用户名或密码错误";
+                  that.button_disabled = false;
+                }
+                else if(response.data.code[0] == "5") {
+                  that.wrong_pwd("服务器错误")
+                  that.button_disabled = false;
+                }
+              })
+              .catch(function (error) {
+                alert(error);
+                token_pointer.button_disabled = false;
+              })
+        }
+      },
+      confirmupdate() {
+        let that = this
+        this.button_disabled = true;
+          let param = new URLSearchParams();
+          let self = this;
+          param.append('username',this.worker.username);
+          param.append('name',this.worker.name);
+          param.append('teleNumber',this.worker.teleNumber);
+          param.append('eMail',this.worker.eMail);
+          param.append('education',this.worker.education);
+          param.append('workArea',this.worker.workArea);
+          param.append('age',this.worker.age);
+          param.append('gender',this.worker.gender);
+          param.append('major',this.worker.major);
+          axios({
+            method: 'put',
+            url: '/api/worker/update',
+            data:param
+          })
+          .then(function(reponse) {
+            console.log(reponse);
+            if(reponse.data.code[0] == "2") {
+                   self.$message("修改成功")
+                }
+                else if(response.data.code[0] == "4") {
+                  that.wrong_pwd = "用户名或密码错误";
+                  that.button_disabled = false;
+                }
+                else if(response.data.code[0] == "5") {
+                  that.wrong_pwd("服务器错误")
+                  that.button_disabled = false;
+                }
+              })
+              .catch(function (error) {
+                alert(error);
+                token_pointer.button_disabled = false;
+              })
+        }
+      },
     data() {
       return {
         user: {
@@ -333,35 +350,39 @@
           {
             name: '',
             region: '',
-            enrollment: '',
             gender: '',
-            nickname: '',
             graduation: '',
             workdomain: '',
-            workplace: '',
+            workArea: '',
             worktime: '',
-            internettime: '',
             major: '',
             background: '',
             email: '',
             password: '',
             number: '',
+            money:'',
+            method:'',
+            age:'',
+            level:'',
           },
         worker: {
-          age: 0,
-          balance: 0,
+          age: '',
+          balance: '',
           education: '',
           email: '',
           name: '',
           teleNumber: '',
-          username: "good_day",
+          username: '',
           withdrawnMethod: '',
           workArea: '',
           workerId:'',
+          level:'',
+          password:'',
+          gender:'男',
+          major:'',
         },
       }
     },
-
     created()
     {
       let that=this
@@ -382,6 +403,28 @@
   }
 </script>
 
-<style scoped>
-
+<style>
+.text {
+    font-size: 14px;
+  }
+  .item {
+    margin-bottom: 18px;
+  }
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
+  .clearfix:after {
+    clear: both
+  }
+  .box-card {
+    width: 640px;
+  }
+  .operation{
+    margin-top: 50px;
+}
+.operation span{
+    margin:0 10px;
+}
 </style>
