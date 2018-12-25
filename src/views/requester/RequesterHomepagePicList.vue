@@ -139,9 +139,10 @@ import * as axios from 'axios'
             handlePictureCardPreview(file) {
                 this.dialogImageUrl = file.url;
                 this.dialogVisible = true;
-            },
+            }
+            /*,
             onProgress(file){
-                /*let that = this;
+                let that = this;
                 let param = new URLSearchParams();
                 param.append('multipartFile',file.id);        
                 axios({
@@ -160,10 +161,10 @@ import * as axios from 'axios'
                 })
                 .catch(function (error) {
                     alert(error);
-                });      */ 
+                });       
                 
                 console.log(file)
-            }
+            }*/
         }
     }
 </script>
