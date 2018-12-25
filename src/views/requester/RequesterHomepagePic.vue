@@ -11,20 +11,24 @@
                         <span>图片仓库</span>
                     </div>
                     <div class="box">
+                        <el-row>                          
+                       
                         <!--相册列表-->
                         <div class="wrapper" >
-                        <el-card class="pic_box " v-for="item in picFile" 
-                            :key="item.id"
-                            >
-                            <img class="img" :src="item.url" @click="show_list(item.id)">
-                            <!-- <img :src="item.url" alt="照片"> -->
-                            <!--<span class="count">{{item.list.length}}</span>-->
-                            
-                            <div class="names">{{item.title}}</div>
-                        </el-card>
-                        <div class="addAlbum" @click="dialogFormVisible = true">
-                            <i class="el-icon-plus" style="padding-top:63px;color:#8C939D;font-size:25px;"></i>
-                        </div>
+                        <el-col :span="5"  v-for="item in picFile" 
+                            :key="item.id" >
+                            <div class="pic_box ">
+                                <img class="img" :src="pic" @click="show_list(item.photoAlbum.id)">                           
+                            <!--{{(item.resources[0].link='')?'../../../static/blank.jpg':item.resources[0].link}}-->
+                            <div class="names">{{item.photoAlbum.name}}</div>
+                            </div>                            
+                         </el-col> 
+                                                     
+                        <el-col :span="5">
+                            <div class="pic_box addAlbum" @click="dialogFormVisible = true">
+                                <i class="el-icon-plus" style="padding-top:70px;color:#8C939D;font-size:25px;"></i>
+                            </div>
+                        </el-col>
 
                         <el-dialog title="创建新相簿" :visible.sync="dialogFormVisible">
                         <el-form :model="newAlbum">
@@ -39,7 +43,7 @@
                         </el-dialog>
                         </div>
 
-                       
+                        </el-row>
                     </div>
                 </div>
                 
@@ -61,35 +65,44 @@ import * as axios from 'axios'
             RequesterHomepageTopbar,
             RequesterHomepageSidebar
         },
-        methods: {
-
+        computed: {
+            
         },
         data(){           
             return{
                 dialogFormVisible: false,
-                picFile:[
-                  {
-                      id:'1',
-                      title:'album1',
-                      url:'../../../static/pics/album1/1.jpg'
-                  },
-                  {
-                      id:'2',
-                      title:'album2',
-                      url:'../../../static/pics/album2/6.jpg'
-                  }
-                ],
+                pic:require('../../../static/blank.jpg'),
+                picFile:[],
                 newAlbum:{
                     name:''
                 }
             }
         },
         created() {
-           
+           let that = this;
+          axios({
+            method:	'get',
+            url: '/api/image/findImages',
+          })
+            .then(function (response) {
+              //console.log(response);
+             that.picFile = response.data.images;
+             //console.log(response.data.images[0].resources[0].link)
+            })
+            .catch(function (error) {
+              alert(error);
+            });
         },
         methods: {
            show_list(id){
                this.$router.push('/requester_homepage_pic/'+id );
+                /*this.$router.push({
+                    path: '/requester_homepage_pic/',
+                    query: {
+                    album_id: id,                   
+                    }
+                });*/
+
            },
            addAlbum(){    
             let that = this;
@@ -138,21 +151,22 @@ template {
     border-bottom:solid 1px #E4E7ED;
 }
 .box{
-    padding-left: 60px;
-    padding-top: 50px;
+    padding:50px 60px;
 }
 .pic_box{
-    width: 180px;
-    margin: 0px
+    width: 150px;
+    height: 220px;
+    margin: 20 10px;
+    cursor: pointer;
 }
 .img{
-    width: 150px;
-    height: 150px;
+    width: 180px;
+    height: 180px;
     overflow: hidden;
 }
 .addAlbum{
-    height: 150px;
-    width: 150px;
+    height: 180px;
+    width: 180px;
     text-align: center;
     border: dashed 1px #DCDFE6;
     border-radius: 5px;

@@ -455,11 +455,8 @@ export default {
                 {
                 value: '交通',
                 label: '交通'
-                },
-                {
-                value: '交通',
-                label: '交通'
                 }
+                
                 ],
             worker_condition_seen:false,
             ex_condition:[],
