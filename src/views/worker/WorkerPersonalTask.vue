@@ -15,7 +15,7 @@
       <el-row>
         <el-col style="border-style:solid;border-width:0.3vh;border-color:#E6E6E6">
           <span style="padding-left: 1vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;"><b>按条件查找：</b></span>
-          <span style="padding-left: 1vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;">报酬：</span>
+          <span style="padding-left: 1vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;">单位工资：</span>
           <el-input v-model="minReward" placeholder="" size="mini" style="width:6%"></el-input>
           <span style="font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;">-</span>
           <el-input v-model="maxReward" placeholder="" size="mini" style="width:6%"></el-input>
@@ -47,8 +47,7 @@
           <template>
             <el-checkbox-group v-model="checkList" size="mini" @change="handleCheckedChange">
               <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;padding-right: 3vw"><b>筛选：</b></span>
-              <el-checkbox label="显示已完成任务" border></el-checkbox>
-              <el-checkbox label="显示未完成任务" border></el-checkbox>
+              <el-checkbox label="只显示未完成任务" border></el-checkbox>
             </el-checkbox-group>
           </template>
         </el-col>
@@ -57,7 +56,7 @@
         <el-col style="border-style:solid;border-width:0.3vh;border-color:#E6E6E6">
           <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;padding-right: 3vw"><b>排序：</b></span>
           <el-button type="success" style="color:#ffffff" @click="orderByReward" size="mini">
-            报酬
+            单位工资
             <i class="el-icon-d-caret" v-if="rewardOrder==0"></i>
             <i class="el-icon-caret-top" v-if="rewardOrder==1"></i>
             <i class="el-icon-caret-bottom" v-if="rewardOrder==2"></i>
@@ -112,10 +111,10 @@
               <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.reward}}</span>
             </el-col>
             <el-col :span="4">
-              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(personalTask.start_time).slice(0,10)}}</span>
+              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.start_time}}</span>
             </el-col>
             <el-col :span="3">
-              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(personalTask.end_time).slice(0,10)}}</span>
+              <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.end_time}}</span>
             </el-col>
             <el-col :span="2">
               <el-button type="text" style="width:100%;font-weight:500;color:#ffffff;background-color:#015D73;margin-left:3vh" @click="continuation(personalTask.id)">
@@ -179,10 +178,10 @@
                 <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.reward}}</span>
               </el-col>
               <el-col :span="4">
-                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(personalTask.start_time).slice(0,10)}}</span>
+                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.start_time}}</span>
               </el-col>
               <el-col :span="3">
-                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(personalTask.end_time).slice(0,10)}}</span>
+                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{personalTask.end_time}}</span>
               </el-col>
             </el-row>
           </template>
@@ -249,18 +248,16 @@
         let showTaskListCopy = this.showTaskListCopy;
         this.showTaskList = [];
         console.log(this.checkList);
-        if(this.checkList.indexOf("显示已完成任务") != -1){
+        if(this.checkList.indexOf("只显示未完成任务") != -1){
           for(let taskIndex in showTaskListCopy){
             let aTask = showTaskListCopy[taskIndex];
-            if(aTask.status == '100%')
+            if(aTask.status != '100%')
               this.showTaskList.push(aTask);
           }
         }
-        if(this.checkList.indexOf("显示未完成任务") != -1) {
-          for (let taskIndex in showTaskListCopy) {
-            let aTask = showTaskListCopy[taskIndex];
-            if (aTask.status != '100%')
-              this.showTaskList.push(aTask);
+        else{
+          for(let taskIndex in showTaskListCopy){
+            this.showTaskList = showTaskListCopy;
           }
         }
       },
@@ -307,25 +304,27 @@
           maxReward = minReward;
           minReward = change_num;
         }
-        if(this.endDate < this.startDate) {
+        if(this.endDate != '' && this.endDate < this.startDate) {
           let change = this.startDate;
           this.startDate = this.endDate;
           this.endDate = change;
         }
+        console.log(this.endDate);
+        console.log(this.startDate);
         for(let task in this.taskList){
           let aTask =this.taskList[task];
           if(aTask.reward >= minReward && aTask.reward <= maxReward){
-            if(this.startDate != ''&& this.startDate != null  && aTask.start_time >= dateToString(this.startDate)) {
-              if(this.endDate != '' && this.endDate != null && aTask.start_time <= dateToString(this.endDate)) {
+            if(this.startDate != '' && this.startDate != null && aTask.start_time >= dateToString(this.startDate)) {
+              if(this.endDate != ''&& this.endDate != null && aTask.start_time <= dateToString(this.endDate)) {
                 if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
-              else if(this.endDate == ''|| this.endDate == null ){
+              else if(this.endDate == ''|| this.endDate != null){
                 if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
             }
-            else if(this.startDate == '' || this.startDate != null ) {
+            else if(this.startDate == '' || this.startDate == null) {
               if(this.endDate != '' && this.endDate != null && aTask.start_time <= dateToString(this.endDate)) {
                 if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
@@ -393,7 +392,6 @@
       return{
         user:{
           username:this.$store.state.username,
-          level:this.$store.state.level,
         },
         taskList:[],
         showTaskList:[],
@@ -403,7 +401,7 @@
         startDate:'',
         endDate:'',
         keyword:'',
-        checkList:["显示已完成任务","显示未完成任务"],
+        checkList:[],
         activeNames:[],
         pickerOptions1: {
           disabledDate(time) {
@@ -438,12 +436,23 @@
     },
     created()
     {
+      function dateToString(datetime){
+        let date = datetime.slice(0,10);
+        let time = datetime.slice(11,19)
+        return date + ' ' + time;
+      }
       let that=this
       axios.get('/api/personal-task/find-my-task')
         .then(function (response) {
           console.log(response);
           let personalTasks = response.data.tasks;
-          console.log(personalTasks);
+          if(personalTasks == undefined){
+            personalTasks =[];
+          }
+          for(let i=0;i<personalTasks.length;i++){
+            personalTasks[i].start_time = dateToString(personalTasks[i].start_time);
+            personalTasks[i].end_time = dateToString(personalTasks[i].end_time);
+          }
           that.taskList = personalTasks;
           that.showTaskList = personalTasks;
           that.showTaskListCopy = personalTasks;

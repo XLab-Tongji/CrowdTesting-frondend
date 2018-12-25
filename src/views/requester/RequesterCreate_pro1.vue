@@ -34,20 +34,20 @@
                                     width="200"
                                     trigger="hover"
                                     content="回答每个问题（注意：不是每个项目）参与者可以获得的报酬">
-                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
-                                  </el-popover>    
+                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>
+                                  </el-popover>
                             </el-form-item>
                              <el-form-item label="完成人数">
                                 <el-input-number v-model="population_per"
-                                 style="width:200px;margin-right:10px"></el-input-number>人  
+                                 style="width:200px;margin-right:10px"></el-input-number>人
                                  <el-popover
                                     placement="right-start"
                                     title="属性说明"
                                     width="200"
                                     trigger="hover"
                                     content="每个问题由多少人完成">
-                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
-                                  </el-popover>                                 
+                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>
+                                  </el-popover>
                             </el-form-item>
                             <el-form-item label="完成时限">
                                 <el-input-number v-model="time_per"
@@ -58,8 +58,8 @@
                                     width="200"
                                     trigger="hover"
                                     content="参与者从开始答题到提交项目的时间限制">
-                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
-                                  </el-popover>                               
+                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>
+                                  </el-popover>
                             </el-form-item>
                             <el-form-item label="项目有效期"><!--限制：开始日期不能小于当前日期-->
                                 <div class="block">
@@ -82,8 +82,8 @@
                                     width="200"
                                     trigger="hover"
                                     content="参与者完成项目后多久系统自动支付酬金给参与者">
-                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
-                                  </el-popover>       
+                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>
+                                  </el-popover>
                             </el-form-item>
                             <el-form-item label="额外要求">
                               <el-switch
@@ -97,8 +97,8 @@
                                     width="200"
                                     trigger="hover"
                                     content="对参与者是否有额外的条件限制">
-                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
-                                  </el-popover>  
+                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>
+                                  </el-popover>
                             </el-form-item>
                             <div v-if="worker_condition_seen">
                             <el-form-item label="资质要求"  >
@@ -116,11 +116,11 @@
                                     width="200"
                                     trigger="hover"
                                     content="参与者需要拥有哪些领域的知识才能更好地参与该项目（多选）">
-                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
-                                  </el-popover>       
+                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>
+                                  </el-popover>
                             </el-form-item>
                              <el-form-item label="等级要求">
-                                <el-input-number v-model="worker_exp" 
+                                <el-input-number v-model="worker_exp"
                                  :min="0" style="width:200px;margin-right:10px"></el-input-number>
                                  <el-popover
                                     placement="right-start"
@@ -128,13 +128,13 @@
                                     width="200"
                                     trigger="hover"
                                     content="参与者需要多高的经验才能更好地完成项目">
-                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>    
-                                  </el-popover>    
+                                     <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>
+                                  </el-popover>
                             </el-form-item>
                             <el-form-item label="年龄要求">
-                                <el-input-number v-model="worker_age" 
+                                <el-input-number v-model="worker_age"
                                  :min="0" style="width:200px;margin-right:10px"></el-input-number>
-                                
+
                             </el-form-item>
                             </div>
                             <el-form-item>
@@ -177,9 +177,11 @@
                                 <div v-if="scope.row.question_title.type===0">
                                   <div v-if="scope.row.question_title.must===0">
                                     <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【单选题】(选填)</span>
+                                    <el-button type="primary" icon="el-icon-plus" size="mini" @click="showAddPic(scope.$index)">图片</el-button>
                                   </div>
                                   <div v-else>
                                     <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【单选题】(必填)</span>
+                                    <el-button type="primary" icon="el-icon-plus" size="mini" @click="showAddPic(scope.$index)">图片</el-button>
                                   </div>
                                   <template>
                                     <div v-for="option in scope.row.options">
@@ -194,9 +196,11 @@
                                 <div v-else-if="scope.row.question_title.type===1">
                                   <div v-if="scope.row.question_title.must===0">
                                     <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【多选题】(选填)</span>
+                                    <el-button type="primary" icon="el-icon-plus" size="mini" @click="showAddPic(scope.$index)">图片</el-button>
                                   </div>
                                   <div v-else>
                                     <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【多选题】(必填)</span>
+                                    <el-button type="primary" icon="el-icon-plus" size="mini" @click="showAddPic(scope.$index)">图片</el-button>
                                   </div>
                                   <template>
                                     <div v-for="option in scope.row.options">
@@ -211,9 +215,11 @@
                                 <div v-else-if="scope.row.question_title.type===2">
                                   <div v-if="scope.row.question_title.must===0">
                                     <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【简答题】（选填）</span>
+                                    <el-button type="primary" icon="el-icon-plus" size="mini" @click="showAddPic(scope.row.question_id)">图片</el-button>
                                   </div>
                                   <div v-else>
                                     <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【简答题】（必填）</span>
+                                    <el-button type="primary" icon="el-icon-plus" size="mini" @click="showAddPic(scope.$index)">图片</el-button>
                                   </div>
                                 </div>
                               </template>
@@ -222,6 +228,39 @@
                         </template>
                       </el-col>
                     </el-row>
+                    <el-dialog title="添加图片" :visible.sync="dialogVisible">
+                      <template>
+                        <el-table
+                          :data="images"
+                          style="width: 100%">
+                          <el-table-column type="expand">
+                            <template slot-scope="scope">
+                              <el-form label-position="left" inline>
+                                <el-form-item label="">
+                                  <el-row style="width:514px">
+                                  <div v-for="picture in images[scope.$index].resources">
+                                  <el-col :span="7" :key="picture.id" style="margin-left: 10px">
+                                    <el-card :body-style="{ padding: '0px' }" style="width:150px">
+                                      <img :src="picture.link" class="image" style="width: 150px;height:120px">
+                                      <div style="text-align:center">
+                                        <el-button type="text" class="button" v-if="questions[index_of_questions].resource.length === 0 || questions[index_of_questions].resource.indexOf(picture.id)===-1" @click="addPicture(picture.id)">添加</el-button>
+                                        <el-button type="text" class="button" v-else @click="deletePicture(picture.id)">删除</el-button>
+                                      </div>
+                                    </el-card>
+                                  </el-col>
+                                  </div>
+                                  </el-row>
+                                </el-form-item>
+                              </el-form>
+                            </template>
+                          </el-table-column>
+                          <el-table-column
+                            label="目录"
+                            prop="photoAlbum.name">
+                          </el-table-column>
+                        </el-table>
+                      </template>
+                    </el-dialog>
                     <el-row type="flex" justify="center" style="margin-bottom:6vh">
                       <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
                         <el-button type="primary" @click="open_help">
@@ -251,111 +290,114 @@
 
 <script>
 import RequesterHomepageTopbar from '@/components/RequesterNavi/RequesterHomepageTopbar.vue'
+import axios from 'axios'
 export default {
     components:{
             RequesterHomepageTopbar
         },
-  computed: {
-    questions:function(){
-      let lines = this.text_area1.split("\n");
-      let question_title = {
-        question_content:'',
-        resource_loading:0,
-        type:0,
-      }
-      let question = {
-        question_num:0,
-        question_title:'',
-        options:[],
-      }
-      let questions = []
-      let index = 0;
-      let num = 0;
-      for(let i=0;i<lines.length;i++) {
-        let line = lines[i];
-        if(line==='')
-          continue;
-        line = line.replace(" ","");
-        let first = line.split(".")[0];
-        if(!isNaN(parseInt(first,10))){
-          num = 0;
-          let new_question = {
-            question_title:{
-              question_content:'',
-              resource_loading:0,
-              type:0,
-              must:1,
-            },
-            options:[]
-          }
-          questions.push(new_question);
-          index = questions.length - 1;
-          questions[index].question_num = index + 1;
-          questions[index].question_title.type = 0;
-          if(questions[index].options.length===0)
-            questions[index].question_title.type = 2;
-          if(line.indexOf("【单选题】") !== -1){
+    computed: {
+      questions:function(){
+        let lines = this.text_area1.split("\n");
+        let question_title = {
+          question_content:'',
+          resource_loading:0,
+          type:0,
+        }
+        let question = {
+          question_num:0,
+          question_title:'',
+          options:[],
+          resource:[],
+        }
+        let questions = [];
+        let index = 0;
+        let num = 0;
+        for(let i=0;i<lines.length;i++) {
+          let line = lines[i];
+          if(line==='')
+            continue;
+          line = line.replace(" ","");
+          let first = line.split(".")[0];
+          if(!isNaN(parseInt(first,10))){
+            num = 0;
+            let new_question = {
+              question_title:{
+                question_content:'',
+                resource_loading:0,
+                type:0,
+                must:1,
+              },
+              options:[],
+              resource:[],
+            }
+            questions.push(new_question);
+            index = questions.length - 1;
+            questions[index].question_num = index + 1;
             questions[index].question_title.type = 0;
-            line = line.replace('【单选题】','');
-          }
-          else if(line.indexOf("【多选题】") !== -1){
-            questions[index].question_title.type = 1;
-            line = line.replace('【多选题】','');
-          }
-          else if (line.indexOf("【简答题】") !== -1){
-            questions[index].question_title.type = 2;
-            line = line.replace('【简答题】','');
-          }
-          if(line.indexOf("（选填）") !== -1){
-            questions[index].question_title.must = 0;
-            line = line.replace('（选填）','');
-          }
-          else if(line.indexOf("（必填）") !== -1){
-            questions[index].question_title.must = 1;
-            line = line.replace('（选填）','');
-          }
-          if(line.split(".").length<2)
-            questions[index].question_title.question_content = '';
-          else
-            questions[index].question_title.question_content = line.split(".")[1];
-          questions[index].options = [];
-          num = 0;
-        }
-        else{
-          let option = {
-            option_number: 0,
-            content: '',
-            question_id: 0,
-            open_answer_permission: 0,
-          }
-          if(questions.length!==0) {
-            if(questions[index].question_title.type === 2)
+            if(questions[index].options.length===0)
+              questions[index].question_title.type = 2;
+            if(line.indexOf("【单选题】") !== -1){
               questions[index].question_title.type = 0;
+              line = line.replace('【单选题】','');
+            }
+            else if(line.indexOf("【多选题】") !== -1){
+              questions[index].question_title.type = 1;
+              line = line.replace('【多选题】','');
+            }
+            else if (line.indexOf("【简答题】") !== -1){
+              questions[index].question_title.type = 2;
+              line = line.replace('【简答题】','');
+            }
+            if(line.indexOf("（选填）") !== -1){
+              questions[index].question_title.must = 0;
+              line = line.replace('（选填）','');
+            }
+            else if(line.indexOf("（必填）") !== -1){
+              questions[index].question_title.must = 1;
+              line = line.replace('（选填）','');
+            }
+            if(line.split(".").length<2)
+              questions[index].question_title.question_content = '';
+            else
+              questions[index].question_title.question_content = line.split(".")[1];
+            questions[index].options = [];
+            num = 0;
           }
-          if(first.length===1&&((first[0]>='A'&&first[0]<='Z')||(first[0]>='a'&&first[0]<='z'))){
-            let arr = line.split("");
-            arr.splice(1,1);
-            arr.splice(0,1);
-            line = arr.join("");
+          else{
+            let option = {
+              option_number: 0,
+              content: '',
+              question_id: 0,
+              open_answer_permission: 0,
+            }
+            if(questions.length!==0) {
+               if(questions[index].question_title.type === 2)
+                 questions[index].question_title.type = 0;
+            }
+            if(first.length===1&&((first[0]>='A'&&first[0]<='Z')||(first[0]>='a'&&first[0]<='z'))){
+              let arr = line.split("");
+              arr.splice(1,1);
+              arr.splice(0,1);
+              line = arr.join("");
+            }
+            if(line.indexOf("【填空】") !== -1){
+              option.open_answer_permission = 1;
+              line = line.replace('【填空】','');
+            }
+            else
+              option.open_answer_permission = 0;
+            option.content = line;
+            num = num + 1;
+            option.option_number = num;
+            if(questions.length!==0)
+              questions[index].options.push(option);
           }
-          if(line.indexOf("【填空】") !== -1){
-            option.open_answer_permission = 1;
-            line = line.replace('【填空】','');
-          }
-          else
-            option.open_answer_permission = 0;
-          option.content = line;
-          num = num + 1;
-          option.option_number = num;
-          if(questions.length!==0)
-            questions[index].options.push(option);
         }
+        return questions;
       }
-      return questions;
-    }
-  },
+    },
         data() {
-        return {
+          return {
             describe:'',
             limi_value:'',
             activeName2: 'first',
@@ -414,78 +456,147 @@ export default {
                 label: '交通'
                 }
                 ],
-          worker_condition_seen:0,
-          text_area1: '',
-          task_id: 2,
-        };
+            worker_condition_seen:0,
+            text_area1: '',
+            task_id: 2,
+            dialogVisible:false,
+            index_of_questions:0,
+            images:[],
+          };
+        },
+        created(){
+          let that = this;
+          axios({
+          method: 'get',
+          url: '/api/image/findImages',
+          })
+          .then(function (response) {
+              if (response.data.code[0] == "2") {
+                that.images = response.data.images;
+              }
+          })
+        .catch(function (error) {
+          success = false;
+          console.log(error);
+        });
         },
         methods: {
-          submit() {
-            let questions = this.questions;
-            let task_id = this.task_id;
-            let resource_loading = 0;
-            let that = this;
-            console.log(questions);
-            for(let i=0;i<questions.length;i++){
-              let param = new URLSearchParams();
-              param.append('taskId',task_id);
-              param.append('content',questions[i].question_title.question_content);
-              param.append('resourceLoading',resource_loading);
-              param.append('type',questions[i].question_title.type);
-              param.append('compulsory',questions[i].question_title.must);
-              axios({
-                method:	'post',
-                url: '/api/question/add-question',
-                data:param
-              })
-                .then(function (response) {
-                  console.log(response);
-                  if(response.data.code[0] == "2") {
-                    let question_id =response.data.questionId;
-                    console.log(question_id);
-                    for(let j=0;j<questions[i].options.length;j++) {
-                      questions[i].options[j].question_id = question_id;
-                      console.log(questions[i].options[j].question_id);
-                      let parama = new URLSearchParams();
-                      parama.append('content', questions[i].options[j].content);
-                      parama.append('questionId', questions[i].options[j].question_id);
-                      parama.append('openAnswerPermission', questions[i].options[j].open_answer_permission);
-                      parama.append('optionNumber', questions[i].options[j].option_number);
-                      console.log(parama);
-                      axios({
-                        method: 'post',
-                        url: '/api/question/add-option',
-                        data: parama
-                      })
-                        .then(function (response) {
-                          console.log(response);
-                          if (response.data.code[0] == "2") {
-                            console.log(response);
-                          }
-                        })
-                        .catch(function (error) {
-                          that.$message("上传失败");
-                          console.log(error);
-                        });
-                    }
-                  }
-                })
-                .catch(function (error) {
-                  that.$message("上传失败");
-                  console.log(error);
-                });
-            }
-            that.$message("上传成功");
+          showAddPic(index){
+            this.index_of_questions = index;
+            this.dialogVisible = true;
           },
-        handleClick(tab, event) {
+          submit() {
+            this.$confirm('是否确认提交答案?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              let questions = this.questions;
+              let task_id = this.task_id;
+              let that = this;
+              let success = true;
+              console.log(questions);
+              for(let i=0;i<questions.length;i++) {
+                let resource_loading = 0;
+                if(questions[i].resource.length>0){
+                  resource_loading = 1;
+                }
+                let param = new URLSearchParams();
+                param.append('taskId', task_id);
+                param.append('content', questions[i].question_title.question_content);
+                param.append('resourceLoading', resource_loading);
+                param.append('type', questions[i].question_title.type);
+                param.append('compulsory', questions[i].question_title.must);
+                axios({
+                  method: 'post',
+                  url: '/api/question/add-question',
+                  data: param
+                })
+                  .then(function (response) {
+                    console.log(response);
+                    if (response.data.code[0] == "2") {
+                      let question_id = response.data.questionId;
+                      console.log(question_id);
+                      for (let j = 0; j < questions[i].options.length; j++) {
+                        questions[i].options[j].question_id = question_id;
+                        console.log(questions[i].options[j].question_id);
+                        let parama = new URLSearchParams();
+                        parama.append('content', questions[i].options[j].content);
+                        parama.append('questionId', questions[i].options[j].question_id);
+                        parama.append('openAnswerPermission', questions[i].options[j].open_answer_permission);
+                        parama.append('optionNumber', questions[i].options[j].option_number);
+                        console.log(parama);
+                        axios({
+                          method: 'post',
+                          url: '/api/question/add-option',
+                          data: parama
+                        })
+                          .then(function (response) {
+                            console.log(response);
+                            if (response.data.code[0] == "2") {
+                              console.log(response);
+                            }
+                          })
+                          .catch(function (error) {
+                            success = false;
+                            console.log(error);
+                          });
+                      }
+                      for (let k = 0; k < questions[i].resource.length; k++) {
+                        let paramb = new URLSearchParams();
+                        paramb.append('questionId', question_id);
+                        paramb.append('resourceId', questions[i].resource[k]);
+                        axios({
+                          method: 'post',
+                          url: '/api/question/add-resource',
+                          data: paramb
+                        })
+                          .then(function (response) {
+                            console.log(response);
+                            if (response.data.code[0] == "2") {
+                              console.log(response);
+                            }
+                          })
+                          .catch(function (error) {
+                            success = false;
+                            console.log(error);
+                          });
+                      }
+                    }
+                  })
+                  .catch(function (error) {
+                    success = false;
+                    console.log(error);
+                  });
+              }
+              if(success == true){
+                that.$message("提交成功！");
+              }
+              else{
+                that.$message("上传失败！");
+              }
+            }).catch(() => {
+              that.$message({
+                type: 'info',
+                message: '取消提交'
+              });
+            });
+          },
+          handleClick(tab, event) {
             console.log(tab, event);
-        },
-        toDesign(){
-          this.activeName2='second';
-        },
-        created() {
-
-        },
+          },
+          toDesign(){
+            this.activeName2='second';
+          },
+          open_help() {},
+          addPicture(picture_id){
+            this.questions[this.index_of_questions].resource.push(picture_id);
+            console.log(this.questions[this.index_of_questions]);
+          },
+          deletePicture(picture_id){
+            this.questions[this.index_of_questions].resource.splice(this.questions[this.index_of_questions].resource.indexOf(picture_id),1);
+            console.log(this.questions[this.index_of_questions]);
+          },
         }
 }
 </script>
@@ -519,4 +630,6 @@ export default {
 .box_containing{
      margin:30px 80px;
 }
+
+
 </style>

@@ -96,7 +96,6 @@
                       let username = response.data.requester.username;
                       let user_information = {
                         username :'',
-                        level:0,
                       }
                       user_information.username = username;
                       that.$store.commit('UserInfo', user_information);
@@ -158,16 +157,11 @@
                     .then(function (response) {
                       console.log(response);
                       let username = response.data.worker.username;
-                      let level = response.data.worker.level
-                      console.log(level);
                       let user_information = {
                         username :'',
-                        level:0,
                       }
                       user_information.username = username;
-                      user_information.level = level;
                       that.$store.commit('UserInfo', user_information);
-                      console.log(that.$store.state.username)
                       that.$router.replace("/worker_task_square");
                       that.button_disabled = false;
                     })

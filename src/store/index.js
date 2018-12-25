@@ -10,7 +10,6 @@ const store = new Vuex.Store({
     // 存储token
     token: window.localStorage.getItem('token'),
     username: window.localStorage.getItem('username'),
-    level: 0,
   },
 
   mutations: {
@@ -21,7 +20,6 @@ const store = new Vuex.Store({
     UserInfo(state,user_information){
       window.localStorage.setItem('username', user_information.username);
       state.username = user_information.username;
-      state.level = user_information.level;
     },
     UserLogout(state){
       window.localStorage.removeItem("token");
