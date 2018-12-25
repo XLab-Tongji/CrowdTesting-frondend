@@ -18,7 +18,7 @@
                     active-text-color="#5ED5D1">
                 <el-menu-item index="requester_manage_main" @click="manage">管理</el-menu-item>
                 <el-menu-item index="requester_create_pro1" @click="create">创建</el-menu-item>
-                
+
             </el-menu>
         </el-col>
         <el-col :span="3">
@@ -27,9 +27,9 @@
           </el-button>
         </el-col>
 
-        <el-col :span="1" style = "background-color:#4D4D4D">
+        <el-col :span="1" style = "background-color:#313233">
           <el-button type="text" style="color:#ffffff;width:100%;height:60px" @click="logout">
-            <span>登出</span>
+            <span>退出</span>
           </el-button>
         </el-col>
     </div>
@@ -38,10 +38,10 @@
 
 <script>
     export default {
-        methods: {          
+        methods: {
             informationPage(){
                 this.$router.push('/requester_homepage_basic')
-            },        
+            },
             logout(){
               this.$store.commit('UserLogout');
               this.$router.replace('/login')
@@ -52,7 +52,7 @@
             }
         },
         computed:{
-            activeIndex(){       
+            activeIndex(){
                     return this.$route.path.replace('/','');
             }
         },
@@ -75,9 +75,9 @@
     height: 60px;
 }
 .topbar_title{
-    
+
     color: #fff;
-   
+
     margin-left:50px;
     margin-top: 13px;
     font-size: 70%;

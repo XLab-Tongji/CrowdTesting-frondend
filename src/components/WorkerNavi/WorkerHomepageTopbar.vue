@@ -29,7 +29,7 @@
 
       <el-col :span="1" style = "background-color:#4D4D4D">
         <el-button type="text" style="color:#ffffff;width:100%;height:60px" @click="logout">
-          <span>登出</span>
+          <span>退出</span>
         </el-button>
       </el-col>
     </div>

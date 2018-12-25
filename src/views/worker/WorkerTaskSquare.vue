@@ -12,7 +12,7 @@
       <el-row>
         <el-col style="border-style:solid;border-width:0.3vh;border-color:#E6E6E6">
           <span style="padding-left: 1vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;"><b>按条件查找：</b></span>
-          <span style="padding-left: 1vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;">报酬：</span>
+          <span style="padding-left: 1vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;">单位工资：</span>
           <el-input v-model="minReward" placeholder="" size="mini" style="width:6%"></el-input>
           <span style="font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;">-</span>
           <el-input v-model="maxReward" placeholder="" size="mini" style="width:6%"></el-input>
@@ -46,7 +46,6 @@
               <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;padding-right: 2vw"><b>只显示：</b></span>
               <el-checkbox label="可接受任务" border></el-checkbox>
               <el-checkbox label="推荐任务" border></el-checkbox>
-              <el-checkbox label="未完成任务" border></el-checkbox>
             </el-checkbox-group>
           </template>
         </el-col>
@@ -61,7 +60,7 @@
             <i class="el-icon-caret-top" v-if="heatOrder==2"></i>
           </el-button>
           <el-button type="success" style="color:#ffffff" @click="orderByReward" size="mini">
-            报酬
+            单位工资
             <i class="el-icon-d-caret" v-if="rewardOrder==0"></i>
             <i class="el-icon-caret-top" v-if="rewardOrder==1"></i>
             <i class="el-icon-caret-bottom" v-if="rewardOrder==2"></i>
@@ -116,10 +115,10 @@
                 <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.reward}}元/题</span>
               </el-col>
               <el-col :span="4">
-                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(task.start_time).slice(0,10)}}</span>
+                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.start_time}}</span>
               </el-col>
               <el-col :span="3">
-                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(task.end_time).slice(0,10)}}</span>
+                <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.end_time}}</span>
               </el-col>
               <el-col :span="3">
                 <el-button type="text" style="vertical-align:middle;width:100%;font-weight:500;color:#000000;background-color:#ffffff" @click="preview(task.id)">
@@ -186,10 +185,10 @@
                   <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.reward}}元/题</span>
                 </el-col>
                 <el-col :span="4">
-                  <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(task.start_time).slice(0,10)}}</span>
+                  <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.start_time}}</span>
                 </el-col>
                 <el-col :span="3">
-                  <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{String(task.end_time).slice(0,10)}}</span>
+                  <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.end_time}}</span>
                 </el-col>
                 <el-col :span="3">
                   <el-button type="text" style="vertical-align:middle;width:100%;font-weight:500;color:#ffffff;background-color:#015D73" @click="accept(task.id)">
@@ -265,7 +264,7 @@
         if(this.checkList.indexOf("可接受任务") != -1) {
           for (let taskIndex in showTaskListCopy) {
             let aTask = showTaskListCopy[taskIndex];
-            if (aTask.level <= this.user.level && aTask.status != '100%')
+            if (aTask.level <= this.user.level && aTask.status != '100%' && aTask.min_age <= this.user.age && this.user.age <= aTask.max_age)
               newShowTaskListCopy.push(aTask);
           }
         }
@@ -274,10 +273,10 @@
         }
         let copy = newShowTaskListCopy;
         newShowTaskListCopy = [];
-        if(this.checkList.indexOf("未完成任务") != -1) {
+        if(this.checkList.indexOf("推荐任务") != -1) {
           for (let taskIndex in copy) {
             let aTask = copy[taskIndex];
-            if (aTask.status != '100%')
+            if (aTask.area == this.user.work_area)
               newShowTaskListCopy.push(aTask);
           }
         }
@@ -444,7 +443,9 @@
       return{
         user:{
           username:this.$store.state.username,
-          level:this.$store.state.level,
+          level:0,
+          age:0,
+          work_area:'',
         },
         input_advice: '',
         taskList:[],
@@ -492,11 +493,23 @@
     },
     created()
     {
-      let that=this;
-      if(that.$route.params.page!=null)
-      {
-        that.page = that.$route.params.page;
+      function dateToString(datetime){
+        let date = datetime.slice(0,10);
+        let time = datetime.slice(11,19)
+        return date + ' ' + time;
       }
+      let that=this;
+      axios.get('/api/worker/find-myself')
+        .then(function (response) {
+          let worker = response.data.worker;
+          that.user.age = worker.age;
+          that.user.level = worker.level;
+          that.user.work_area = worker.workArea;
+          that.$forceUpdate();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
       axios.get('/api/task/find-all')
         .then(function (response) {
           let tasks = response.data.tasks;
@@ -504,10 +517,11 @@
           tasks = [];
           for(let i=0;i<tasks_copy.length;i++){
             if(tasks_copy[i].status != '100%'){
+              tasks_copy[i].start_time = dateToString(tasks_copy[i].start_time);
+              tasks_copy[i].end_time = dateToString(tasks_copy[i].end_time);
               tasks.push(tasks_copy[i]);
             }
           }
-          console.log(tasks);
           axios.get('/api/personal-task/find-my-task')
             .then(function (response) {
               let personalTasks = response.data.tasks;
@@ -534,7 +548,6 @@
         .catch(function (error) {
           console.log(error);
         });
-      console.log(that.user.level);
     }
   }
   function newSort(array,key){

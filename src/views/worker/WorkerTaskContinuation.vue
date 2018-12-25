@@ -32,7 +32,7 @@
         <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
             <span style="font-size:1.0vw">创建时间：</span>
-            <span style="font-size:1.0vw">{{String(task.start_time).slice(0,10)}}</span>
+            <span style="font-size:1.0vw">{{task.start_time}}</span>
           </div>
         </el-col>
         <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
@@ -46,7 +46,7 @@
         <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
             <span style="font-size:1.0vw">终止时间：</span>
-            <span style="font-size:1.0vw">{{String(task.end_time).slice(0,10)}}</span>
+            <span style="font-size:1.0vw">{{task.end_time}}</span>
           </div>
         </el-col>
         <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
@@ -134,9 +134,15 @@
                   <div v-if="scope.row.question.type===0">
                     <div v-if="scope.row.question.compulsory===1">
                       <span>{{ question_index[scope.row.question.id] }}.{{ scope.row.question.content }}【单选题】（必做）</span>
+                      <div v-if="scope.row.question.resource_loading===1">
+                        <img :src="pic.link" style="width:250px;height:200px;margin-left:20px" v-for="pic in scope.row.resources">
+                      </div>
                     </div>
                     <div v-else>
                       <span>{{ question_index[scope.row.question.id] }}.{{ scope.row.question.content }}【单选题】</span>
+                      <div v-if="scope.row.question.resource_loading===1">
+                        <img :src="pic.link" style="width:250px;height:200px;margin-left:20px" v-for="pic in scope.row.resources">
+                      </div>
                     </div>
                     <template>
                       <div v-for="option in scope.row.options">
@@ -151,9 +157,15 @@
                   <div v-else-if="scope.row.question.type===1">
                     <div v-if="scope.row.question.compulsory===1">
                       <span>{{ question_index[scope.row.question.id] }}.{{ scope.row.question.content }}【多选题】（必做）</span>
+                      <div v-if="scope.row.question.resource_loading===1">
+                        <img :src="pic.link" style="width:250px;height:200px;margin-left:20px" v-for="pic in scope.row.resources">
+                      </div>
                     </div>
                     <div v-else>
                       <span>{{ question_index[scope.row.question.id] }}.{{ scope.row.question.content }}【多选题】</span>
+                      <div v-if="scope.row.question.resource_loading===1">
+                        <img :src="pic.link" style="width:250px;height:200px;margin-left:20px" v-for="pic in scope.row.resources">
+                      </div>
                     </div>
                     <template>
                       <div v-for="option in scope.row.options">
@@ -168,9 +180,15 @@
                   <div v-else-if="scope.row.question.type===2">
                     <div v-if="scope.row.question.compulsory===1">
                       <span>{{ question_index[scope.row.question.id] }}.{{ scope.row.question.content }}【简答题】（必做）</span>
+                      <div v-if="scope.row.question.resource_loading===1">
+                          <img :src="pic.link" style="width:250px;height:200px;margin-left:20px" v-for="pic in scope.row.resources">
+                      </div>
                     </div>
                     <div v-else>
                       <span>{{ question_index[scope.row.question.id] }}.{{ scope.row.question.content }}【简答题】</span>
+                      <div v-if="scope.row.question.resource_loading===1">
+                        <img :src="pic.link" style="width:250px;height:200px;margin-left:20px" v-for="pic in scope.row.resources">
+                      </div>
                     </div>
                     <el-row>
                       <el-input type="textarea" :rows="3" placeholder="请输入内容" size="small" style="width:100%"></el-input>
@@ -298,6 +316,11 @@
     },
     created()
     {
+      function dateToString(datetime){
+        let date = datetime.slice(0,10);
+        let time = datetime.slice(11,19)
+        return date + ' ' + time;
+      }
       let task_id = this.$route.query.task_id;
       let that=this;
       let question_title = [];
@@ -306,6 +329,8 @@
         .then(function (response) {
           let task = response.data.task;
           that.task = task;
+          task.start_time = dateToString(task.start_time);
+          task.end_time = dateToString(task.end_time);
           that.$forceUpdate();
         })
         .catch(function (error) {
