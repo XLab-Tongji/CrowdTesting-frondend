@@ -276,7 +276,7 @@
         if(this.checkList.indexOf("推荐任务") != -1) {
           for (let taskIndex in copy) {
             let aTask = copy[taskIndex];
-            if (aTask.area == this.user.work_area)
+            if (aTask.area != null && aTask.area.indexOf(this.user.work_area)!=-1)
               newShowTaskListCopy.push(aTask);
           }
         }

@@ -17,16 +17,16 @@
                     <div class="attribute box_containing">
                         <el-form label-position="left" label-width="120px" :model="user" style="width: 600px;" >
                             <el-form-item label="项目名称">
-                             <el-input v-model="name"></el-input>
+                             <el-input v-model="task.name"></el-input>
                             </el-form-item>
                             <el-form-item label="项目描述">
-                                <el-input v-model="describe"  type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
+                                <el-input v-model="task.description"  type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
                             </el-form-item>
                             <el-form-item label="项目标签">
-                                <el-input v-model="tag" placeholder="标签请用空格隔开"></el-input>
+                                <el-input v-model="task.type" placeholder="标签请用空格隔开"></el-input>
                             </el-form-item>
                             <el-form-item label="问题单价">
-                                <el-input-number v-model="reward_per" :precision="2"
+                                <el-input-number v-model="task.reward" :precision="2"
                                 :step="0.1" :min="0" style="width:200px;margin-right:10px"></el-input-number>元
                                  <el-popover
                                     placement="right-start"
@@ -38,7 +38,7 @@
                                   </el-popover>
                             </el-form-item>
                              <el-form-item label="完成人数">
-                                <el-input-number v-model="population_per"
+                                <el-input-number v-model="population"
                                  style="width:200px;margin-right:10px"></el-input-number>人
                                  <el-popover
                                     placement="right-start"
@@ -50,7 +50,7 @@
                                   </el-popover>
                             </el-form-item>
                             <el-form-item label="完成时限">
-                                <el-input-number v-model="time_per"
+                                <el-input-number v-model="task.time_limitation"
                                  style="width:200px;margin-right:10px"></el-input-number>小时
                                  <el-popover
                                     placement="right-start"
@@ -66,7 +66,7 @@
                                     <!--{{limi_value}}-->
                                     <el-date-picker
                                     v-model="limi_value"
-                                    type="daterange"
+                                    type="datetimerange"
                                     range-separator="至"
                                     start-placeholder="开始日期"
                                     end-placeholder="结束日期">
@@ -74,7 +74,7 @@
                                 </div>
                             </el-form-item>
                             <el-form-item label="自动支付时间">
-                                <el-input-number v-model="auto_pay"
+                                <el-input-number v-model="task.pay_time"
                                  style="width:200px;margin-right:10px" :max="72" :min="0"></el-input-number>小时
                                   <el-popover
                                     placement="right-start"
@@ -120,25 +120,25 @@
                                   </el-popover>
                             </el-form-item>
                              <el-form-item label="等级要求">
-                                <el-input-number v-model="worker_exp"
+                                <el-input-number v-model="task.level"
                                  :min="0" style="width:200px;margin-right:10px"></el-input-number>
                                  <el-popover
                                     placement="right-start"
                                     title="属性说明"
                                     width="200"
                                     trigger="hover"
-                                    content="参与者需要多高的经验才能更好地完成项目">
+                                    content="参与者需要多高的等级才能更好地完成项目">
                                      <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>
                                   </el-popover>
                             </el-form-item>
                             <el-form-item label="年龄要求">
-                                <el-input-number v-model="worker_age"
+                                <el-input-number v-model="task.min_age"
                                  :min="0" style="width:200px;margin-right:10px"></el-input-number>
 
                             </el-form-item>
                             </div>
                             <el-form-item>
-                              <el-button  @click="" :loading=this.button_disabled class="next_step1">
+                              <el-button  @click="" :loading=this.button_disabled class="next_step1" @click="submitTaskInformation">
                                     提交
                                 </el-button>
                                 <el-button  @click="toDesign" :loading=this.button_disabled class="next_step1" type="primary">
@@ -398,19 +398,24 @@ export default {
     },
         data() {
           return {
-            describe:'',
-            limi_value:'',
+            task:{
+              name:'',
+              description:'',
+              reward:0,
+              status:0,
+              type:'',
+              restrictions:'',
+              start_time:'',
+              end_time:'',
+              level:'',
+              time_limitation:0,
+              pay_time:0,
+              area:'',
+              usage:'',
+              min_age:0,
+              max_age:100,
+            },
             activeName2: 'first',
-            reward_per:0,
-            population_per:0,
-            time_per:0,
-            auto_pay:0,
-            if_expert:0,
-            ex_condition:'',
-            name:'',
-            tag:'',
-            worker_exp:'',
-            worker_age:'',
             condition_options: [{
                 value: '计算机',
                 label: '计算机'
@@ -456,12 +461,15 @@ export default {
                 label: '交通'
                 }
                 ],
-            worker_condition_seen:0,
+            worker_condition_seen:false,
+            ex_condition:[],
             text_area1: '',
             task_id: 2,
             dialogVisible:false,
             index_of_questions:0,
             images:[],
+            limi_value:'',
+            population:0,
           };
         },
         created(){
@@ -597,6 +605,65 @@ export default {
             this.questions[this.index_of_questions].resource.splice(this.questions[this.index_of_questions].resource.indexOf(picture_id),1);
             console.log(this.questions[this.index_of_questions]);
           },
+          submitTaskInformation(){
+            function dateToString(draftTimeV){
+              draftTimeV = draftTimeV + "";
+              let date = '';
+              let month = new Array();
+              month["Jan"] = 1; month["Feb"] = 2; month["Mar"] = 3; month["Apr"] = 4; month["May"] = 5; month["Jan"] = 6;
+              month["Jul"] = 7; month["Aug"] = 8; month["Sep"] = 9; month["Oct"] = 10; month["Nov"] = 11; month["Dec"] = 12;
+              let str = draftTimeV.split(" ");
+              date = str[3] + "-";
+              date = date + month[str[1]] + "-" + str[2] + ' ' + str[4];
+              return date;
+            }
+            let that = this;
+            this.$confirm('是否确认提交任务信息?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              let param = new URLSearchParams();
+              let area = '';
+              for(let i=0;i<that.ex_condition.length;i++){
+                area += that.ex_condition[i] + ';'
+              }
+              param.append('name', that.task.name);
+              param.append('description', that.task.description);
+              param.append('reward', that.task.reward);
+              param.append('status', 0);
+              param.append('type', that.task.type);
+              param.append('restrictions', that.task.restrictions);
+              param.append('start_time', dateToString(that.limi_value[0]));
+              param.append('end_time', dateToString(that.limi_value[1]));
+              param.append('level', that.task.level);
+              param.append('time_limitation', that.task.time_limitation);
+              param.append('pay_time', that.task.pay_time);
+              param.append('area', area);
+              param.append('usage', that.task.usage);
+              param.append('min_age', that.task.min_age);
+              param.append('max_age', that.task.max_age);
+              axios({
+                method: 'post',
+                url: '/api/task/add',
+                data: param
+              })
+                .then(function (response) {
+                  that.task_id = response.data.taskId;
+                  console.log(that.task_id)
+                  that.$message("提交成功！");
+                })
+                .catch(function (error) {
+                  console.log(error);
+                  that.$message("上传失败！");
+                });
+            }).catch(() => {
+              that.$message({
+                type: 'info',
+                message: '取消提交'
+              });
+            });
+          }
         }
 }
 </script>
