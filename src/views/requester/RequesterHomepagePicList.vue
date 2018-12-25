@@ -20,14 +20,18 @@
                                 
                                     <div class="upload">
                                         <el-upload
-                                            action=""
+                                            action="/api/image/add-image"
                                             list-type="picture-card"
                                             multiple
                                             :on-preview="handlePictureCardPreview"
                                             :on-remove="handleRemove"
                                             :file-list="fileList"
-                                            :on-progress="onProgress"
+                                            :data="photoAlbumId"
+                                            :before-upload="beforeUpload"
+                                            :on-error="onError"
+                                            data="dialogImageUrl"
                                             >
+                                            <!--:http-request='submitUpload'-->
                                             <i class="el-icon-plus"></i>
                                         </el-upload>
                                         <el-dialog :visible.sync="dialogVisible">
@@ -66,9 +70,10 @@ import * as axios from 'axios'
                 imgstyle:{
                     height:'150px',
                     width:'150px',
-                    dialogImageUrl: '',
+                    dialogImageUrl: this.id,
                     dialogVisible: false
                 },
+                photoAlbumId:'',
                 fileList:[         
                 ], 
                 rawList:[], 
@@ -139,6 +144,38 @@ import * as axios from 'axios'
             handlePictureCardPreview(file) {
                 this.dialogImageUrl = file.url;
                 this.dialogVisible = true;
+            },
+            beforUpload(file){
+               
+            },
+            onError(err, file, fileList){
+                this.$message('上传失败');
+            },
+            submitUpload:function(content){
+                console.log(content);
+                let that = this;
+                let param = new URLSearchParams();
+                //param.append('multipartFile',content.file);  
+                param.append('photoAlbumId',that.id); 
+                let formData = new FormData; 
+                 formData.append('multipartFile', content.file);
+                axios({
+                method:'post',
+                url: '/api/image/add-image',
+                data:param,formData
+                })
+                .then(function(response){
+                    if(response.data.code[0] == "2"){
+                        that.$message('添加成功');
+                        that.dialogFormVisible = false;
+                    }
+                    else if(response.data.code[0] == "5") {
+                    that.wrong_pwd("服务器错误")              
+                    }               
+                })
+                .catch(function (error) {
+                    alert(error);
+                }); 
             }
             /*,
             onProgress(file){
