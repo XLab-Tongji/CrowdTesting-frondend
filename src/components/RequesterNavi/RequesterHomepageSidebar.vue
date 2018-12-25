@@ -60,6 +60,7 @@ export default {
     color: #fff;
     height:700px;
     padding-left: 10px;
+    padding-right: 10px;
 }
 .sidebar_title{
     font:#fff;

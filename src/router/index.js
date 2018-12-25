@@ -22,6 +22,7 @@ import WorkerPersonalTask from '@/views/worker/WorkerPersonalTask.vue'
 import WorkerTaskHelp from '@/views/worker/WorkerTaskHelp.vue'
 import RequesterHomepagePic from '@/views/requester/RequesterHomepagePic'
 import RequesterHomepagePicList from '@/views/requester/RequesterHomepagePicList.vue'
+import RequesterManageModify from '@/views/requester/RequesterManageModify.vue'
 
 Vue.use(Router) // 注册vue-router
 

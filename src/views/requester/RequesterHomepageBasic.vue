@@ -35,16 +35,6 @@
                         </el-form-item>
                       </el-form>
 
-                      <el-dialog                      
-                        :visible.sync="dialogVisible"
-                        width="30%"
-                        :before-close="handleClose">
-                        <span>{{message}}</span>
-                        <span slot="footer" class="dialog-footer">                        
-                            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-                        </span>
-                        </el-dialog>
-
                     </div>
                 </div>
 
@@ -69,18 +59,31 @@ import * as axios from 'axios'
         methods: {
             modify(){
                 let that = this;
-            axios({
-                method:	'get',
-                url: '/api/requester/find-myself',
-            })
-                .then(function (response) {
-                console.log(response);
-                that.requester = response.data.requester;
+                let param = new URLSearchParams();
+                param.append('name',that.requester.name);
+                param.append('username',that.requester.username);  
+                param.append('teleNumber',that.requester.teleNumber);   
+                param.append('name',that.requester.eMail);   
+                param.append('name',that.requester.gender);   
+                param.append('name',that.requester.age);                 
+                axios({
+                    method:	'put',
+                    url: '/api/requester/update',
+                    data:param
+                })
+                .then(function(response){
+                if(response.data.code[0] == "2"){
+                    that.$message('添加成功');
+                    that.dialogFormVisible = false;
+                }
+                else if(response.data.code[0] == "5") {
+                  that.wrong_pwd("服务器错误")              
+                }               
                 })
                 .catch(function (error) {
-                alert(error);
+                    alert(error);
                 });
-            }
+            }           
         },
         data(){
             return{
