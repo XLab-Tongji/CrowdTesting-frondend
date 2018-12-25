@@ -532,7 +532,8 @@
               that.personalTaskList = personalTaskList;
               let other_tasks = [];
               for(let i=0;i<tasks.length;i++){
-                if(personalTaskList != null && personalTaskList.indexOf(tasks[i].task_id)===-1){
+                console.log(personalTaskList);
+                if(personalTaskList != null && personalTaskList.indexOf(tasks[i].id)===-1){
                   other_tasks.push(tasks[i]);
                 }
               }
