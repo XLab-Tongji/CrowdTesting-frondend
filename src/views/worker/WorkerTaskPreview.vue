@@ -220,6 +220,9 @@
       WorkerHomepageTopbar,
     },
     methods: {
+      back(){
+        this.$router.push('worker_task_square')
+      },
       handleOpen (key, keyPath) {
         console.log(key, keyPath);
       },

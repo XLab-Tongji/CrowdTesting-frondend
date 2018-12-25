@@ -228,6 +228,9 @@
       WorkerHomepageTopbar,
     },
     methods: {
+      back(){
+        this.$router.push('worker_task_square')
+      },
       submit(){
         let that = this;
         let answer = this.answer;
