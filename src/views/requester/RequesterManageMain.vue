@@ -17,41 +17,41 @@
                 </div>
 
                 <div class="manage_main_box">
-
-                    <div style="float:right;width:500px">
-                        <el-input v-model="search" suffix-icon="el-icon-search" placeholder="输入关键词"></el-input>
-                    </div>
                     <div>
                         <el-table
                             :data="tableData"
                             stripe
+                            :default-sort = "{prop: 'id', order: 'ascending'}"
                             style="width: 100%">
                             <el-table-column
                             prop="id"
                             label="项目id"
-                            width="180">
+                            width="100">
                             </el-table-column>
                             <el-table-column
                             prop="name"
                             label="项目名称"
-                            width="180">
+                            width="240">
                             </el-table-column>
                             <el-table-column
                             prop="start_time"
-                            label="创建时间">
+                            label="创建时间"
+                            sortable
+                            width="180">
                             </el-table-column>
                             <el-table-column
                             prop="end_time"
                             label="截止日期"
+                            sortable
                             width="180">
                             </el-table-column>
                             <el-table-column
                             prop="status"
                             label="项目状态"
-                            width="180">
+                            width="120">
                             </el-table-column>
                             <el-table-column
-                            prop="real_popul"
+                            prop="population"
                             label="参与人数"
                             width="180">
                             </el-table-column>
@@ -59,7 +59,7 @@
                             label="操作"
                             width="180">
                             <template slot-scope="scope">
-                                <el-button @click="showResult"  size="small">查看结果</el-button>                            
+                                <el-button @click="showResult"  size="small">查看结果</el-button>
                             </template>
                             </el-table-column>
                         </el-table>
@@ -76,6 +76,7 @@
 
 <script>
 import RequesterHomepageTopbar from '@/components/RequesterNavi/RequesterHomepageTopbar.vue'
+import axios from 'axios'
 
 export default {
     components:{
@@ -83,36 +84,32 @@ export default {
         },
         data(){
             return{
-                tableData:[
-                    {
-                        /*id:
-                        name:
-                        start_time:
-                        end_time:
-                        status:
-                        population:*/
-                        id:'12345',
-                        name:'Zela',
-                        start_time:'2018-5',
-                        end_time:'2018-8',
-                        status:'进行中',
-                        population:'100',
-                        real_popul:'50'
-                    },
-                    {
-                        id:'12345',
-                        name:'Zela',
-                        start_time:'2018-5',
-                        end_time:'2018-8',
-                        status:'进行中',
-                        population:'100',
-                        real_popul:'50'
-                    }
-                ]
+                tableData:[]
             }
         },
         methods:{
-            showResult(){}
+          showResult(){
+
+          }
+        },
+        created(){
+          let that = this;
+          axios.get('/api/requester/find-myself')
+            .then(function (response) {
+              let requester_id = response.data.requester.requesterId;
+              console.log(requester_id);
+              axios.get('/api/task/find-by-requester-id',{ params:{ requesterid: requester_id}})
+                .then(function (response) {
+                  that.tableData = response.data.tasks;
+                  console.log(that.tableData);
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
         }
 }
 </script>
