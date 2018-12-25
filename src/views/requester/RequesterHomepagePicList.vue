@@ -27,11 +27,11 @@
                                             :on-remove="handleRemove"
                                             :file-list="fileList"
                                             :data="photoAlbumId"
-                                            :before-upload="beforeUpload"
+                                            :http-request='submitUpload'
                                             :on-error="onError"
                                             data="dialogImageUrl"
                                             >
-                                            <!--:http-request='submitUpload'-->
+                                            <!--:before-upload="beforeUpload"-->
                                             <i class="el-icon-plus"></i>
                                         </el-upload>
                                         <el-dialog :visible.sync="dialogVisible">
@@ -81,7 +81,11 @@ import * as axios from 'axios'
             }
         },
         mounted() {           
-            let that = this;          
+            this.refresh()
+        },
+        methods: {
+            refresh(){
+                let that = this;          
             axios({
                 method:	'get',
                 url: '/api/image/findImages',
@@ -110,8 +114,7 @@ import * as axios from 'axios'
                 .catch(function (error) {
                 alert(error);
                 });
-        },
-        methods: {
+            },
            return_wrapper(){
                this.$router.push('/requester_homepage_pic');
            },
@@ -146,23 +149,14 @@ import * as axios from 'axios'
                 this.dialogVisible = true;
             },
             beforUpload(file){
-               
-            },
-            onError(err, file, fileList){
-                this.$message('上传失败');
-            },
-            submitUpload:function(content){
-                console.log(content);
                 let that = this;
-                let param = new URLSearchParams();
-                //param.append('multipartFile',content.file);  
-                param.append('photoAlbumId',that.id); 
-                let formData = new FormData; 
-                 formData.append('multipartFile', content.file);
+                let fd = new FormData();//通过form数据格式来传
+                fd.append("multipartFile", file); //传文件
+                fd.append("photoAlbumId", that.id); //传其他参数
                 axios({
                 method:'post',
                 url: '/api/image/add-image',
-                data:param,formData
+                data:fd
                 })
                 .then(function(response){
                     if(response.data.code[0] == "2"){
@@ -176,20 +170,30 @@ import * as axios from 'axios'
                 .catch(function (error) {
                     alert(error);
                 }); 
-            }
-            /*,
-            onProgress(file){
-                let that = this;
+            },
+            onError(err, file, fileList){
+                this.$message('上传失败');
+            },
+            submitUpload:function(content){
+                console.log(content);
+               /* let that = this;
                 let param = new URLSearchParams();
-                param.append('multipartFile',file.id);        
+                param.append('multipartFile',file);  
+                param.append('photoAlbumId',that.id); */
+                //let formData = new FormData; 
+                // formData.append('multipartFile', content.file);
+                let that = this;
+                let fd = new FormData();//通过form数据格式来传
+                fd.append("multipartFile",content.file); //传文件
+                fd.append("photoAlbumId", that.id); //传其他参数
                 axios({
-                method:'put',
+                method:'post',
                 url: '/api/image/add-image',
-                data:param
+                data:fd
                 })
                 .then(function(response){
                     if(response.data.code[0] == "2"){
-                        that.$message('删除成功');
+                        that.$message('添加成功');
                         that.dialogFormVisible = false;
                     }
                     else if(response.data.code[0] == "5") {
@@ -198,10 +202,10 @@ import * as axios from 'axios'
                 })
                 .catch(function (error) {
                     alert(error);
-                });       
+                }); 
                 
-                console.log(file)
-            }*/
+            }
+            
         }
     }
 </script>
