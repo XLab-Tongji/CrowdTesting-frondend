@@ -51,8 +51,8 @@
         </el-col>
         <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">任务限制：</span>
-            <span style="font-size:1.0vw"  v-if="task.restrictions!=null">{{task.restrictions}}</span>
+            <span style="font-size:1.0vw">项目领域：</span>
+            <span style="font-size:1.0vw" v-if="task.area!=''&&task.area!=null">{{task.area}}</span>
             <span style="font-size:1.0vw" v-else>暂无</span>
           </div>
         </el-col>
@@ -68,22 +68,6 @@
           <div style="margin-top: 1vh">
             <span style="font-size:1.0vw">最高年龄：</span>
             <span style="font-size:1.0vw">{{task.max_age}}</span>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row type="flex" justify="center">
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
-          <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">项目领域：</span>
-            <span style="font-size:1.0vw" v-if="task.area!=''&&task.area!=null">{{task.area}}</span>
-            <span style="font-size:1.0vw" v-else>暂无</span>
-          </div>
-        </el-col>
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
-          <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">项目用途：</span>
-            <span style="font-size:1.0vw" v-if="task.usage!=''&&task.usage!=null">{{task.usage}}</span>
-            <span style="font-size:1.0vw" v-else>暂无</span>
           </div>
         </el-col>
       </el-row>

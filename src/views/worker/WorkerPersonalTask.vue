@@ -124,12 +124,12 @@
           </template>
           <div style="background-color: #F2F0F0">
             <el-row>
-              <el-col :span="6">
+              <el-col :span="13">
                 <span style="color:#4D4D4D;padding-left: 1vw">项目领域：</span>
               </el-col>
-              <el-col :span="7">
+              <!--<el-col :span="7">
                 <span style="color:#4D4D4D">限制条件：</span>
-              </el-col>
+              </el-col>-->
               <el-col :span="3">
                 <span style="color:#4D4D4D">最低年龄:</span>
               </el-col>
@@ -142,14 +142,14 @@
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="6">
+              <el-col :span="13">
                 <span style="color:#4D4D4D;padding-left: 1vw" v-if="personalTask.area!=null">{{personalTask.area}}</span>
                 <span style="color:#4D4D4D;padding-left: 1vw" v-else>暂无</span>
               </el-col>
-              <el-col :span="7">
+              <!--<el-col :span="7">
                 <span style="color:#4D4D4D" v-if="personalTask.restrictions!=null">{{personalTask.restrictions}}</span>
                 <span style="color:#4D4D4D" v-else>暂无</span>
-              </el-col>
+              </el-col>-->
               <el-col :span="3">
                 <span style="color:#4D4D4D">{{personalTask.min_age}}</span>
               </el-col>
@@ -187,12 +187,12 @@
           </template>
           <div style="background-color: #4D8D9D">
             <el-row>
-              <el-col :span="6">
+              <el-col :span="13">
                 <span style="color:#ffffff;padding-left: 1vw">项目领域:</span>
               </el-col>
-              <el-col :span="7">
+              <!--<el-col :span="7">
                 <span style="color:#ffffff">限制条件</span>
-              </el-col>
+              </el-col>-->
               <el-col :span="3">
                 <span style="color:#ffffff">最低年龄:</span>
               </el-col>
@@ -209,10 +209,10 @@
                 <span style="color:#ffffff;padding-left: 1vw" v-if="personalTask.area!=null">{{personalTask.area}}</span>
                 <span style="color:#ffffff;padding-left: 1vw" v-else>暂无</span>
               </el-col>
-              <el-col :span="7">
+              <!--<el-col :span="7">
                 <span style="color:#ffffff" v-if="personalTask.restrictions!=null">{{personalTask.restrictions}}</span>
                 <span style="color:#ffffff" v-else>暂无</span>
-              </el-col>
+              </el-col>-->
               <el-col :span="3">
                 <span style="color:#ffffff">{{personalTask.min_age}}</span>
               </el-col>

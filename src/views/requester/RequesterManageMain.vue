@@ -59,7 +59,7 @@
                             label="操作"
                             width="180">
                             <template slot-scope="scope">
-                                <el-button @click="showResult"  size="small">查看结果</el-button>
+                                <el-button @click="showResult(scope.row.id)"  size="small">查看结果</el-button>
                             </template>
                             </el-table-column>
                         </el-table>
@@ -88,8 +88,8 @@ export default {
             }
         },
         methods:{
-          showResult(){
-
+          showResult(task_id){
+            this.$router.push({ path: 'requester_task_data_analysis', query: { task_id: task_id }})
           }
         },
         created(){
