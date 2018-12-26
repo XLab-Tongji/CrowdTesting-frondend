@@ -139,7 +139,7 @@
                             </div>
                             <el-form-item>
                               <el-button class="next_step1" @click="submitTaskInformation">
-                                    提交
+                                    保存
                                 </el-button>
                                 <el-button  @click="toDesign" class="next_step1" type="primary">
                                     下一步
@@ -178,10 +178,23 @@
                                   <div v-if="scope.row.question_title.must===0">
                                     <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【单选题】(选填)</span>
                                     <el-button type="primary" icon="el-icon-plus" size="mini" @click="showAddPic(scope.$index)">图片</el-button>
+                                    <span v-if="resources.hasOwnProperty(scope.$index)&&resources[scope.$index].length>0">(已选择图片：
+                                      <span v-for="resource in resources[scope.$index]">
+                                        {{resource}}
+                                      </span>
+                                      <span>)</span>
+                                    </span>
+                                    <span>a</span>
                                   </div>
                                   <div v-else>
                                     <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【单选题】(必填)</span>
                                     <el-button type="primary" icon="el-icon-plus" size="mini" @click="showAddPic(scope.$index)">图片</el-button>
+                                    <span v-if="resources.hasOwnProperty(scope.$index)&&resources[scope.$index].length>0">(已选择图片：
+                                      <span v-for="resource in resources[scope.$index]">
+                                        {{resource}}
+                                      </span>
+                                      <span>)</span>
+                                    </span>
                                   </div>
                                   <template>
                                     <div v-for="option in scope.row.options">
@@ -197,10 +210,22 @@
                                   <div v-if="scope.row.question_title.must===0">
                                     <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【多选题】(选填)</span>
                                     <el-button type="primary" icon="el-icon-plus" size="mini" @click="showAddPic(scope.$index)">图片</el-button>
+                                    <span v-if="resources.hasOwnProperty(scope.$index)&&resources[scope.$index].length>0">(已选择图片：
+                                      <span v-for="resource in resources[scope.$index]">
+                                        {{resource}}
+                                      </span>
+                                      <span>)</span>
+                                    </span>
                                   </div>
                                   <div v-else>
                                     <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【多选题】(必填)</span>
                                     <el-button type="primary" icon="el-icon-plus" size="mini" @click="showAddPic(scope.$index)">图片</el-button>
+                                    <span v-if="resources.hasOwnProperty(scope.$index)&&resources[scope.$index].length>0">(已选择图片：
+                                      <span v-for="resource in resources[scope.$index]">
+                                        {{resource}}
+                                      </span>
+                                      <span>)</span>
+                                    </span>
                                   </div>
                                   <template>
                                     <div v-for="option in scope.row.options">
@@ -216,10 +241,22 @@
                                   <div v-if="scope.row.question_title.must===0">
                                     <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【简答题】（选填）</span>
                                     <el-button type="primary" icon="el-icon-plus" size="mini" @click="showAddPic(scope.row.question_id)">图片</el-button>
+                                    <span v-if="resources.hasOwnProperty(scope.$index)&&resources[scope.$index].length>0">(已选择图片：
+                                      <span v-for="resource in resources[scope.$index]">
+                                        {{resource}}
+                                      </span>
+                                      <span>)</span>
+                                    </span>
                                   </div>
                                   <div v-else>
                                     <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【简答题】（必填）</span>
                                     <el-button type="primary" icon="el-icon-plus" size="mini" @click="showAddPic(scope.$index)">图片</el-button>
+                                    <span v-if="resources.hasOwnProperty(scope.$index)&&resources[scope.$index].length>0">(已选择图片：
+                                      <span v-for="resource in resources[scope.$index]">
+                                        {{resource}}
+                                      </span>
+                                      <span>)</span>
+                                    </span>
                                   </div>
                                 </div>
                               </template>
@@ -243,8 +280,8 @@
                                     <el-card :body-style="{ padding: '0px' }" style="width:150px">
                                       <img :src="picture.link" class="image" style="width: 150px;height:120px">
                                       <div style="text-align:center">
-                                        <el-button type="text" class="button" v-if="questions[index_of_questions].resource.length === 0 || questions[index_of_questions].resource.indexOf(picture.id)===-1" @click="addPicture(picture.id)">添加</el-button>
-                                        <el-button type="text" class="button" v-else @click="deletePicture(picture.id)">删除</el-button>
+                                        <el-button type="text" class="button" v-if="resources.hasOwnProperty(index_of_questions) && resources[index_of_questions].indexOf(picture.id)!==-1" @click="deletePicture(picture.id)">删除</el-button>
+                                        <el-button type="text" class="button" v-else @click="addPicture(picture.id)">添加</el-button>
                                       </div>
                                     </el-card>
                                   </el-col>
@@ -276,6 +313,31 @@
                         </el-button>
                       </el-col>
                     </el-row>
+                    <el-dialog title="填写说明" :visible.sync="helpDialogVisible">
+                      <p><b>&nbsp;&nbsp;&nbsp;&nbsp;语法规则</b></p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可使用左侧的输入栏进行输入问卷，具体语法规则如下：</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.默认以数字开头为试题，字母开头为选项，如果连续出现两个数字开头的行，且无后缀指定，第一个行默认为简答题；如果第一行为数字开头，接下来的行不为数字开头，则默认为单选题，且直到下一个数字开头的行出现之前，均为选项。所有题目默认为必填。</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.推荐使用"数字+'.'"作为题目开头，"字母+'.'"作为选项开头（字母会自动排序，无需区分大小写）。</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.可通过后缀指定题型："【单选题】"、"【多选题】"、"【简答题】"、"（必填）"、"（选填）"；同时，可以在选项后填写"【填空】"，从而在选项中进行填空。</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.可通过右边的部分实时观察表格生成情况，并进行修改。</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.可通过题目旁边的添加图片按钮添加或删除图片。（注：建议在添加图片后，尽量不要改动题目顺序，以免出现图片与题目不匹配的情况）。</p>
+                      <p><b>&nbsp;&nbsp;&nbsp;&nbsp;样例（可复制此样例到输入栏查看效果）</b></p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.您的性别：</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a.男</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.女</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.您的专业是：【单选题】</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a.计算及应用</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.计算机平面设计</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c.计算机文秘</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d.其他</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.您为什么会选择计算机专业就读：【多选题】（选填）</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a.自己的兴趣</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b.父母及朋友推荐</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c.计算机的就业前景好</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d.其他【填空】</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.现今众多本专业的同学被迫转行，您的看法是：【简答题】</p>
+                      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.您希望得到一份什么样的工作：（必填）</p>
+                    </el-dialog>
                   </el-tab-pane>
 
             </el-tabs>
@@ -469,6 +531,8 @@ export default {
             population:0,
             task_submit:false,
             refresh:false,
+            resources:[],
+            helpDialogVisible:false,
           };
         },
         created(){
@@ -488,7 +552,7 @@ export default {
         });
         },
         methods: {
-          showAddPic(index){
+          showAddPic(index,content){
             this.index_of_questions = index;
             this.dialogVisible = true;
           },
@@ -511,7 +575,7 @@ export default {
                 console.log(questions);
                 for (let i = 0; i < questions.length; i++) {
                   let resource_loading = 0;
-                  if (questions[i].resource.length > 0) {
+                  if(that.resources.hasOwnProperty(i)&&that.resources[i].length>0) {
                     resource_loading = 1;
                   }
                   let param = new URLSearchParams();
@@ -555,25 +619,27 @@ export default {
                               console.log(error);
                             });
                         }
-                        for (let k = 0; k < questions[i].resource.length; k++) {
-                          let paramb = new URLSearchParams();
-                          paramb.append('questionId', question_id);
-                          paramb.append('resourceId', questions[i].resource[k]);
-                          axios({
-                            method: 'post',
-                            url: '/api/question/add-resource',
-                            data: paramb
-                          })
-                            .then(function (response) {
-                              console.log(response);
-                              if (response.data.code[0] == "2") {
-                                console.log(response);
-                              }
+                        if(that.resources.hasOwnProperty(i)) {
+                          for (let k = 0; k < that.resources[i].length; k++) {
+                            let paramb = new URLSearchParams();
+                            paramb.append('questionId', question_id);
+                            paramb.append('resourceId', that.resources[i][k]);
+                            axios({
+                              method: 'post',
+                              url: '/api/question/add-resource',
+                              data: paramb
                             })
-                            .catch(function (error) {
-                              success = false;
-                              console.log(error);
-                            });
+                              .then(function (response) {
+                                console.log(response);
+                                if (response.data.code[0] == "2") {
+                                  console.log(response);
+                                }
+                              })
+                              .catch(function (error) {
+                                success = false;
+                                console.log(error);
+                              });
+                          }
                         }
                         that.$router.push({path: 'requester_manage_main'});
                       }
@@ -606,14 +672,29 @@ export default {
           toDesign(){
             this.activeName2='second';
           },
-          open_help() {},
+          open_help() {
+            this.helpDialogVisible = true;
+          },
           addPicture(picture_id){
-            this.questions[this.index_of_questions].resource.push(picture_id);
-            console.log(this.questions);
+            console.log(this.resources.hasOwnProperty(this.index_of_questions));
+            if(this.resources.hasOwnProperty(this.index_of_questions)){
+              console.log(this.resources[this.index_of_questions].indexOf(picture_id));
+              this.resources[this.index_of_questions].push(picture_id);
+            }
+            else{
+              let resource = [];
+              resource.push(picture_id);
+              this.resources[this.index_of_questions] = resource;
+            }
+            let resource_copy = this.resources;
+            this.resources = [];
+            this.resources = resource_copy;
           },
           deletePicture(picture_id){
-            this.questions[this.index_of_questions].resource.splice(this.questions[this.index_of_questions].resource.indexOf(picture_id),1);
-            console.log(this.questions);
+            this.resources[this.index_of_questions].splice(this.resources[this.index_of_questions].indexOf(picture_id),1);
+            let resource_copy = this.resources;
+            this.resources = [];
+            this.resources = resource_copy;
           },
           submitTaskInformation(){
             function dateToString(draftTimeV){
@@ -662,11 +743,11 @@ export default {
                   that.task_id = response.data.taskId;
                   that.refresh = true;
                   that.task_submit = true;
-                  that.$message("提交成功！");
+                  that.$message("保存成功！");
                 })
                 .catch(function (error) {
                   console.log(error);
-                  that.$message("上传失败！");
+                  that.$message("填写格式错误！");
                 });
             }).catch(() => {
               that.$message({
