@@ -514,6 +514,9 @@
         .then(function (response) {
           let tasks = response.data.tasks;
           let tasks_copy = tasks;
+          if(tasks_copy == undefined ||tasks_copy == null){
+            tasks_copy = [];
+          }
           tasks = [];
           for(let i=0;i<tasks_copy.length;i++){
             if(tasks_copy[i].status != '100%'){
@@ -525,6 +528,9 @@
           axios.get('/api/personal-task/find-my-task')
             .then(function (response) {
               let personalTasks = response.data.tasks;
+              if(personalTasks == undefined|| personalTasks==null){
+                personalTasks = [];
+              }
               let personalTaskList = [];
               for(let i=0;i<personalTasks.length;i++){
                 personalTaskList.push(personalTasks[i].id);
