@@ -13,7 +13,8 @@
                             </el-input>
                     </el-form-item>
                     <el-form-item label="" prop="email">
-                        <el-input v-model="user.email" placeholder="邮箱">
+                        <el-input v-model="user.email" placeholder="邮箱"
+                        >
                             <template slot="prepend">&nbsp;&nbsp;</template>
                             </el-input>
                     </el-form-item>
@@ -47,6 +48,7 @@
 </template>
 
 <script>
+import * as axios from 'axios'
     export default {
         methods: {
            login () {
@@ -55,18 +57,40 @@
             register(formName) {
                 this.$refs[formName].validate((valid) => {
                 if (valid) {
-                    axios.post('http://localhost:8080/',{
-                    "username":this.username,
-                    "email":this.email,
-                    "tele":this.teleNumber,
-                    "pwd":this.pwd
-                }).then(function(response){
-                    if(response.status == 200) {                 
-                    }
-                }).catch(function(error){
-                   
+                    let that = this;
+                    let param = new URLSearchParams();
+                    param.append('username',that.user.name); 
+                    param.append('eMail',that.user.email);  
+                    param.append('password',that.user.pwd);
+                    param.append('name','');
+                    param.append('teleNumber',0); 
+                    param.append('research_field','');       
+                    param.append('institutionName',''); 
+                    param.append('address',''); 
+                    param.append('payMethod','');
+                    param.append('gender','');
+                    param.append('age',0);                      
+                    axios({
+                    method:'post',
+                    url: '/api/register-as-requester',
+                    data:param
+                    })
+                    .then(function(response){
+                        if(response.data.code[0] == "2"){
+                            that.$message('注册成功！');                           
+                            that.$router.replace('/login');
+                        }
+                        else if(response.data.code == "400") {
+                        that.wrong_pwd("输入格式有误")              
+                        }  
+                        else if(response.data.code == "500") {
+                        that.wrong_pwd("服务器错误")              
+                        }               
+                    })
+                    .catch(function (error) {
+                        alert(error);
                     });
-                   this.$router.push('/register_requester_info');
+                   
                 } else {
                     console.log('error submit!!');
                     return false;
@@ -96,13 +120,20 @@
                 };    
             return {    
                        
-                user: {},
+                user: {
+                    username:'',
+                    email:'',
+                    pwd:'',
+                    pwd2:''
+                },
                 rules: {
                     name: [
                         {required: true, message: '用户名不能为空', trigger: 'blur'}
                     ],
                     email:[
-                        {required: true, message: '邮箱不能为空', trigger: 'blur'}
+                        {required: true, message: '邮箱不能为空', trigger: 'blur'},
+                        {pattern:/[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+                        message:'邮箱格式不正确'}            
                     ],
                     pwd: [
                         {validator:validatePass, trigger: 'blur'}
@@ -134,7 +165,7 @@
     margin-top: 30px;
 }
 .el-input__inner{
-    border-radius: 12px;
+    border-radius: 4px;
 }
 .el-input__inner:hover{
     border-color: rgb(147, 206, 229);
@@ -147,7 +178,7 @@
 .register_button{
     width:100%;
     background-color: #00ACED;
-    font-size: 18px;
+    font-size: 16px;
     color: #fff;
 }
 .register_button:hover{

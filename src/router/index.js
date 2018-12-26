@@ -143,12 +143,6 @@ const router = new Router({
       component: RequesterTask
     },
     {
-      path: '/requester_task_data_analysis',
-      name: 'RequesterTaskDataAnalysis',
-      meta: { login: true },
-      component: RequesterTaskDataAnalysis
-    },
-    {
       path: '/requester_homepage_pic',
       name: 'RequesterHomepagePic',
       meta: { login: true },
