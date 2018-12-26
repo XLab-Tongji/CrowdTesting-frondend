@@ -446,7 +446,7 @@
         .then(function (response) {
           console.log(response);
           let personalTasks = response.data.tasks;
-          if(personalTasks == undefined){
+          if(personalTasks == undefined||personalTasks == null){
             personalTasks =[];
           }
           for(let i=0;i<personalTasks.length;i++){
