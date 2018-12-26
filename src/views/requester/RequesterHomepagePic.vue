@@ -18,7 +18,7 @@
                         <el-col :span="5"  v-for="item in picFile" 
                             :key="item.id" >
                             <div class="pic_box ">
-                                <img class="img" :src="pic" @click="show_list(item.photoAlbum.id)">                           
+                                <img class="img" :src="item.cover" @click="show_list(item.photoAlbum.id)">                           
                             <!--{{(item.resources[0].link='')?'../../../static/blank.jpg':item.resources[0].link}}-->
                             <div class="names">{{item.photoAlbum.name}}</div>
                             </div>                            
@@ -66,7 +66,9 @@ import * as axios from 'axios'
             RequesterHomepageSidebar
         },
         computed: {
-            
+            pic:function(item){
+                
+            }
         },
         data(){           
             return{
@@ -85,9 +87,25 @@ import * as axios from 'axios'
             url: '/api/image/findImages',
           })
             .then(function (response) {
-              //console.log(response);
+            console.log(response);
              that.picFile = response.data.images;
-             //console.log(response.data.images[0].resources[0].link)
+             for(let i=0;i<response.data.images.length;i++){
+                let albums=response.data.images[i].resources;
+                let link;
+                //console.log(albums.length)
+                if(albums.length==0){
+                    link='../../../static/blank.jpg';
+                    //console.log(link)
+                }
+                else{
+                    link= albums[0].link;
+                }
+                console.log(that.picFile[i])
+                that.picFile[i].cover=link;
+                
+             }
+             
+             console.log(that.picFile)
             })
             .catch(function (error) {
               alert(error);

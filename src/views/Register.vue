@@ -57,7 +57,8 @@
 <style scoped>
 .el-button{
     border:solid 1px rgb(168, 168, 168);
-    border-radius: 15px;
+    border-radius: 4px;
+    margin: 0;
 }
 .info{
     margin:20px auto;

@@ -59,8 +59,9 @@ import * as axios from 'axios'
                 param.append('gender',that.requester.gender);      
                 param.append('age',that.requester.age);       
                 axios({
-                    method:	'post',
+                    method:	'put',
                     url: '/api/requester/update',
+                    data:param
                 })
                     .then(function (response) {
                         console.log(response);
