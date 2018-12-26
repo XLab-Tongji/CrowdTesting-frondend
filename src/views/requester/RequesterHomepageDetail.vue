@@ -45,7 +45,40 @@ import * as axios from 'axios'
             RequesterHomepageSidebar
         },
         methods: {
-
+            modify(){
+                let that = this;
+                let param = new URLSearchParams();
+                param.append('teleNumber',that.requester.teleNumber);
+                param.append('username',that.requester.username);
+                param.append('name',that.requester.name);
+                param.append('eMail',that.requester.eMail);
+                param.append('research_field',that.requester.research_field); 
+                param.append('institutionName',that.requester.institutionName);
+                param.append('address',that.requester.address);
+                param.append('payMethod',that.requester.payMethod);
+                param.append('gender',that.requester.gender);      
+                param.append('age',that.requester.age);       
+                axios({
+                    method:	'post',
+                    url: '/api/requester/update',
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        if(response.data.code[0] == "2"){
+                            that.$message('修改成功！');                           
+                            
+                        }
+                        else if(response.data.code[0] == "4") {
+                        that.wrong_pwd("输入格式有误")              
+                        }  
+                        else if(response.data.code == "500") {
+                        that.wrong_pwd("服务器错误")              
+                        }                      
+                    })
+                    .catch(function (error) {
+                    alert(error);
+                    });
+            }
         },
         data(){
             return{
