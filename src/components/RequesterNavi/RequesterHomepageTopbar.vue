@@ -16,8 +16,8 @@
                     background-color="#313233"
                     text-color="#fff"
                     active-text-color="#5ED5D1">
-                <el-menu-item index="requester_manage_main" @click="manage">管理</el-menu-item>
-                <el-menu-item index="requester_create_pro1" @click="create">创建</el-menu-item>
+                <el-menu-item index="requester_manage_main">管理</el-menu-item>
+                <el-menu-item index="requester_create_pro1">创建</el-menu-item>
 
             </el-menu>
         </el-col>

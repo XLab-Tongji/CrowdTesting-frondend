@@ -97,7 +97,7 @@
         </el-col>
       </el-row>
       <el-collapse accordion v-for = "task in showTaskList" id = "collapse" v-model="activeNames" :key="task.id">
-          <el-collapse-item v-if="user.level<task.level">
+          <el-collapse-item v-if="user.level<task.level || task.min_age > user.age || task.max_age < user.age">
             <template slot="title">
               <el-col :span="7" v-if="task.name!=null">
                 <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh">{{task.name}}</span>
@@ -128,12 +128,12 @@
             </template>
             <div style="background-color: #F2F0F0">
               <el-row>
-                <el-col :span="6">
+                <el-col :span="13">
                   <span style="color:#4D4D4D;padding-left: 1vw">项目领域:</span>
                 </el-col>
-                <el-col :span="7">
+                <!--<el-col :span="7">
                   <span style="color:#4D4D4D">限制条件:</span>
-                </el-col>
+                </el-col>-->
                 <el-col :span="3">
                   <span style="color:#4D4D4D">最低年龄:</span>
                 </el-col>
@@ -145,14 +145,14 @@
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="6">
-                  <span style="color:#4D4D4D;padding-left: 1vw" v-if="task.area!=null">{{task.area}}</span>
+                <el-col :span="13">
+                  <span style="color:#4D4D4D;padding-left: 1vw" v-if="task.area!=null||task.area!=''">{{task.area}}</span>
                   <span style="color:#4D4D4D;padding-left: 1vw" v-else>暂无</span>
                 </el-col>
-                <el-col :span="7">
+                <!--<el-col :span="7">
                   <span style="color:#4D4D4D" v-if="task.restrictions!=null">{{task.restrictions}}</span>
                   <span style="color:#4D4D4D" v-else>暂无</span>
-                </el-col>
+                </el-col>-->
                 <el-col :span="3">
                   <span style="color:#4D4D4D">{{task.min_age}}</span>
                 </el-col>
@@ -199,12 +199,12 @@
             </template>
             <div style="background-color: #4D8D9D">
               <el-row>
-                <el-col :span="6">
+                <el-col :span="13">
                   <span style="color:#ffffff;padding-left: 1vw">项目领域:</span>
                 </el-col>
-                <el-col :span="7">
+                <!--<el-col :span="7">
                   <span style="color:#ffffff">限制条件:</span>
-                </el-col>
+                </el-col>-->
                 <el-col :span="3">
                   <span style="color:#ffffff">最低年龄:</span>
                 </el-col>
@@ -216,14 +216,14 @@
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="6">
+                <el-col :span="13">
                   <span style="color:#ffffff;padding-left: 1vw" v-if="task.area!=null">{{task.area}}</span>
                   <span style="color:#ffffff;padding-left: 1vw" v-else>暂无</span>
                 </el-col>
-                <el-col :span="7">
-                  <span style="color:#ffffff" v-if="task.restrictions!=null">{{task.restrictions}}</span>
+                <!--<el-col :span="7">
+                  <span style="color:#ffffff" v-if="task.restrictions!=null||task.restrictions!=''">{{task.restrictions}}</span>
                   <span style="color:#ffffff" v-else>暂无</span>
-                </el-col>
+                </el-col>-->
                 <el-col :span="3">
                   <span style="color:#ffffff">{{task.min_age}}</span>
                 </el-col>

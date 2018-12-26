@@ -3,13 +3,13 @@
     <el-row type="flex" justify="center" style="margin-top:2vh">
       <el-col :span="12">
         <el-collapse accordion v-for = "a_question in questions" @change="changeQuestion" :key="a_question.question.id" v-model="activeName">
-            <el-collapse-item :name="a_question.question.id">
+            <el-collapse-item :name="a_question.question.id" v-if="a_question.question.type!=2">
               <template slot="title">
                 <el-col :span="14">
                   <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh">{{a_question.question.content}}</span>
                 </el-col>
               </template>
-              <div style="height:500px" :id ="a_question.question.id">
+              <div style="width:600px;height:400px" :id ="a_question.question.id">
               </div>
             </el-collapse-item>
         </el-collapse>
@@ -40,13 +40,11 @@
             name: this.questions[index].options[j].content
           });
         }
-        // console.log(option_copy.legend.data);
-        // console.log(option_copy.series.data);
-        // console.log(option_copy);
+        console.log(this.questions[index].question.id);
         let myChart = echarts.init(document.getElementById(this.questions[index].question.id))
         let option ={
           title: {
-            text: '流量来源',
+            text: '选项比例',
             left: 'center',
             textStyle: {
               color: '#4D4D4D',
@@ -60,7 +58,7 @@
           },
           //图例，选择要显示的项目
           legend: {
-            bottom: 10,
+            bottom: 1,
             left:'center',
             textStyle:{
               fontSize:14
@@ -82,43 +80,38 @@
                 normal: {
                   show: true,
                   position: 'inside',
-                  fontSize:'10',
-                  formatter:'{d}%'
-                }
-              },
-              labelLine: {
-                normal: {
-                  show: false
+                  fontSize: '10',
+                  formatter: '{d}%'
                 }
               },
             }
           ]
         }
-        console.log(option);
         option.legend.data = data;
         option.series[0].data = key_value.sort(function (a, b) {
           return a.value - b.value;
         });
         myChart.setOption(option)
-      }
+      },
+
     },
     data () {
       return {
         activeName: '',
         questions:[],
-        task_id: 1,
+        task_id: 0,
       }
     },
     beforeMount:function(){
       let that =this;
+      that.task_id = this.$route.query.task_id;
       let questions = [];
       axios.get('/api/question/see-all-answer',
         {params:{'taskId': that.task_id}})
         .then(function (response) {
           //console.log(response);
           that.questions = response.data.Questions;
-          questions = response.data.Questions;
-          that.$forceUpdate();
+          console.log(that.questions);
         })
         .catch(function (error) {
           console.log(error);

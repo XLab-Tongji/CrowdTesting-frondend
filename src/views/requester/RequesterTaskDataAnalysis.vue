@@ -15,13 +15,13 @@
             <i class="el-icon-menu"></i>
             <span slot="title">答题情况分析</span>
           </el-menu-item>
-          <el-submenu index="2">
+          <!--<el-submenu index="2">
             <template slot="title">
               <i class="el-icon-info"></i>
               <span>问卷可视化信息</span>
             </template>
             <el-menu-item index="2-1"><i class="el-icon-time"></i>日记录</el-menu-item>
-          </el-submenu>
+          </el-submenu>-->
         </el-menu>
       </el-col>
       <el-col :span="20">
@@ -63,10 +63,17 @@
     data () {
       return {
         select_page: '1',
+        clientHeight:''
       }
     },
     mounted () {
-      /*ECharts图表*/
+      this.clientHeight=document.documentElement.clientHeight;
+      window.onresize = function temp() {
+        this.clientHeight = document.documentElement.clientHeight;
+        console.log("a");
+        console.log(this.clientHeight);
+      };
+      /*ECharts图表
       let myChart = echarts.init(document.getElementById('myChart'));
       myChart.setOption({
         xAxis: {
@@ -80,7 +87,7 @@
           data: [1, 3, 4, 7, 4, 6, 9],
           type: 'line'
         }]
-      })
+      })*/
     }
   }
 </script>

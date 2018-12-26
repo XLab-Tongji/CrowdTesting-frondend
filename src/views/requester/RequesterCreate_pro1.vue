@@ -15,7 +15,7 @@
                 <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
                 <el-tab-pane label="项目属性" name="first">
                     <div class="attribute box_containing">
-                        <el-form label-position="left" label-width="120px" :model="user" style="width: 600px;" >
+                        <el-form label-position="left" label-width="120px" style="width: 600px;" >
                             <el-form-item label="项目名称">
                              <el-input v-model="task.name"></el-input>
                             </el-form-item>
@@ -138,10 +138,10 @@
                             </el-form-item>
                             </div>
                             <el-form-item>
-                              <el-button  @click="" :loading=this.button_disabled class="next_step1" @click="submitTaskInformation">
+                              <el-button class="next_step1" @click="submitTaskInformation">
                                     提交
                                 </el-button>
-                                <el-button  @click="toDesign" :loading=this.button_disabled class="next_step1" type="primary">
+                                <el-button  @click="toDesign" class="next_step1" type="primary">
                                     下一步
                                 </el-button>
                             </el-form-item>
@@ -404,7 +404,7 @@ export default {
               reward:0,
               status:0,
               type:'',
-              restrictions:'',
+              restrictions:'暂无',
               start_time:'',
               end_time:'',
               level:'',
@@ -456,7 +456,7 @@ export default {
                 value: '交通',
                 label: '交通'
                 }
-                
+
                 ],
             worker_condition_seen:false,
             ex_condition:[],
@@ -467,6 +467,8 @@ export default {
             images:[],
             limi_value:'',
             population:0,
+            task_submit:false,
+            refresh:false,
           };
         },
         created(){
@@ -491,97 +493,108 @@ export default {
             this.dialogVisible = true;
           },
           submit() {
-            this.$confirm('是否确认提交答案?', '提示', {
+            this.$confirm('是否确认提交?', '提示', {
               confirmButtonText: '确定',
               cancelButtonText: '取消',
               type: 'warning'
             }).then(() => {
-              let questions = this.questions;
-              let task_id = this.task_id;
-              let that = this;
-              let success = true;
-              console.log(questions);
-              for(let i=0;i<questions.length;i++) {
-                let resource_loading = 0;
-                if(questions[i].resource.length>0){
-                  resource_loading = 1;
+              console.log(this.questions);
+              if(this.task_submit==true) {
+                while (!this.refresh) {
                 }
-                let param = new URLSearchParams();
-                param.append('taskId', task_id);
-                param.append('content', questions[i].question_title.question_content);
-                param.append('resourceLoading', resource_loading);
-                param.append('type', questions[i].question_title.type);
-                param.append('compulsory', questions[i].question_title.must);
-                axios({
-                  method: 'post',
-                  url: '/api/question/add-question',
-                  data: param
-                })
-                  .then(function (response) {
-                    console.log(response);
-                    if (response.data.code[0] == "2") {
-                      let question_id = response.data.questionId;
-                      console.log(question_id);
-                      for (let j = 0; j < questions[i].options.length; j++) {
-                        questions[i].options[j].question_id = question_id;
-                        console.log(questions[i].options[j].question_id);
-                        let parama = new URLSearchParams();
-                        parama.append('content', questions[i].options[j].content);
-                        parama.append('questionId', questions[i].options[j].question_id);
-                        parama.append('openAnswerPermission', questions[i].options[j].open_answer_permission);
-                        parama.append('optionNumber', questions[i].options[j].option_number);
-                        console.log(parama);
-                        axios({
-                          method: 'post',
-                          url: '/api/question/add-option',
-                          data: parama
-                        })
-                          .then(function (response) {
-                            console.log(response);
-                            if (response.data.code[0] == "2") {
-                              console.log(response);
-                            }
-                          })
-                          .catch(function (error) {
-                            success = false;
-                            console.log(error);
-                          });
-                      }
-                      for (let k = 0; k < questions[i].resource.length; k++) {
-                        let paramb = new URLSearchParams();
-                        paramb.append('questionId', question_id);
-                        paramb.append('resourceId', questions[i].resource[k]);
-                        axios({
-                          method: 'post',
-                          url: '/api/question/add-resource',
-                          data: paramb
-                        })
-                          .then(function (response) {
-                            console.log(response);
-                            if (response.data.code[0] == "2") {
-                              console.log(response);
-                            }
-                          })
-                          .catch(function (error) {
-                            success = false;
-                            console.log(error);
-                          });
-                      }
-                    }
+                this.submit = false;
+                let questions = this.questions;
+                let task_id = this.task_id;
+                let that = this;
+                let success = true;
+                that.refresh = false;
+                console.log(questions);
+                for (let i = 0; i < questions.length; i++) {
+                  let resource_loading = 0;
+                  if (questions[i].resource.length > 0) {
+                    resource_loading = 1;
+                  }
+                  let param = new URLSearchParams();
+                  param.append('taskId', task_id);
+                  param.append('content', questions[i].question_title.question_content);
+                  param.append('resourceLoading', resource_loading);
+                  param.append('type', questions[i].question_title.type);
+                  param.append('compulsory', questions[i].question_title.must);
+                  axios({
+                    method: 'post',
+                    url: '/api/question/add-question',
+                    data: param
                   })
-                  .catch(function (error) {
-                    success = false;
-                    console.log(error);
-                  });
-              }
-              if(success == true){
-                that.$message("提交成功！");
+                    .then(function (response) {
+                      console.log(response);
+                      if (response.data.code[0] == "2") {
+                        let question_id = response.data.questionId;
+                        console.log(question_id);
+                        for (let j = 0; j < questions[i].options.length; j++) {
+                          questions[i].options[j].question_id = question_id;
+                          console.log(questions[i].options[j].question_id);
+                          let parama = new URLSearchParams();
+                          parama.append('content', questions[i].options[j].content);
+                          parama.append('questionId', questions[i].options[j].question_id);
+                          parama.append('openAnswerPermission', questions[i].options[j].open_answer_permission);
+                          parama.append('optionNumber', questions[i].options[j].option_number);
+                          console.log(parama);
+                          axios({
+                            method: 'post',
+                            url: '/api/question/add-option',
+                            data: parama
+                          })
+                            .then(function (response) {
+                              console.log(response);
+                              if (response.data.code[0] == "2") {
+                                console.log(response);
+                              }
+                            })
+                            .catch(function (error) {
+                              success = false;
+                              console.log(error);
+                            });
+                        }
+                        for (let k = 0; k < questions[i].resource.length; k++) {
+                          let paramb = new URLSearchParams();
+                          paramb.append('questionId', question_id);
+                          paramb.append('resourceId', questions[i].resource[k]);
+                          axios({
+                            method: 'post',
+                            url: '/api/question/add-resource',
+                            data: paramb
+                          })
+                            .then(function (response) {
+                              console.log(response);
+                              if (response.data.code[0] == "2") {
+                                console.log(response);
+                              }
+                            })
+                            .catch(function (error) {
+                              success = false;
+                              console.log(error);
+                            });
+                        }
+                        that.$router.push({path: 'requester_manage_main'});
+                      }
+                    })
+                    .catch(function (error) {
+                      success = false;
+                      console.log(error);
+                    });
+                }
+                if (success == true) {
+                  that.$message("提交成功！");
+                }
+                else {
+                  that.$message("上传失败！");
+                }
               }
               else{
-                that.$message("上传失败！");
+                this.$message("请先提交任务信息！");
               }
             }).catch(() => {
-              that.$message({
+              this.$message({
                 type: 'info',
                 message: '取消提交'
               });
@@ -596,11 +609,11 @@ export default {
           open_help() {},
           addPicture(picture_id){
             this.questions[this.index_of_questions].resource.push(picture_id);
-            console.log(this.questions[this.index_of_questions]);
+            console.log(this.questions);
           },
           deletePicture(picture_id){
             this.questions[this.index_of_questions].resource.splice(this.questions[this.index_of_questions].resource.indexOf(picture_id),1);
-            console.log(this.questions[this.index_of_questions]);
+            console.log(this.questions);
           },
           submitTaskInformation(){
             function dateToString(draftTimeV){
@@ -647,7 +660,8 @@ export default {
               })
                 .then(function (response) {
                   that.task_id = response.data.taskId;
-                  console.log(that.task_id)
+                  that.refresh = true;
+                  that.task_submit = true;
                   that.$message("提交成功！");
                 })
                 .catch(function (error) {
