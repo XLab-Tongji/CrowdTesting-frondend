@@ -62,8 +62,8 @@ import * as axios from 'axios'
                     param.append('username',that.user.name);
                     param.append('eMail',that.user.email);
                     param.append('password',that.user.pwd);
-                    param.append('name',' ');
-                    param.append('teleNumber',' ');
+                    param.append('name','');
+                    param.append('teleNumber','');
                     param.append('withdrawnMethod','');
                     param.append('education','');
                     param.append('workArea','');
