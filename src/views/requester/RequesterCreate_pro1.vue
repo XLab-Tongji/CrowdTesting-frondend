@@ -641,7 +641,6 @@ export default {
                               });
                           }
                         }
-                        that.$router.push({path: 'requester_manage_main'});
                       }
                     })
                     .catch(function (error) {
@@ -651,6 +650,7 @@ export default {
                 }
                 if (success == true) {
                   that.$message("提交成功！");
+                  that.$router.push({path: 'requester_manage_main'});
                 }
                 else {
                   that.$message("上传失败！");

@@ -15,72 +15,72 @@
         </el-col>
       </el-row>
       <el-row type="flex" justify="center" style="margin-top:6vh">
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 2vh">
-            <span style="font-size:1.0vw">项目类型：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">项目类型：</span>
             <span style="font-size:1.0vw">{{task.type}}</span>
           </div>
         </el-col>
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 2vh">
-            <span style="font-size:1.0vw">资质：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">资质：</span>
             <span style="font-size:1.0vw">Level {{task.level}}</span>
           </div>
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">创建时间：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">创建时间：</span>
             <span style="font-size:1.0vw">{{task.start_time}}</span>
           </div>
         </el-col>
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">完成度：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">完成度：</span>
             <span style="font-size:1.0vw">{{task.status}}</span>
           </div>
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">终止时间：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">终止时间：</span>
             <span style="font-size:1.0vw">{{task.end_time}}</span>
           </div>
         </el-col>
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">项目领域：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">项目领域：</span>
             <span style="font-size:1.0vw" v-if="task.area!=''&&task.area!=null">{{task.area}}</span>
             <span style="font-size:1.0vw" v-else>暂无</span>
           </div>
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">最低年龄：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">最低年龄：</span>
             <span style="font-size:1.0vw">{{task.min_age}}</span>
           </div>
         </el-col>
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">最高年龄：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">最高年龄：</span>
             <span style="font-size:1.0vw">{{task.max_age}}</span>
           </div>
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh;margin-bottom: 2vh">
-            <span style="font-size:1.0vw">时间限制（小时）：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">时间限制（小时）：</span>
             <span style="font-size:1.0vw">{{task.time_limitation}}</span>
           </div>
         </el-col>
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh;margin-bottom: 2vh">
-            <span style="font-size:1.0vw">支付时长（小时）：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">支付时长（小时）：</span>
             <span style="font-size:1.0vw">{{task.pay_time}}</span>
           </div>
         </el-col>

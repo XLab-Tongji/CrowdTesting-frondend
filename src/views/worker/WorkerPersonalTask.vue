@@ -15,7 +15,7 @@
       <el-row>
         <el-col style="border-style:solid;border-width:0.3vh;border-color:#E6E6E6">
           <span style="padding-left: 1vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;"><b>按条件查找：</b></span>
-          <span style="padding-left: 1vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;">单位工资：</span>
+          <span style="padding-left: 1vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;">单位酬金：</span>
           <el-input v-model="minReward" placeholder="" size="mini" style="width:6%"></el-input>
           <span style="font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;">-</span>
           <el-input v-model="maxReward" placeholder="" size="mini" style="width:6%"></el-input>
@@ -56,7 +56,7 @@
         <el-col style="border-style:solid;border-width:0.3vh;border-color:#E6E6E6">
           <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;color:#4D4D4D;padding-right: 3vw"><b>排序：</b></span>
           <el-button type="success" style="color:#ffffff" @click="orderByReward" size="mini">
-            单位工资
+            单位酬金
             <i class="el-icon-d-caret" v-if="rewardOrder==0"></i>
             <i class="el-icon-caret-top" v-if="rewardOrder==1"></i>
             <i class="el-icon-caret-bottom" v-if="rewardOrder==2"></i>
@@ -80,7 +80,7 @@
           <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">参与人数</span>
         </el-col>
         <el-col :span="2">
-          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">单位工资</span>
+          <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">单位酬金</span>
         </el-col>
         <el-col :span="4">
           <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">开始时间</span>
