@@ -70,6 +70,7 @@
                       <!--{{limi_value}}-->
                       <el-date-picker
                         v-model="limi_value"
+                        :picker-options="pickerOptions1"
                         type="datetimerange"
                         range-separator="至"
                         start-placeholder="开始日期"
@@ -539,6 +540,10 @@
         resources:[],
         helpDialogVisible:false,
         have_saved:false,
+        pickerOptions1: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          },}
       };
     },
     created(){
@@ -752,6 +757,7 @@
               that.refresh = true;
               that.task_submit = true;
               that.$message("保存成功！");
+              that.have_saved=true;
             })
             .catch(function (error) {
               console.log(error);

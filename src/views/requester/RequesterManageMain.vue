@@ -59,7 +59,8 @@
                             label="操作"
                             width="150px">
                             <template slot-scope="scope">
-                                <el-button @click="showResult(scope.row.id)"  size="small">查看结果</el-button>
+                                <el-button @click="showResult(scope.row.id)"  size="small" v-show="scope.row.status!='待发布'">
+                                    查看结果</el-button>
                             </template>
                             </el-table-column>
                         </el-table>

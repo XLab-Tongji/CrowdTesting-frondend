@@ -82,11 +82,14 @@ import * as axios from 'axios'
                             that.$message('注册成功！');
                             that.$router.replace('/login');
                         }
+                        else if(response.data.message=="user has existed"){
+                            that.$message('该邮箱已被注册');
+                        }
                         else if(response.data.code == "400") {
-                        that.wrong_pwd("输入格式有误")
+                            
                         }
                         else if(response.data.code == "500") {
-                        that.wrong_pwd("服务器错误")
+                             that.$message("服务器错误");
                         }
                     })
                     .catch(function (error) {
