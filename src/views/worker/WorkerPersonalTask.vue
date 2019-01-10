@@ -93,7 +93,7 @@
         </el-col>
       </el-row>
       <el-collapse accordion v-for = "personalTask in showTaskList" :key="personalTask.id">
-        <el-collapse-item v-if="personalTask.status!='100%'">
+        <el-collapse-item v-if="personalTask.finished!==1">
           <template slot="title">
             <el-col :span="7">
               <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh;">{{personalTask.name}}</span>
@@ -450,12 +450,35 @@
             personalTasks =[];
           }
           for(let i=0;i<personalTasks.length;i++){
-            personalTasks[i].start_time = dateToString(personalTasks[i].start_time);
-            personalTasks[i].end_time = dateToString(personalTasks[i].end_time);
+            personalTasks[i].task.start_time = dateToString(personalTasks[i].task.start_time);
+            personalTasks[i].task.end_time = dateToString(personalTasks[i].task.end_time);
+            let a_task = {
+              "id": personalTasks[i].task.id,
+              "name": personalTasks[i].task.name,
+              "description": personalTasks[i].task.description,
+              "reward": personalTasks[i].task.reward,
+              "status": personalTasks[i].status,
+              "requesterid": personalTasks[i].task.requesterid,
+              "type": personalTasks[i].task.type,
+              "restrictions": personalTasks[i].task.restrictions,
+              "start_time": personalTasks[i].task.start_time,
+              "end_time": personalTasks[i].task.end_time,
+              "population": personalTasks[i].task.population,
+              "level": personalTasks[i].task.level,
+              "time_limitation": personalTasks[i].task.time_limitation,
+              "pay_time": personalTasks[i].task.pay_time,
+              "area": personalTasks[i].task.area,
+              "usage": personalTasks[i].task.usage,
+              "min_age": personalTasks[i].task.min_age,
+              "max_age": personalTasks[i].task.max_age,
+              "requester_id": personalTasks[i].task.requester_id,
+              "finished": personalTasks[i].finished,
+            }
+            that.taskList.push(a_task);
           }
-          that.taskList = personalTasks;
-          that.showTaskList = personalTasks;
-          that.showTaskListCopy = personalTasks;
+          that.showTaskList = that.taskList;
+          console.log(that.taskList);
+          that.showTaskListCopy = that.taskList;
           that.$forceUpdate();
         })
         .catch(function (error) {

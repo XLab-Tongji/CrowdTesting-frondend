@@ -238,12 +238,12 @@
             </div>
           </el-collapse-item>
       </el-collapse>
-      <div class="block" style="text-align: center;margin-top:6vh">
+      <!--<div class="block" style="text-align: center;margin-top:6vh">
         <el-pagination
           layout="prev, pager, next"
           :total="taskList.length">
         </el-pagination>
-      </div>
+      </div>-->
     </el-main>
   </el-container>
 </template>

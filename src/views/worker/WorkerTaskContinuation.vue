@@ -175,7 +175,7 @@
                       </div>
                     </div>
                     <el-row>
-                      <el-input type="textarea" :rows="3" placeholder="请输入内容" size="small" style="width:100%"></el-input>
+                      <el-input type="textarea" :rows="3" placeholder="请输入内容" size="small" style="width:100%" v-model="answer[question_index[scope.row.question.id]-1].open_answer"></el-input>
                     </el-row>
                   </div>
                 </template>
@@ -186,7 +186,7 @@
       </el-row>
       <el-row type="flex" justify="center" style="margin-bottom:6vh">
         <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
-          <el-button type="primary">
+          <el-button type="primary" @click="open_help">
             <span style="font-size:1.2vw">帮助</span>
           </el-button>
         </el-col>
@@ -199,6 +199,13 @@
           </el-button>
         </el-col>
       </el-row>
+      <el-dialog title="填写说明" :visible.sync="helpDialogVisible">
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请根据题目内容做出回答，具体要求如下：</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.请选择符合您想法的答案。</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.所有标识必做的题目请在提交之前全部作答。</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.请尽可能回答选做题。</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.项目细节详见本页面上方。</p>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
@@ -214,6 +221,9 @@
     methods: {
       back(){
         this.$router.push('worker_task_square')
+      },
+      open_help() {
+        this.helpDialogVisible = true;
       },
       submit(){
         let that = this;
@@ -240,6 +250,9 @@
                 }
               }
               else if(answer[i].type === 2){
+                if(answer[i].open_answer===''){
+                  flag = 1
+                }
               }
             }
           }
@@ -281,10 +294,24 @@
                 }
               }
               else if (answer[i].type === 2) {
+
               }
             }
             if (success === true) {
-              that.$message("提交成功！");
+              let param = new URLSearchParams();
+              param.append('taskId', that.task.id);
+              axios({
+                method: 'post',
+                url: '/api/question/finish',
+                data: param
+              })
+                .then(function (response) {
+                  that.$message("提交成功！");
+                  that.$router.push({ name: 'WorkerPersonalTask'})
+                })
+                .catch(function (error) {
+                  that.$message("提交失败！");
+                });
             }
           }
         }).catch(() => {
@@ -326,6 +353,7 @@
         questions:[],
         answer:[],
         question_index:[],
+        helpDialogVisible:false,
       }
     },
     created()
@@ -354,6 +382,7 @@
         {params:{'taskId': task_id}})
         .then(function (response) {
           that.questions = response.data.Questions;
+          console.log(that.questions);
           for(let i=0;i<that.questions.length;i++){
             that.question_index[that.questions[i].question.id] = i + 1;
             let an_answer = {
