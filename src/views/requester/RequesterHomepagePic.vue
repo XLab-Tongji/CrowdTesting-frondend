@@ -89,6 +89,9 @@ import * as axios from 'axios'
             .then(function (response) {
             console.log(response);
              that.picFile = response.data.images;
+             if(response.data.images==null){
+                 return;
+             }
              for(let i=0;i<response.data.images.length;i++){
                 let albums=response.data.images[i].resources;
                 let link;
@@ -133,7 +136,7 @@ import * as axios from 'axios'
             })
             .then(function(response){
                 if(response.data.code[0] == "2"){
-                    that.$message('添加成功');
+                    that.$message('添加成功！请刷新页面');
                     that.dialogFormVisible = false;
                 }
                 else if(response.data.code[0] == "5") {

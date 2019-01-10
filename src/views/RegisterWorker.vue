@@ -81,7 +81,7 @@ import * as axios from 'axios'
                             that.$router.replace('/login');
                         }
                         else if(response.data.code == "400") {
-                        that.wrong_pwd("输入格式有误")
+                        
                         }
                         else if(response.data.code[0] == "5") {
                         that.wrong_pwd("服务器错误")
