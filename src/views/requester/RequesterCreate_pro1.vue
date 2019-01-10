@@ -22,11 +22,15 @@
                             <el-form-item label="项目描述">
                                 <el-input v-model="task.description"  type="textarea" :autosize="{ minRows: 3, maxRows: 5}"></el-input>
                             </el-form-item>
-                            <el-form-item label="项目标签">
-                                <el-input v-model="task.type" placeholder="标签请用空格隔开"></el-input>
+                            <el-form-item label="项目类型">
+                                
+                                <el-select v-model="task.type"  placeholder="请选择">
+                                    <el-option label="问卷调查"  value="问卷调查"></el-option>
+                                    <el-option label="图片标记"  value="图片标记"></el-option>
+                                </el-select>
                             </el-form-item>
                             <el-form-item label="问题单价">
-                                <el-input-number v-model="task.reward" :precision="2"
+                                <el-input-number v-model="task.reward" :precision="2"  type="number"
                                 :step="0.1" :min="0" style="width:200px;margin-right:10px"></el-input-number>元
                                  <el-popover
                                     placement="right-start"
@@ -38,7 +42,7 @@
                                   </el-popover>
                             </el-form-item>
                              <el-form-item label="完成人数">
-                                <el-input-number v-model="population"
+                                <el-input-number v-model="population" :min="0" type="number"
                                  style="width:200px;margin-right:10px"></el-input-number>人
                                  <el-popover
                                     placement="right-start"
@@ -49,15 +53,15 @@
                                      <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>
                                   </el-popover>
                             </el-form-item>
-                            <el-form-item label="完成时限">
-                                <el-input-number v-model="task.time_limitation"
+                            <el-form-item label="推荐完成时间">
+                                <el-input-number v-model="task.time_limitation" :precision="2" :min="0" type="number"
                                  style="width:200px;margin-right:10px"></el-input-number>小时
                                  <el-popover
                                     placement="right-start"
                                     title="属性说明"
                                     width="200"
                                     trigger="hover"
-                                    content="参与者从开始答题到提交项目的时间限制">
+                                    content="推荐参与者从开始答题到提交项目的时间">
                                      <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>
                                   </el-popover>
                             </el-form-item>
@@ -74,14 +78,14 @@
                                 </div>
                             </el-form-item>
                             <el-form-item label="自动支付时间">
-                                <el-input-number v-model="task.pay_time"
+                                <el-input-number v-model="task.pay_time" :precision="2" type="number"
                                  style="width:200px;margin-right:10px" :max="72" :min="0"></el-input-number>小时
                                   <el-popover
                                     placement="right-start"
                                     title="属性说明"
                                     width="200"
                                     trigger="hover"
-                                    content="参与者完成项目后多久系统自动支付酬金给参与者">
+                                    content="参与者完成项目后多久系统自动支付酬金给参与者（不超过72小时）">
                                      <i class="el-icon-info" slot="reference" style="padding-left:20px;color:#909399"></i>
                                   </el-popover>
                             </el-form-item>
@@ -101,7 +105,7 @@
                                   </el-popover>
                             </el-form-item>
                             <div v-if="worker_condition_seen">
-                            <el-form-item label="资质要求"  >
+                            <el-form-item label="推荐领域"  >
                                 <el-select v-model="ex_condition" filterable multiple placeholder="请选择" style="width:400px">
                                     <el-option
                                     v-for="item in condition_options"
@@ -120,7 +124,7 @@
                                   </el-popover>
                             </el-form-item>
                              <el-form-item label="等级要求">
-                                <el-input-number v-model="task.level"
+                                <el-input-number v-model="task.level" type="number"
                                  :min="0" style="width:200px;margin-right:10px"></el-input-number>
                                  <el-popover
                                     placement="right-start"
@@ -132,14 +136,16 @@
                                   </el-popover>
                             </el-form-item>
                             <el-form-item label="年龄要求">
-                                <el-input-number v-model="task.min_age"
+                                <el-input-number v-model="task.min_age" type="number"
                                  :min="0" style="width:200px;margin-right:10px"></el-input-number>
-
+                                 <span style="margin-right:10px;"> — </span>
+                                 <el-input-number v-model="task.max_age"
+                                 :min="0" style="width:200px;margin-right:10px"></el-input-number>
                             </el-form-item>
                             </div>
                             <el-form-item>
                               <el-button class="next_step1" @click="submitTaskInformation">
-                                    提交
+                                    保存设置
                                 </el-button>
                                 <el-button  @click="toDesign" class="next_step1" type="primary">
                                     下一步
@@ -407,7 +413,7 @@ export default {
               restrictions:'暂无',
               start_time:'',
               end_time:'',
-              level:'',
+              level:0,
               time_limitation:0,
               pay_time:0,
               area:'',
