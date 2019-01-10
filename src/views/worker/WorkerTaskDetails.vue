@@ -25,7 +25,7 @@
         <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 2vh">
             <span style="font-size:1.0vw;margin-left: 25%">资质：</span>
-            <span style="font-size:1.0vw">{{task.level}}</span>
+            <span style="font-size:1.0vw">Level {{task.level}}</span>
           </div>
         </el-col>
       </el-row>
@@ -86,26 +86,26 @@
           </div>
         </el-col>
       </el-row>
-      <el-row style="margin-top:6vh">
-        <el-col :span="3" style="font-size:1.3vw;font-weight:500;letter-spacing: 0.1vh;color:#4D4D4D;padding-left:1vw">
+      <el-row style="margin-top:6vh;margin-left:20%">
+        <el-col style="font-size:1.3vw;font-weight:500;letter-spacing: 0.1vh;color:#4D4D4D;padding-left:1vw">
           <i class="el-icon-info"></i>
           <span>项目描述</span>
         </el-col>
       </el-row>
-      <el-row style="margin-top:2vh">
+      <el-row :span="18" style="margin-top:2vh;margin-left:20%">
         <el-col style="font-size:1.1vw;font-weight:500;letter-spacing: 0.1vh;color:#4D4D4D;padding-left:1vw">
           <span v-if="task.description!=null">&nbsp;&nbsp;&nbsp;&nbsp;{{task.description}}</span>
           <span v-else>暂无</span>
         </el-col>
       </el-row>
-      <el-row style="margin-top:6vh">
-        <el-col :span="3" style="font-size:1.3vw;font-weight:500;letter-spacing: 0.1vh;color:#4D4D4D;padding-left:1vw">
+      <el-row style="margin-top:6vh;margin-left:20%">
+        <el-col style="font-size:1.3vw;font-weight:500;letter-spacing: 0.1vh;color:#4D4D4D;padding-left:1vw">
           <i class="el-icon-document"></i>
           <span>样例</span>
         </el-col>
       </el-row>
-      <el-row type="flex" justify="center" style="margin-top:6vh;margin-bottom:6vh">
-        <el-col :span="16">
+      <el-row type="flex" justify="center" style="margin-bottom:6vh">
+        <el-col :span="14">
           <template>
             <el-table
               :data="questions"

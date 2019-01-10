@@ -85,26 +85,26 @@
           </div>
         </el-col>
       </el-row>
-      <el-row style="margin-top:6vh">
-        <el-col :span="3" style="font-size:1.3vw;font-weight:500;letter-spacing: 0.1vh;color:#4D4D4D;padding-left:1vw">
+      <el-row style="margin-top:6vh;margin-left:20%">
+        <el-col style="font-size:1.3vw;font-weight:500;letter-spacing: 0.1vh;color:#4D4D4D;padding-left:1vw">
           <i class="el-icon-info"></i>
           <span>项目描述</span>
         </el-col>
       </el-row>
-      <el-row style="margin-top:2vh">
-        <el-col style="font-size:1.1vw;font-weight:500;letter-spacing: 0.1vh;color:#4D4D4D;padding-left:1vw">
+      <el-row style="margin-top:2vh;margin-left:20%">
+        <el-col :span="18" style="font-size:1.1vw;font-weight:500;letter-spacing: 0.1vh;color:#4D4D4D;padding-left:1vw">
           <span v-if="task.description!=null">&nbsp;&nbsp;&nbsp;&nbsp;{{task.description}}</span>
           <span v-else>暂无</span>
         </el-col>
       </el-row>
-      <el-row style="margin-top:6vh">
-        <el-col :span="3" style="font-size:1.3vw;font-weight:500;letter-spacing: 0.1vh;color:#4D4D4D;padding-left:1vw">
+      <el-row style="margin-top:6vh;margin-left:20%">
+        <el-col style="font-size:1.3vw;font-weight:500;letter-spacing: 0.1vh;color:#4D4D4D;padding-left:1vw">
           <i class="el-icon-document"></i>
           <span>题目</span>
         </el-col>
       </el-row>
-      <el-row type="flex" justify="center" style="margin-top:6vh;margin-bottom:6vh">
-        <el-col :span="16">
+      <el-row type="flex" justify="center" style="margin-bottom:6vh">
+        <el-col :span="14">
           <template>
             <el-table
               :data="questions"
@@ -132,7 +132,7 @@
                       <div v-for="option in scope.row.options">
                         <el-radio v-model="answer[question_index[scope.row.question.id]-1].radio" :label="String(option.id)">{{option.content}}
                         </el-radio>
-                        <div v-if="option.openAnswerPermission===1">
+                        <div v-if="option.openAnswerPermission===1" v-model="answer[question_index[scope.row.question.id]-1].open_answer">
                           <el-input placeholder="请输入内容" size="small" style="width:50%"></el-input>
                         </div>
                       </div>
@@ -155,7 +155,7 @@
                       <div v-for="option in scope.row.options">
                         <el-checkbox v-model="answer[question_index[scope.row.question.id]-1].checkList" :label="String(option.id)">{{option.content}}
                         </el-checkbox>
-                        <div v-if="option.openAnswerPermission===1">
+                        <div v-if="option.openAnswerPermission===1" v-model="answer[question_index[scope.row.question.id]-1].open_answer">
                           <el-input placeholder="请输入内容" size="small" style="width:50%"></el-input>
                         </div>
                       </div>
@@ -236,7 +236,7 @@
           type: 'warning'
         }).then(() => {
           let flag = 0;
-          console.log(that.questions);
+          console.log(that.answer);
           for(let i=0;i<that.questions.length;i++){
             if(that.questions[i].question.compulsory === 1){
               if(answer[i].type === 0){
@@ -263,24 +263,16 @@
           else {
             for (let i = 0; i < answer.length; i++) {
               if (answer[i].type == 0) {
-                let param = new URLSearchParams();
-                param.append('optionId', answer[i].radio);
-                axios({
-                  method: 'post',
-                  url: '/api/question/select-one',
-                  data: param
-                })
-                  .then(function (response) {
-                  })
-                  .catch(function (error) {
-                    success = false;
-                  });
-              }
-              else if (answer[i].type == 1) {
-                for (let j = 0; j < answer[i].checkList.length; j++) {
-                  console.log()
+                let open_answer_permission = 0;
+                for(let j=0;j<answer[i].options.length;j++){
+                  if(answer[i].radio == answer[i].options[j].id){
+                    open_answer_permission = answer[i].options[j].openAnswerPermission;
+                    break;
+                  }
+                }
+                if(open_answer_permission == 0) {
                   let param = new URLSearchParams();
-                  param.append('optionId', answer[i].checkList[j]);
+                  param.append('optionId', answer[i].radio);
                   axios({
                     method: 'post',
                     url: '/api/question/select-one',
@@ -292,9 +284,76 @@
                       success = false;
                     });
                 }
+                else{
+                  let param = new URLSearchParams();
+                  param.append('optionId', answer[i].radio);
+                  param.append('content', answer[i].open_answer);
+                  axios({
+                    method: 'post',
+                    url: '/api/question/answer-one',
+                    data: param
+                  })
+                    .then(function (response) {
+                    })
+                    .catch(function (error) {
+                      success = false;
+                    });
+                }
+              }
+              else if (answer[i].type == 1) {
+                for (let j = 0; j < answer[i].checkList.length; j++) {
+                  let open_answer_permission = 0;
+                  for(let k=0;k<answer[i].options.length;k++){
+                    if(answer[i].checkList[j] == answer[i].options[k].id){
+                      open_answer_permission = answer[i].options[j].openAnswerPermission;
+                      break;
+                    }
+                  }
+                  if(open_answer_permission === 0) {
+                    let param = new URLSearchParams();
+                    param.append('optionId', answer[i].checkList[j]);
+                    axios({
+                      method: 'post',
+                      url: '/api/question/select-one',
+                      data: param
+                    })
+                      .then(function (response) {
+                      })
+                      .catch(function (error) {
+                        success = false;
+                      });
+                  }
+                  else{
+                    let param = new URLSearchParams();
+                    param.append('optionId', answer[i].checkList[j]);
+                    param.append('content', answer[i].open_answer);
+                    axios({
+                      method: 'post',
+                      url: '/api/question/answer-one',
+                      data: param
+                    })
+                      .then(function (response) {
+                      })
+                      .catch(function (error) {
+                        success = false;
+                      });
+                  }
+                }
               }
               else if (answer[i].type === 2) {
-
+                let param = new URLSearchParams();
+                param.append('questionId', that.questions[i].question.id);
+                param.append('content', that.answer[i].open_answer);
+                axios({
+                  method: 'post',
+                  url: '/api/question/answer',
+                  data: param
+                })
+                  .then(function (response) {
+                  })
+                  .catch(function (error) {
+                    success = false;
+                  });
               }
             }
             if (success === true) {
@@ -386,6 +445,7 @@
           for(let i=0;i<that.questions.length;i++){
             that.question_index[that.questions[i].question.id] = i + 1;
             let an_answer = {
+              options:that.questions[i].options,
               type:that.questions[i].question.type,
               radio:'',
               checkList:[],

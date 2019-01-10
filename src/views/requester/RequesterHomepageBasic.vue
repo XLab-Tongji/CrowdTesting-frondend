@@ -31,7 +31,7 @@
                         </el-form-item>
                           <el-form-item label="年龄">
                             <el-input v-model="requester.age"></el-input>
-                          </el-form-item>                       
+                          </el-form-item>
                         <el-form-item label="手机号码">
                         <el-input v-model="requester.teleNumber"></el-input>
                         </el-form-item>
@@ -40,12 +40,12 @@
                         </el-form-item>
                       </el-form>
 
-                      <el-dialog                      
+                      <el-dialog
                         :visible.sync="dialogVisible"
                         width="30%"
                         :before-close="handleClose">
                         <span>{{message}}</span>
-                        <span slot="footer" class="dialog-footer">                        
+                        <span slot="footer" class="dialog-footer">
                             <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
                         </span>
                         </el-dialog>
@@ -53,7 +53,7 @@
                     </div>
                 </div>
 
-                
+
         </el-col>
     </el-row>
 
@@ -79,12 +79,12 @@ import * as axios from 'axios'
                 param.append('username',that.requester.username);
                 param.append('name',that.requester.name);
                 param.append('eMail',that.requester.eMail);
-                param.append('research_field',that.requester.research_field); 
+                param.append('research_field',that.requester.research_field);
                 param.append('institutionName',that.requester.institutionName);
                 param.append('address',that.requester.address);
                 param.append('payMethod',that.requester.payMethod);
-                param.append('gender',that.requester.gender);      
-                param.append('age',that.requester.age);       
+                param.append('gender',that.requester.gender);
+                param.append('age',that.requester.age);
                 axios({
                     method:	'put',
                     url: '/api/requester/update',
@@ -93,15 +93,15 @@ import * as axios from 'axios'
                     .then(function (response) {
                         console.log(response);
                         if(response.data.code[0] == "2"){
-                            that.$message('修改成功！');                           
-                            
+                            that.$message('修改成功！');
+
                         }
                         else if(response.data.code[0] == "4") {
-                        that.wrong_pwd("输入格式有误")              
-                        }  
+                        that.wrong_pwd("输入格式有误")
+                        }
                         else if(response.data.code == "500") {
-                        that.wrong_pwd("服务器错误")              
-                        }                      
+                        that.wrong_pwd("服务器错误")
+                        }
                     })
                     .catch(function (error) {
                     alert(error);
