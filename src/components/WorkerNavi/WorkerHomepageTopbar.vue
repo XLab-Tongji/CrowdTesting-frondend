@@ -7,7 +7,7 @@
         </div>
 
       </el-col>
-      <el-col :span="16">
+      <el-col :span="18">
         <el-menu :default-active="activeIndex"
                  router
                  class="el-menu-demo"
@@ -21,17 +21,26 @@
         </el-menu>
       </el-col>
 
-      <el-col :span="3">
-        <el-button type="text" style="color:#ffffff;width:100%;height:60px" @click="informationPage">
+      <el-col :span="2">
+        <!--<el-button type="text" style="color:#ffffff;width:100%;height:60px" @click="informationPage">
           <span>{{user.username}}</span>
-        </el-button>
+        </el-button>-->
+        <el-dropdown @command="handleCommand">
+          <el-button type="text" style="color:#ffffff;width:100%;height:60px">
+            <span>{{user.username}}<i class="el-icon-arrow-down el-icon--right"></i></span>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="info">个人信息</el-dropdown-item>
+            <el-dropdown-item command="logout">退出</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </el-col>
 
-      <el-col :span="1" style = "background-color:#4D4D4D">
+      <!--<el-col :span="1" style = "background-color:#4D4D4D">
         <el-button type="text" style="color:#ffffff;width:100%;height:60px" @click="logout">
           <span>退出</span>
         </el-button>
-      </el-col>
+      </el-col>-->
     </div>
   </el-row>
 </template>
@@ -51,6 +60,14 @@
         this.$store.commit('UserLogout');
         this.$router.replace('/login')
       },
+      handleCommand(command) {
+        if(command === 'info'){
+          this.informationPage();
+        }
+        else{
+          this.logout();
+        }
+      }
     },
     data () {
       return {
