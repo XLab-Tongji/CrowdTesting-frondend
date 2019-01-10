@@ -218,35 +218,44 @@
       submit(){
         let that = this;
         let answer = this.answer;
+        console.log(answer);
         let success = true;
         this.$confirm('是否确认提交答案?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          for(let i=0;i<answer.length;i++){
-            if(answer[i].type == 0){
-              let param = new URLSearchParams();
-              param.append('optionId',answer[i].radio);
-              axios({
-                method:	'post',
-                url: '/api/question/select-one',
-                data:param
-              })
-                .then(function (response) {
-                })
-                .catch(function (error) {
-                  success = false;
-                });
+          let flag = 0;
+          console.log(that.questions);
+          for(let i=0;i<that.questions.length;i++){
+            if(that.questions[i].question.compulsory === 1){
+              if(answer[i].type === 0){
+                if(answer[i].radio===''){
+                  flag = 1
+                }
+              }
+              else if(answer[i].type === 1){
+                if(answer[i].checkList.length===0){
+                  flag = 1
+                }
+              }
+              else if(answer[i].type === 2){
+              }
             }
-            else if(answer[i].type == 1){
-              for(let j=0;j<answer[i].checkList.length;j++){
+          }
+          console.log(flag);
+          if(flag===1){
+            that.$message("请至少作答所有的必答题！")
+          }
+          else {
+            for (let i = 0; i < answer.length; i++) {
+              if (answer[i].type == 0) {
                 let param = new URLSearchParams();
-                param.append('optionId',answer[i].checkList[j].radio);
+                param.append('optionId', answer[i].radio);
                 axios({
-                  method:	'post',
+                  method: 'post',
                   url: '/api/question/select-one',
-                  data:param
+                  data: param
                 })
                   .then(function (response) {
                   })
@@ -254,14 +263,32 @@
                     success = false;
                   });
               }
+              else if (answer[i].type == 1) {
+                for (let j = 0; j < answer[i].checkList.length; j++) {
+                  console.log()
+                  let param = new URLSearchParams();
+                  param.append('optionId', answer[i].checkList[j]);
+                  axios({
+                    method: 'post',
+                    url: '/api/question/select-one',
+                    data: param
+                  })
+                    .then(function (response) {
+                    })
+                    .catch(function (error) {
+                      success = false;
+                    });
+                }
+              }
+              else if (answer[i].type === 2) {
+              }
             }
-            else if(answer[i].type == 2){
+            if (success === true) {
+              that.$message("提交成功！");
             }
-          }
-          if(success == true){
-            that.$message("提交成功！");
           }
         }).catch(() => {
+          console.log("a");
           that.$message({
             type: 'info',
             message: '取消提交'
