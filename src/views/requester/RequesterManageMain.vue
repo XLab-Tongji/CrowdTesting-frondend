@@ -26,38 +26,38 @@
                             <el-table-column
                             prop="id"
                             label="项目id"
-                            width="100">
+                            width="100px">
                             </el-table-column>
                             <el-table-column
                             prop="name"
                             label="项目名称"
-                            width="240">
+                            >
                             </el-table-column>
                             <el-table-column
                             prop="start_time"
                             label="创建时间"
                             sortable
-                            width="180">
+                            >
                             </el-table-column>
                             <el-table-column
                             prop="end_time"
                             label="截止日期"
                             sortable
-                            width="180">
+                            >
                             </el-table-column>
                             <el-table-column
                             prop="status"
                             label="项目状态"
-                            width="120">
+                            width="150px">
                             </el-table-column>
                             <el-table-column
                             prop="population"
                             label="参与人数"
-                            width="180">
+                            width="150px">
                             </el-table-column>
                             <el-table-column
                             label="操作"
-                            width="180">
+                            width="150px">
                             <template slot-scope="scope">
                                 <el-button @click="showResult(scope.row.id)"  size="small">查看结果</el-button>
                             </template>
@@ -102,6 +102,20 @@ export default {
                 .then(function (response) {
                   that.tableData = response.data.tasks;
                   console.log(that.tableData);
+                  for(let i=0;i<that.tableData.length;i++){
+                      var begin=new Date(that.tableData[i].start_time);
+                      var end= new Date(that.tableData[i].end_time);
+                      var now=new Date().getTime();
+                      if(now<begin){
+                          that.tableData[i].status="待发布";
+                      }
+                      else if(now>begin&&now<end){
+                           that.tableData[i].status="进行中";
+                      }
+                      else{
+                           that.tableData[i].status="已完成";
+                      }
+                  }
                 })
                 .catch(function (error) {
                   console.log(error);
