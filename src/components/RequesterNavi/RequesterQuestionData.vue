@@ -3,13 +3,27 @@
     <el-row type="flex" justify="center" style="margin-top:2vh">
       <el-col :span="16">
         <el-collapse accordion v-for = "a_question in questions" @change="changeQuestion" :key="a_question.question.id" v-model="activeName">
-            <el-collapse-item :name="a_question.question.id" v-if="a_question.question.type!=2">
+            <el-collapse-item :name="a_question.question.id">
               <template slot="title">
                 <el-col :span="22">
                   <span style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh">{{a_question.question.content}}</span>
                 </el-col>
               </template>
-              <div style="margin-left:56px;width:600px;height:400px" :id ="a_question.question.id">
+              <div v-if="a_question.question.type!=2">
+                <div style="margin-left:56px;width:600px;height:400px" :id ="a_question.question.id"></div>
+              </div>
+              <div v-else>
+                <template>
+                  <el-table
+                    :data="tableData"
+                    style="width: 100%">
+                    <el-table-column
+                      prop="date"
+                      label="日期"
+                      width="180">
+                    </el-table-column>
+                  </el-table>
+                </template>
               </div>
             </el-collapse-item>
         </el-collapse>

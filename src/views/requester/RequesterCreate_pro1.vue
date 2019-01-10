@@ -191,7 +191,6 @@
                                       </span>
                                       <span>)</span>
                                     </span>
-                              <span>a</span>
                             </div>
                             <div v-else>
                               <span>{{ scope.row.question_num }}.{{ scope.row.question_title.question_content }}【单选题】(必填)</span>
@@ -542,7 +541,7 @@
         have_saved:false,
         pickerOptions1: {
           disabledDate(time) {
-            return time.getTime() > Date.now();
+            return time.getTime() <= Date.now();
           },}
       };
     },

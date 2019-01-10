@@ -132,8 +132,8 @@
                       <div v-for="option in scope.row.options">
                         <el-radio v-model="answer[question_index[scope.row.question.id]-1].radio" :label="String(option.id)">{{option.content}}
                         </el-radio>
-                        <div v-if="option.openAnswerPermission===1" v-model="answer[question_index[scope.row.question.id]-1].open_answer">
-                          <el-input placeholder="请输入内容" size="small" style="width:50%"></el-input>
+                        <div v-if="option.openAnswerPermission===1">
+                          <el-input placeholder="请输入内容" size="small" style="width:50%" v-model="answer[question_index[scope.row.question.id]-1].open_answer"></el-input>
                         </div>
                       </div>
                     </template>
@@ -155,8 +155,8 @@
                       <div v-for="option in scope.row.options">
                         <el-checkbox v-model="answer[question_index[scope.row.question.id]-1].checkList" :label="String(option.id)">{{option.content}}
                         </el-checkbox>
-                        <div v-if="option.openAnswerPermission===1" v-model="answer[question_index[scope.row.question.id]-1].open_answer">
-                          <el-input placeholder="请输入内容" size="small" style="width:50%"></el-input>
+                        <div v-if="option.openAnswerPermission===1">
+                          <el-input placeholder="请输入内容" size="small" style="width:50%" v-model="answer[question_index[scope.row.question.id]-1].open_answer"></el-input>
                         </div>
                       </div>
                     </template>
@@ -285,6 +285,18 @@
                     });
                 }
                 else{
+                  let param1 = new URLSearchParams();
+                  param1.append('optionId', answer[i].radio);
+                  axios({
+                    method: 'post',
+                    url: '/api/question/select-one',
+                    data: param1
+                  })
+                    .then(function (response) {
+                    })
+                    .catch(function (error) {
+                      success = false;
+                    });
                   let param = new URLSearchParams();
                   param.append('optionId', answer[i].radio);
                   param.append('content', answer[i].open_answer);
@@ -305,7 +317,7 @@
                   let open_answer_permission = 0;
                   for(let k=0;k<answer[i].options.length;k++){
                     if(answer[i].checkList[j] == answer[i].options[k].id){
-                      open_answer_permission = answer[i].options[j].openAnswerPermission;
+                      open_answer_permission = answer[i].options[k].openAnswerPermission;
                       break;
                     }
                   }
@@ -324,6 +336,18 @@
                       });
                   }
                   else{
+                    let param1 = new URLSearchParams();
+                    param1.append('optionId', answer[i].checkList[j]);
+                    axios({
+                      method: 'post',
+                      url: '/api/question/select-one',
+                      data: param1
+                    })
+                      .then(function (response) {
+                      })
+                      .catch(function (error) {
+                        success = false;
+                      });
                     let param = new URLSearchParams();
                     param.append('optionId', answer[i].checkList[j]);
                     param.append('content', answer[i].open_answer);
@@ -341,12 +365,24 @@
                 }
               }
               else if (answer[i].type === 2) {
+                let param1 = new URLSearchParams();
+                param1.append('optionId', that.answer[i].options[0].id);
+                axios({
+                  method: 'post',
+                  url: '/api/question/select-one',
+                  data: param1
+                })
+                  .then(function (response) {
+                  })
+                  .catch(function (error) {
+                    success = false;
+                  });
                 let param = new URLSearchParams();
-                param.append('questionId', that.questions[i].question.id);
+                param.append('optionId', that.answer[i].options[0].id);
                 param.append('content', that.answer[i].open_answer);
                 axios({
                   method: 'post',
-                  url: '/api/question/answer',
+                  url: '/api/question/answer-one',
                   data: param
                 })
                   .then(function (response) {
