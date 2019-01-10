@@ -146,7 +146,7 @@
               </el-row>
               <el-row>
                 <el-col :span="13">
-                  <span style="color:#4D4D4D;padding-left: 1vw" v-if="task.area!=null||task.area!=''">{{task.area}}</span>
+                  <span style="color:#4D4D4D;padding-left: 1vw" v-if="task.area!=''">{{task.area}}</span>
                   <span style="color:#4D4D4D;padding-left: 1vw" v-else>暂无</span>
                 </el-col>
                 <!--<el-col :span="7">
@@ -217,7 +217,7 @@
               </el-row>
               <el-row>
                 <el-col :span="13">
-                  <span style="color:#ffffff;padding-left: 1vw" v-if="task.area!=null">{{task.area}}</span>
+                  <span style="color:#ffffff;padding-left: 1vw" v-if="task.area!=''">{{task.area}}</span>
                   <span style="color:#ffffff;padding-left: 1vw" v-else>暂无</span>
                 </el-col>
                 <!--<el-col :span="7">
@@ -238,12 +238,12 @@
             </div>
           </el-collapse-item>
       </el-collapse>
-      <!--<div class="block" style="text-align: center;margin-top:6vh">
+      <div class="block" style="text-align: center;margin-top:6vh">
         <el-pagination
           layout="prev, pager, next"
           :total="taskList.length">
         </el-pagination>
-      </div>-->
+      </div>
     </el-main>
   </el-container>
 </template>
@@ -284,18 +284,19 @@
           newShowTaskListCopy = copy;
         }
         this.showTaskList = newShowTaskListCopy;
-        console.log(this.showTaskList);
       },
       search(){
         function dateToString(draftTimeV){
           draftTimeV = draftTimeV + "";
           let date = '';
           let month = new Array();
-          month["Jan"] = 1; month["Feb"] = 2; month["Mar"] = 3; month["Apr"] = 4; month["May"] = 5; month["Jan"] = 6;
-          month["Jul"] = 7; month["Aug"] = 8; month["Sep"] = 9; month["Oct"] = 10; month["Nov"] = 11; month["Dec"] = 12;
+          month["Jan"] = '01'; month["Feb"] = '02'; month["Mar"] = '03'; month["Apr"] = '04'; month["May"] = '05'; month["Jun"] = '06';
+          month["Jul"] = '07'; month["Aug"] = '08'; month["Sep"] = '09'; month["Oct"] = '10'; month["Nov"] = '11'; month["Dec"] = '12';
           let str = draftTimeV.split(" ");
           date = str[3] + "-";
           date = date + month[str[1]] + "-" + str[2];
+          if(str[2]==undefined)
+            date = ''
           return date;
         }
         let showTasks = [];
@@ -329,32 +330,33 @@
           maxReward = minReward;
           minReward = change_num;
         }
-        if(this.endDate != '' && this.endDate < this.startDate) {
+        if(dateToString(this.endDate) != '' && this.endDate < this.startDate && dateToString(this.startDate) != ''){
           let change = this.startDate;
           this.startDate = this.endDate;
           this.endDate = change;
         }
-        console.log(this.endDate);
-        console.log(this.startDate);
+        console.log(dateToString(this.endDate));
+        console.log(dateToString(this.startDate));
+        console.log(this.taskList);
         for(let task in this.taskList){
           let aTask =this.taskList[task];
           if(aTask.reward >= minReward && aTask.reward <= maxReward){
-            if(this.startDate != '' && this.startDate != null && aTask.start_time >= dateToString(this.startDate)) {
-              if(this.endDate != ''&& this.endDate != null && aTask.start_time <= dateToString(this.endDate)) {
+            if(dateToString(this.startDate) != '' && aTask.start_time >= dateToString(this.startDate)) {
+              if(dateToString(this.endDate) != '' && aTask.start_time <= dateToString(this.endDate)) {
                 if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
-              else if(this.endDate == ''|| this.endDate != null){
+              else if(dateToString(this.endDate) == ''){
                 if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
             }
-            else if(this.startDate == '' || this.startDate == null) {
-              if(this.endDate != '' && this.endDate != null && aTask.start_time <= dateToString(this.endDate)) {
+            else if(dateToString(this.startDate) == '') {
+              if(dateToString(this.endDate) != '' && aTask.start_time <= dateToString(this.endDate)) {
                 if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
-              else if(this.endDate == '' || this.endDate == null ){
+              else if(dateToString(this.endDate) == ''){
                 if((aTask.name!= null && aTask.name.indexOf(this.keyword) >= 0) ||(aTask.description != null && aTask.description.indexOf(this.keyword) >= 0) || (aTask.restrictions != null && aTask.restrictions.indexOf(this.keyword) >= 0))
                   showTasks.push(aTask);
               }
@@ -460,9 +462,6 @@
         personalTaskList:[],
         activeNames:[],
         pickerOptions1: {
-          disabledDate(time) {
-            return time.getTime() > Date.now();
-          },
           shortcuts: [{
             text: '今天',
             onClick(picker) {
@@ -533,7 +532,7 @@
               }
               let personalTaskList = [];
               for(let i=0;i<personalTasks.length;i++){
-                personalTaskList.push(personalTasks[i].id);
+                personalTaskList.push(personalTasks[i].task.id);
               }
               that.personalTaskList = personalTaskList;
               let other_tasks = [];

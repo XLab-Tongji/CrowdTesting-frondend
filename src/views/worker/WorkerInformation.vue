@@ -14,7 +14,9 @@
             @close="handleClose"
             background-color="#4D4D4D"
             text-color="#fff"
-            active-text-color="#5ED5D1">
+            active-text-color="#5ED5D1"
+            style="height:550px"
+          >
             <el-menu-item index="1" @click="BasicInformation">
               <i class="el-icon-document"></i>
               <span slot="title">基本信息</span>
@@ -44,22 +46,22 @@
                 <el-form ref="form" :model="form" label-width="80px" @submit.prevent="onSubmit" style="margin:20px;width:60%;min-width:600px;">
 
                   <el-form-item label="真实姓名">
-                    <el-input v-model="worker.username"></el-input>
+                    <el-input v-model="worker.username" style="width:40%"></el-input>
                   </el-form-item>
                   <el-form-item label="性别">
-                    <el-select v-model="worker.gender" placeholder="">
+                    <el-select v-model="worker.gender" style="width:40%" placeholder="">
                       <el-option label="女" value="女"></el-option>
                       <el-option label="男" value="男"></el-option>
                     </el-select>
                   </el-form-item>
                   <el-form-item label="昵称">
-                    <el-input v-model="worker.name"></el-input>
+                    <el-input v-model="worker.name" style="width:40%"></el-input>
                   </el-form-item>
                    <el-form-item label="年龄">
-                    <el-input v-model="worker.age"></el-input>
+                    <el-input v-model="worker.age" style="width:40%"></el-input>
                   </el-form-item>
                   <el-form-item label="手机号">
-                    <el-input v-model="worker.teleNumber"></el-input>
+                    <el-input v-model="worker.teleNumber" style="width:40%"></el-input>
                   </el-form-item>
                   <el-form-item label="邮箱">
                     {{worker.email}}
@@ -67,8 +69,8 @@
                   <!--<el-form-item label="密码">
                     <el-button plain @click="updatepassword">修改密码</el-button>
                   </el-form-item>-->
-                   <el-form-item label="经验值">
-                    {{  worker.level}}
+                   <el-form-item label="等级">
+                    {{worker.level}}
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" @click="confirmupdate">保存</el-button>
@@ -78,7 +80,7 @@
               </template>
               <div>
               </div>
-        
+
           </el-collapse>
           <el-collapse accordion v-if="information_page_menu==1.1">
             <template>
@@ -111,7 +113,7 @@
                     <el-option label="设计" value="设计"></el-option>
                   </el-select>
                 </el-form-item>
-               
+
                 <el-form-item>
                   <el-button type="primary" @click="confirmupdate">保存</el-button>
                   <el-button plain  @click="cancel">取消</el-button>
@@ -172,7 +174,7 @@
   import * as Vue from 'autoprefixer'
   import axios from 'axios'
   import WorkerHomepageTopbar from '@/components/WorkerNavi/WorkerHomepageTopbar.vue'
-  
+
   let self = this;
   export default {
      components:{
