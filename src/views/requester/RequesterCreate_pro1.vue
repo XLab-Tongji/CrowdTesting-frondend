@@ -147,7 +147,7 @@
                               <el-button class="next_step1" @click="submitTaskInformation">
                                     保存设置
                                 </el-button>
-                                <el-button  @click="toDesign" class="next_step1" type="primary">
+                                <el-button  @click="toDesign" class="next_step1" type="primary" v-if="have_saved">
                                     下一步
                                 </el-button>
                             </el-form-item>
@@ -475,6 +475,7 @@ export default {
             population:0,
             task_submit:false,
             refresh:false,
+            have_saved:false
           };
         },
         created(){
@@ -554,6 +555,7 @@ export default {
                               console.log(response);
                               if (response.data.code[0] == "2") {
                                 console.log(response);
+                                
                               }
                             })
                             .catch(function (error) {
@@ -669,6 +671,7 @@ export default {
                   that.refresh = true;
                   that.task_submit = true;
                   that.$message("提交成功！");
+                  that.have_saved=true;
                 })
                 .catch(function (error) {
                   console.log(error);
