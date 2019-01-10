@@ -15,72 +15,72 @@
         </el-col>
       </el-row>
       <el-row type="flex" justify="center" style="margin-top:6vh">
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 2vh">
-            <span style="font-size:1.0vw">项目类型：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">项目类型：</span>
             <span style="font-size:1.0vw">{{task.type}}</span>
           </div>
         </el-col>
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 2vh">
-            <span style="font-size:1.0vw">资质：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">资质：</span>
             <span style="font-size:1.0vw">Level {{task.level}}</span>
           </div>
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">创建时间：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">创建时间：</span>
             <span style="font-size:1.0vw">{{task.start_time}}</span>
           </div>
         </el-col>
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">完成度：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">完成度：</span>
             <span style="font-size:1.0vw">{{task.status}}</span>
           </div>
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">终止时间：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">终止时间：</span>
             <span style="font-size:1.0vw">{{task.end_time}}</span>
           </div>
         </el-col>
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">项目领域：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">项目领域：</span>
             <span style="font-size:1.0vw" v-if="task.area!=''&&task.area!=null">{{task.area}}</span>
             <span style="font-size:1.0vw" v-else>暂无</span>
           </div>
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">最低年龄：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">最低年龄：</span>
             <span style="font-size:1.0vw">{{task.min_age}}</span>
           </div>
         </el-col>
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh">
-            <span style="font-size:1.0vw">最高年龄：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">最高年龄：</span>
             <span style="font-size:1.0vw">{{task.max_age}}</span>
           </div>
         </el-col>
       </el-row>
       <el-row type="flex" justify="center">
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh;margin-bottom: 2vh">
-            <span style="font-size:1.0vw">时间限制（小时）：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">时间限制（小时）：</span>
             <span style="font-size:1.0vw">{{task.time_limitation}}</span>
           </div>
         </el-col>
-        <el-col :span="7" style="text-align: center;font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
+        <el-col :span="7" style="font-size:1.3vw;font-weight:500;color:#ffffff;background-color:#015D73">
           <div style="margin-top: 1vh;margin-bottom: 2vh">
-            <span style="font-size:1.0vw">支付时长（小时）：</span>
+            <span style="font-size:1.0vw;margin-left: 25%">支付时长（小时）：</span>
             <span style="font-size:1.0vw">{{task.pay_time}}</span>
           </div>
         </el-col>
@@ -175,7 +175,7 @@
                       </div>
                     </div>
                     <el-row>
-                      <el-input type="textarea" :rows="3" placeholder="请输入内容" size="small" style="width:100%"></el-input>
+                      <el-input type="textarea" :rows="3" placeholder="请输入内容" size="small" style="width:100%" v-model="answer[question_index[scope.row.question.id]-1].open_answer"></el-input>
                     </el-row>
                   </div>
                 </template>
@@ -186,7 +186,7 @@
       </el-row>
       <el-row type="flex" justify="center" style="margin-bottom:6vh">
         <el-col :span="2" style="text-align: center;font-size:1.3vw;font-weight:500;letter-spacing: 0.2vh;color:#ffffff;border-radius:4px;background-color:#ffffff">
-          <el-button type="primary">
+          <el-button type="primary" @click="open_help">
             <span style="font-size:1.2vw">帮助</span>
           </el-button>
         </el-col>
@@ -199,6 +199,13 @@
           </el-button>
         </el-col>
       </el-row>
+      <el-dialog title="填写说明" :visible.sync="helpDialogVisible">
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请根据题目内容做出回答，具体要求如下：</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.请选择符合您想法的答案。</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.所有标识必做的题目请在提交之前全部作答。</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.请尽可能回答选做题。</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.项目细节详见本页面上方。</p>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
@@ -215,38 +222,53 @@
       back(){
         this.$router.push('worker_task_square')
       },
+      open_help() {
+        this.helpDialogVisible = true;
+      },
       submit(){
         let that = this;
         let answer = this.answer;
+        console.log(answer);
         let success = true;
         this.$confirm('是否确认提交答案?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          for(let i=0;i<answer.length;i++){
-            if(answer[i].type == 0){
-              let param = new URLSearchParams();
-              param.append('optionId',answer[i].radio);
-              axios({
-                method:	'post',
-                url: '/api/question/select-one',
-                data:param
-              })
-                .then(function (response) {
-                })
-                .catch(function (error) {
-                  success = false;
-                });
+          let flag = 0;
+          console.log(that.questions);
+          for(let i=0;i<that.questions.length;i++){
+            if(that.questions[i].question.compulsory === 1){
+              if(answer[i].type === 0){
+                if(answer[i].radio===''){
+                  flag = 1
+                }
+              }
+              else if(answer[i].type === 1){
+                if(answer[i].checkList.length===0){
+                  flag = 1
+                }
+              }
+              else if(answer[i].type === 2){
+                if(answer[i].open_answer===''){
+                  flag = 1
+                }
+              }
             }
-            else if(answer[i].type == 1){
-              for(let j=0;j<answer[i].checkList.length;j++){
+          }
+          console.log(flag);
+          if(flag===1){
+            that.$message("请至少作答所有的必答题！")
+          }
+          else {
+            for (let i = 0; i < answer.length; i++) {
+              if (answer[i].type == 0) {
                 let param = new URLSearchParams();
-                param.append('optionId',answer[i].checkList[j].radio);
+                param.append('optionId', answer[i].radio);
                 axios({
-                  method:	'post',
+                  method: 'post',
                   url: '/api/question/select-one',
-                  data:param
+                  data: param
                 })
                   .then(function (response) {
                   })
@@ -254,14 +276,46 @@
                     success = false;
                   });
               }
+              else if (answer[i].type == 1) {
+                for (let j = 0; j < answer[i].checkList.length; j++) {
+                  console.log()
+                  let param = new URLSearchParams();
+                  param.append('optionId', answer[i].checkList[j]);
+                  axios({
+                    method: 'post',
+                    url: '/api/question/select-one',
+                    data: param
+                  })
+                    .then(function (response) {
+                    })
+                    .catch(function (error) {
+                      success = false;
+                    });
+                }
+              }
+              else if (answer[i].type === 2) {
+
+              }
             }
-            else if(answer[i].type == 2){
+            if (success === true) {
+              let param = new URLSearchParams();
+              param.append('taskId', that.task.id);
+              axios({
+                method: 'post',
+                url: '/api/question/finish',
+                data: param
+              })
+                .then(function (response) {
+                  that.$message("提交成功！");
+                  that.$router.push({ name: 'WorkerPersonalTask'})
+                })
+                .catch(function (error) {
+                  that.$message("提交失败！");
+                });
             }
-          }
-          if(success == true){
-            that.$message("提交成功！");
           }
         }).catch(() => {
+          console.log("a");
           that.$message({
             type: 'info',
             message: '取消提交'
@@ -299,6 +353,7 @@
         questions:[],
         answer:[],
         question_index:[],
+        helpDialogVisible:false,
       }
     },
     created()
@@ -327,6 +382,7 @@
         {params:{'taskId': task_id}})
         .then(function (response) {
           that.questions = response.data.Questions;
+          console.log(that.questions);
           for(let i=0;i<that.questions.length;i++){
             that.question_index[that.questions[i].question.id] = i + 1;
             let an_answer = {
