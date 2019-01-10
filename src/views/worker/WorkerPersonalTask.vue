@@ -92,7 +92,7 @@
           <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">行为</span>
         </el-col>
       </el-row>
-      <el-collapse accordion v-for = "personalTask in showTaskList" :key="personalTask.id">
+      <el-collapse accordion v-for = "personalTask in showTaskList.slice((currentPage-1)*pagesize,currentPage*pagesize)" :key="personalTask.id">
         <el-collapse-item v-if="personalTask.finished!==1">
           <template slot="title">
             <el-col :span="7">
@@ -226,8 +226,13 @@
 
       <div class="block" style="text-align: center;margin-top:6vh">
         <el-pagination
-          layout="prev, pager, next"
-          :total="showTaskList.length">
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total=showTaskList.length>
         </el-pagination>
       </div>
 
@@ -388,7 +393,14 @@
       },
       continuation(task_id){
         this.$router.push({path: 'worker_task_continuation', query: {task_id: task_id}})
-      }
+      },
+      handleSizeChange(val) {
+        this.pagesize = val;
+//        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        this.currentPage = val;
+      },
     },
     data(){
       return{
@@ -427,6 +439,8 @@
             }
           }]
         },
+        pagesize:10,
+        currentPage:1,
         value1: '',
         value2: '',
         rewardOrder: 0,

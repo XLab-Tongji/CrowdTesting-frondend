@@ -96,7 +96,7 @@
           <span style="font-size:1.0vw;font-weight:500;line-height: 5vh">行为</span>
         </el-col>
       </el-row>
-      <el-collapse accordion v-for = "task in showTaskList" id = "collapse" v-model="activeNames" :key="task.id">
+      <el-collapse accordion v-for = "task in showTaskList.slice((currentPage-1)*pagesize,currentPage*pagesize)" id = "collapse" v-model="activeNames" :key="task.id">
           <el-collapse-item v-if="user.level<task.level || task.min_age > user.age || task.max_age < user.age">
             <template slot="title">
               <el-col :span="7" v-if="task.name!=null">
@@ -240,8 +240,13 @@
       </el-collapse>
       <div class="block" style="text-align: center;margin-top:6vh">
         <el-pagination
-          layout="prev, pager, next"
-          :total="taskList.length">
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="pagesize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total=showTaskList.length>
         </el-pagination>
       </div>
     </el-main>
@@ -335,9 +340,6 @@
           this.startDate = this.endDate;
           this.endDate = change;
         }
-        console.log(dateToString(this.endDate));
-        console.log(dateToString(this.startDate));
-        console.log(this.taskList);
         for(let task in this.taskList){
           let aTask =this.taskList[task];
           if(aTask.reward >= minReward && aTask.reward <= maxReward){
@@ -440,6 +442,13 @@
         console.log(task_id);
         this.$router.push({ path: 'worker_task_details', query: { task_id: task_id }})
       },
+      handleSizeChange(val) {
+        this.pagesize = val;
+//        console.log(`每页 ${val} 条`);
+      },
+      handleCurrentChange(val) {
+        this.currentPage = val;
+      },
     },
     data(){
       return{
@@ -488,6 +497,8 @@
         heatOrder: 0,
         rewardOrder: 0,
         dateOrder: 0,
+        pagesize:10,
+        currentPage:1,
       }
     },
     created()
@@ -537,7 +548,6 @@
               that.personalTaskList = personalTaskList;
               let other_tasks = [];
               for(let i=0;i<tasks.length;i++){
-                console.log(personalTaskList);
                 if(personalTaskList != null && personalTaskList.indexOf(tasks[i].id)===-1){
                   other_tasks.push(tasks[i]);
                 }
@@ -545,6 +555,7 @@
               that.taskList = other_tasks;
               that.showTaskList = other_tasks;
               that.showTaskListCopy = other_tasks;
+              console.log(that.showTaskList.slice((that.currentPage-1)*that.pagesize,that.currentPage*that.pagesize))
               that.$forceUpdate();
             })
             .catch(function (error) {
