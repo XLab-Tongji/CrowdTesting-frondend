@@ -365,24 +365,12 @@
                 }
               }
               else if (answer[i].type === 2) {
-                let param1 = new URLSearchParams();
-                param1.append('optionId', that.answer[i].options[0].id);
-                axios({
-                  method: 'post',
-                  url: '/api/question/select-one',
-                  data: param1
-                })
-                  .then(function (response) {
-                  })
-                  .catch(function (error) {
-                    success = false;
-                  });
                 let param = new URLSearchParams();
-                param.append('optionId', that.answer[i].options[0].id);
+                param.append('questionId', that.questions[i].question.id);
                 param.append('content', that.answer[i].open_answer);
                 axios({
                   method: 'post',
-                  url: '/api/question/answer-one',
+                  url: '/api/question/answer',
                   data: param
                 })
                   .then(function (response) {
