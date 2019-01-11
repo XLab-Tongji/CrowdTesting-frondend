@@ -530,9 +530,15 @@
           tasks = [];
           for(let i=0;i<tasks_copy.length;i++){
             if(tasks_copy[i].status != '100%'){
-              tasks_copy[i].start_time = dateToString(tasks_copy[i].start_time);
-              tasks_copy[i].end_time = dateToString(tasks_copy[i].end_time);
-              tasks.push(tasks_copy[i]);
+              let now=new Date().getTime();
+              console.log(now);
+              let begin=new Date(tasks_copy[i].start_time);
+              let end= new Date(tasks_copy[i].end_time);
+              if(now>begin&&now<end) {
+                tasks_copy[i].start_time = dateToString(tasks_copy[i].start_time);
+                tasks_copy[i].end_time = dateToString(tasks_copy[i].end_time);
+                tasks.push(tasks_copy[i]);
+              }
             }
           }
           axios.get('/api/personal-task/find-my-task')

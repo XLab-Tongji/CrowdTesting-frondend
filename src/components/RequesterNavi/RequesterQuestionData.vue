@@ -12,15 +12,16 @@
               <div v-if="a_question.question.type!=2">
                 <div style="margin-left:56px;width:600px;height:400px" :id ="a_question.question.id"></div>
               </div>
-              <div v-else>
+              <div v-else style="margin-left:56px;margin-right:56px">
                 <template>
                   <el-table
-                    :data="tableData"
+                    border
+                    :data="a_question.answers"
                     style="width: 100%">
                     <el-table-column
-                      prop="date"
-                      label="日期"
-                      width="180">
+                      prop="content"
+                      label="答案内容"
+                      style="padding-left: 2vw;font-size:1.0vw;font-weight:500;line-height: 5vh">
                     </el-table-column>
                   </el-table>
                 </template>
@@ -45,67 +46,69 @@
             index = i;
           }
         }
-        let data = [];
-        let key_value = [];
-        for (let j = 0; j < this.questions[index].options.length; j++) {
-          data.push(this.questions[index].options[j].content);
-          key_value.push({
-            value: this.questions[index].selectedCounts[j],
-            name: this.questions[index].options[j].content
-          });
-        }
-        console.log(this.questions[index].question.id);
-        let myChart = echarts.init(document.getElementById(this.questions[index].question.id))
-        let option ={
-          title: {
-            text: '选项比例',
-            left: 'center',
-            textStyle: {
-              color: '#4D4D4D',
-              fontStyle: 'normal',//标题字体,\
-              fontWeight:600,
-            }
-          },
-          tooltip: {
-            trigger: 'item',//以具体项目触发弹窗
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
-          },
-          //图例，选择要显示的项目
-          legend: {
-            bottom: 1,
-            left:'center',
-            textStyle:{
-              fontSize:14
+        if(this.questions[index].question.type!=2) {
+          let data = [];
+          let key_value = [];
+          for (let j = 0; j < this.questions[index].options.length; j++) {
+            data.push(this.questions[index].options[j].content);
+            key_value.push({
+              value: this.questions[index].selectedCounts[j],
+              name: this.questions[index].options[j].content
+            });
+          }
+          console.log(this.questions[index].question.id);
+          let myChart = echarts.init(document.getElementById(this.questions[index].question.id))
+          let option = {
+            title: {
+              text: '选项比例',
+              left: 'center',
+              textStyle: {
+                color: '#4D4D4D',
+                fontStyle: 'normal',//标题字体,\
+                fontWeight: 600,
+              }
             },
-            textStyle: {
-              color: '#000'
+            tooltip: {
+              trigger: 'item',//以具体项目触发弹窗
+              formatter: "{a} <br/>{b} : {c} ({d}%)"
             },
-            data: []  //注意要和数据的name相对应
-          },
-          color:['#ff7474','#ffc95e','#f0a042','#ff9f8c','#ff7f50','#BC8F8F'],
-          series: [
-            {
-              name: '选项',
-              type: 'pie',
-              radius: ['10%', '50%'], //调整大小
-              center: ['50%', '50%'],   //调整位置
-              data: [],
-              label: { //饼图图形的文本标签
-                normal: {
-                  show: true,
-                  position: 'inside',
-                  fontSize: '10',
-                  formatter: '{d}%'
-                }
+            //图例，选择要显示的项目
+            legend: {
+              bottom: 1,
+              left: 'center',
+              textStyle: {
+                fontSize: 14
               },
-            }
-          ]
+              textStyle: {
+                color: '#000'
+              },
+              data: []  //注意要和数据的name相对应
+            },
+            color: ['#ff7474', '#ffc95e', '#f0a042', '#ff9f8c', '#ff7f50', '#BC8F8F'],
+            series: [
+              {
+                name: '选项',
+                type: 'pie',
+                radius: ['10%', '50%'], //调整大小
+                center: ['50%', '50%'],   //调整位置
+                data: [],
+                label: { //饼图图形的文本标签
+                  normal: {
+                    show: true,
+                    position: 'inside',
+                    fontSize: '10',
+                    formatter: '{d}%'
+                  }
+                },
+              }
+            ]
+          }
+          option.legend.data = data;
+          option.series[0].data = key_value.sort(function (a, b) {
+            return a.value - b.value;
+          });
+          myChart.setOption(option)
         }
-        option.legend.data = data;
-        option.series[0].data = key_value.sort(function (a, b) {
-          return a.value - b.value;
-        });
-        myChart.setOption(option)
       },
 
     },
@@ -126,6 +129,13 @@
           //console.log(response);
           that.questions = response.data.Questions;
           console.log(that.questions);
+          for(let i=0;i<that.questions.length;i++){
+            if(that.questions[i].question.content!=undefined  && that.questions[i].question.content!=null  && that.questions[i].question.content.length>48){
+              let first = that.questions[i].question.content.slice(0,47);
+              first += '...'
+              that.questions[i].question.content = first;
+            }
+          }
         })
         .catch(function (error) {
           console.log(error);
