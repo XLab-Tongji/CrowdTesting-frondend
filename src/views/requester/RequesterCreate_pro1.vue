@@ -595,6 +595,7 @@
               param.append('resourceLoading', resource_loading);
               param.append('type', questions[i].question_title.type);
               param.append('compulsory', questions[i].question_title.must);
+              param.append('questionNumber', i+1);
               axios({
                 method: 'post',
                 url: '/api/question/add-question',
