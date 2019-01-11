@@ -541,11 +541,12 @@
         have_saved:false,
         pickerOptions1: {
           disabledDate(time) {
-            return time.getTime() <= Date.now();
+            return time.getTime() < Date.now()-24*3600*1000;
           },}
       };
     },
     created(){
+      console.log(Date.now());
       let that = this;
       axios({
         method: 'get',
